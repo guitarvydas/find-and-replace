@@ -1,8 +1,6 @@
 {
     input : function (items) {
-	console.error ("input >>>");
-	console.error (items.rwr ().join (''));
-	console.error ("<<< input");
+	console.error ("INPUT");
 	return items.rwr ().join(''); },
     item_space : function (x) { 
 	return x.rwr ();},

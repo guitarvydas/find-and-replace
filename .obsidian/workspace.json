@@ -175,6 +175,8 @@
   "lastOpenFiles": [
     "find-and-replace",
     "find-and-replace.o",
+    "#main.odin#",
+    "find-and-replace.ld_T0LLOB",
     "process/#process.odin#",
     "ohmjs/#ohmjs.js#",
     "rt/#word.sem.js#",
@@ -184,8 +186,6 @@
     "find-and-replace.ld_S1CGHY",
     "#Makefile#",
     "Key Ideas.md",
-    "find-and-replace.dSYM/Contents/Resources/DWARF/find-and-replace",
-    "find-and-replace.dSYM/Contents/Resources/DWARF",
     "Untitled.md",
     "find.md",
     "experminents.md"

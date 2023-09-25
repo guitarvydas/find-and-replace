@@ -135,12 +135,15 @@ function main () {
     try {
 	argv = require('yargs/yargs')(process.argv.slice(2)).argv;
 
+	console.error (argv);
 	
 	let grammarName = argv._[0];
 	let grammarFileName = argv._[1];
 	let rwrFileName = argv._[2];
 	let src = fs.readFileSync ('/dev/fd/0', 'utf-8');
 
+	console.error (src);
+		       
 	if (argv.trace) {
 	    _traceDepth = 0;
 	    _tracing = true;
@@ -155,13 +158,17 @@ function main () {
 	let asst = hangOperationOntoAsst (emptyAsst, "rwr", rwrFileName);
 
 	let walked = processCST ("rwr", asst, cst)
+	console.error ("WALKED: " + walked);
 	return walked;
 	
     } catch (e) {
-	console.error (e.message);
+	console.log ("");
+	console.error (e.message.trim ());
 	process.exit (1);
     }
 }
 
 var result = main ()
-console.log (result);
+console.error ("RESULT: " + result.trim ());
+console.log (result.trim ());
+console.error ("");

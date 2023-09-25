@@ -168,10 +168,6 @@ run_command :: proc(cmd: string, input: Maybe(string)) -> (string, string) {
     output, ok_o := process_read_handle(p.output)
     stderr, ok_e := process_read_handle(p.error)
 
-    fmt.printf ("PROCESS ok_o=%v ok_e=%v\n", ok_o, ok_e);
-    fmt.printf ("PROCESS.output = %v\n", output);
-    fmt.printf ("PROCESS.error = %v\n", stderr);
-
     if !ok_o {
 	return "", "read error on stdout"
     } else if !ok_e {

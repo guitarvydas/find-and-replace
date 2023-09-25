@@ -957,13 +957,8 @@ ohmjs_maybe :: proc (eh: ^zd.Eh, inst: ^OhmJS_Instance_Data) {
 
         cmd := fmt.aprintf ("ohmjs/ohmjs.js %s %s %s", inst.grammarname, inst.grammarfilename, inst.semanticsfilename)
 	captured_output, err := process.run_command (cmd, inst.input)
-	fmt.printf ("OUT: %v\n", captured_output);
-	fmt.printf ("ERR: %v\n", err);
-	if err == "" {
-            zd.send(eh, "output", captured_output)
-	} else {
-	    zd.send (eh, "error", err)
-	}
+        zd.send (eh, "output", captured_output)
+	zd.send (eh, "error", err)
     }
 }
 
