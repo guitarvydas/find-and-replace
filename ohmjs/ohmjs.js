@@ -141,8 +141,6 @@ function main () {
 	let rwrFileName = argv._[2];
 	let src = fs.readFileSync ('/dev/fd/0', 'utf-8');
 
-	console.error (src);
-
 	if (argv.trace) {
 	    _traceDepth = 0;
 	    _tracing = true;
@@ -157,7 +155,7 @@ function main () {
 	let asst = hangOperationOntoAsst (emptyAsst, "rwr", rwrFileName);
 
 	let walked = processCST ("rwr", asst, cst)
-	console.log (walked);
+	return walked;
 	
     } catch (e) {
 	console.error (e.message);
@@ -165,4 +163,5 @@ function main () {
     }
 }
 
-main ()
+var result = main ()
+console.log (result);

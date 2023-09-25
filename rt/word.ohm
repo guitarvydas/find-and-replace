@@ -20,5 +20,5 @@ RTWord {
 }
 
 Word <: RTWord {
-//  separator += ";" | ":" | "{" | "}" | "->" | ","
+  separator += ";" | ":" | "{" | "}" | "->" | ","
 }
