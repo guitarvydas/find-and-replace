@@ -6,4 +6,6 @@
 - syntax workbench
 - 0D
 - Drawware
+- tokenizing words
+- escaping whitespace in strings and comments
 - 

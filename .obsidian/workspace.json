@@ -25,7 +25,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Key Ideas.md",
+                "file": "experminents.md",
                 "mode": "source",
                 "source": false
               }
@@ -110,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Key Ideas.md",
+                "file": "experminents.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Key Ideas.md",
+                "file": "experminents.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Key Ideas.md"
+                "file": "experminents.md"
               }
             }
           }
@@ -173,19 +173,21 @@
   },
   "active": "4599a4eef57448a6",
   "lastOpenFiles": [
+    "find-and-replace",
     "find-and-replace.o",
+    "rt/#word.sem.js#",
+    "find-and-replace.ld_suLGug",
+    "test.md~",
+    "test.md",
+    "find-and-replace.ld_S1CGHY",
+    "ohmjs/#ohmjs.js#",
+    "#Makefile#",
+    "Key Ideas.md",
     "find-and-replace.dSYM/Contents/Resources/DWARF/find-and-replace",
     "find-and-replace.dSYM/Contents/Resources/DWARF",
     "find-and-replace.dSYM/Contents/Resources",
-    "find-and-replace.dSYM/Contents/Info.plist",
-    "find-and-replace.dSYM/Contents",
-    "find-and-replace.dSYM",
-    "find-and-replace",
     "Untitled.md",
     "find.md",
-    "find-and-replace.drawio",
-    "find.ohm",
-    "experminents.md",
-    "#find.md#"
+    "experminents.md"
   ]
 }

@@ -135,17 +135,18 @@ function main () {
     try {
 	argv = require('yargs/yargs')(process.argv.slice(2)).argv;
 
+	
 	let grammarName = argv._[0];
 	let grammarFileName = argv._[1];
 	let rwrFileName = argv._[2];
 	let src = fs.readFileSync ('/dev/fd/0', 'utf-8');
-	let supportFileName = argv._[3];
+
+	console.error (src);
 
 	if (argv.trace) {
 	    _traceDepth = 0;
 	    _tracing = true;
 	}
-	
 
 	let grammarText = fs.readFileSync (grammarFileName, 'utf-8');
 	let rwr = fs.readFileSync (rwrFileName, 'utf-8');

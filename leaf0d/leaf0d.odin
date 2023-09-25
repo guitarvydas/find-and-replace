@@ -955,9 +955,6 @@ ohmjs_instantiate :: proc(name: string) -> ^zd.Eh {
 ohmjs_maybe :: proc (eh: ^zd.Eh, inst: ^OhmJS_Instance_Data) {
     if "" != inst.grammarname && "" != inst.grammarfilename && "" != inst.semanticsfilename && "" != inst.input {
 
-        c := "pwd"
-	o, e := process.run_command (c, inst.input)
-
         cmd := fmt.aprintf ("ohmjs/ohmjs.js %s %s %s", inst.grammarname, inst.grammarfilename, inst.semanticsfilename)
 	captured_output, err := process.run_command (cmd, inst.input)
 	if err == "" {

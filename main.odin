@@ -68,5 +68,5 @@ run :: proc (r : ^reg.Component_Registry, main_container_name : string, diagram_
 }
 
 inject :: proc (main_container : ^zd.Eh) {
-    main_container.handler(main_container, zd.make_message("filename", "find.md" ))
+    main_container.handler(main_container, zd.make_message("filename", "test.md" ))
 }

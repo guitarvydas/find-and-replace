@@ -2,16 +2,16 @@ RTWord {
   input = item+
   item =
     | space -- space
+    | html -- html
     | separator -- separator
     | string -- string
-    | html -- html
     | word -- word
 
   word = legalchar+
   legalchar = ~separator ~space any
 
   html = "<" "/"? letter+ ">"
-  separator = "(" | ")" | "//"
+  separator = ~alnum any
   comment = "//" (~"\n" any)* "\n"
   space += comment
   string = dq (~dq any)* dq
@@ -20,5 +20,5 @@ RTWord {
 }
 
 Word <: RTWord {
-  separator += ";" | ":" | "{" | "}" | "->" | ","
+//  separator += ";" | ":" | "{" | "}" | "->" | ","
 }
