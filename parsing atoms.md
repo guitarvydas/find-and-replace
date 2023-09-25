@@ -1,0 +1,11 @@
+- raw strings
+- call rules
+- define main rule (for macro)
+- define helper rules
+- `+`
+- `*`
+- `?`
+- ↺ recur 
+- equate
+- grouping (parentheses)
+- branches

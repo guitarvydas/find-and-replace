@@ -1,0 +1,25 @@
+Loop_Syntax {
+  stuff = maybeLoop+
+  maybeLoop =
+    | applySyntactic<LoopMacro>
+    | any
+
+  LoopMacro = token<"loop"> token<"over"> SymbolListName "->" SingleSymbolName "{"
+    TerminationClause Iteration Clause "}"
+
+  TerminationClause =  token<"termination"> ":" Clause ";"
+  IterationClause =    token<"iteration"> ":" Statement+
+
+  Clause =
+    | "{" Statement* "}"     Clause? -- nested
+    | (~";" ~"{" ~"}" any)+  Clause? -- other
+
+  Statement = Clause ";"
+
+  SymbolListName = name
+  SingleSymbolName = name
+  name = letter alnum* vcomma
+  token<s> = s vcomma
+  vcomma = "ₓ"
+}
+

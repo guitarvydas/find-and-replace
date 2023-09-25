@@ -1,0 +1,14 @@
+Loop_Syntax {
+  stuff [x+] = ‛«x»’
+  LoopMacro [kloop kover listSym karrow loopvar lb ktermination terminationClause iterationClause rb] = ‛(recursiveLoop («terminationClause») («iterationClause»))’
+
+  Clause_nested [lb statements* rb more?] = ‛(«statements»)«more»’
+  Clause_other [cs+ more?] = ‛«cs»«more»’
+
+  Statement [clause ksemicolon] = ‛«clause»’
+  SymbolListName [name] = ‛«name»’
+  SingleSymbolName [name] = ‛«name»’
+  name [letter alnum* vcomma] = ‛«letter»«alnum»«vcomma»’
+  token [s vcomma] = ‛«s»«vcomma»’
+  vcomma [c] = ‛«c»’
+}
