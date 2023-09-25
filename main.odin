@@ -24,7 +24,7 @@ main :: proc() {
     /* ) */
 
     // load arguments
-    diagram_source_file := slice.get(os.args, 1) or_else "loop-syntax.drawio"
+    diagram_source_file := slice.get(os.args, 1) or_else "find-and-replace.drawio"
     main_container_name := slice.get(os.args, 2) or_else "main"
 
     if !os.exists(diagram_source_file) {
@@ -68,5 +68,5 @@ run :: proc (r : ^reg.Component_Registry, main_container_name : string, diagram_
 }
 
 inject :: proc (main_container : ^zd.Eh) {
-    main_container.handler(main_container, zd.make_message("filename", "loop-syntax.txt" ))
+    main_container.handler(main_container, zd.make_message("filename", "find.md" ))
 }

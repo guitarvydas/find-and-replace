@@ -3,4 +3,7 @@
 - towards Find and Replace
 - Obsidian as a programming editor
 - new skin for OhmJS, md and HTML (and CSS?)
+- syntax workbench
+- 0D
+- Drawware
 - 

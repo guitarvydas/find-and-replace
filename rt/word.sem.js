@@ -2,6 +2,9 @@
     input : function (cs) { return cs.rwr ().join(''); },
     item : function (x) {return x.rwr ();},
     word : function (legalchars) { return "❲" + legalchars.rwr ().join ('') + "❳"},
+    html : function (lt, optslash, cs, gt) {
+	return lt.rwr () + optslash.rwr ().join ('') + cs.rwr ().join ('') + gt.rwr ();
+    },
     separator: function (c) { return c.rwr () },
     comment: function (kcomment, cs, nl) { return kcomment.rwr () + cs.rwr ().join ('') + nl.rwr (); },
     space : function (spc) { return spc.rwr (); },

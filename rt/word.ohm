@@ -4,11 +4,13 @@ RTWord {
     | space -- space
     | separator -- separator
     | string -- string
+    | html -- html
     | word -- word
 
   word = legalchar+
   legalchar = ~separator ~space any
 
+  html = "<" "/"? letter+ ">"
   separator = "(" | ")" | "//"
   comment = "//" (~"\n" any)* "\n"
   space += comment

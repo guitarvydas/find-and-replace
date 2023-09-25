@@ -1,0 +1,191 @@
+{
+  "main": {
+    "id": "8e63d4c12a451f2a",
+    "type": "split",
+    "children": [
+      {
+        "id": "03a068fd65f0369c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "81e66f22f9f7db0f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "find.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "4599a4eef57448a6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Key Ideas.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "3a5d83cfe262be1b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "experminents.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "2c566f982afa1295",
+    "type": "split",
+    "children": [
+      {
+        "id": "8efd65c0efdbf70c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e68a2e17e42083d7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "1fb2a5ee5c78f6ea",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "9a078b416388f3e4",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "7267301e6c0007ad",
+    "type": "split",
+    "children": [
+      {
+        "id": "f31a01c322c7b723",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "015caf530d540045",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Key Ideas.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "a2448335c8196b4e",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Key Ideas.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "08d3744a16144dfd",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "fa727b114765a99e",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Key Ideas.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "4599a4eef57448a6",
+  "lastOpenFiles": [
+    "find-and-replace.o",
+    "find-and-replace.dSYM/Contents/Resources/DWARF/find-and-replace",
+    "find-and-replace.dSYM/Contents/Resources/DWARF",
+    "find-and-replace.dSYM/Contents/Resources",
+    "find-and-replace.dSYM/Contents/Info.plist",
+    "find-and-replace.dSYM/Contents",
+    "find-and-replace.dSYM",
+    "find-and-replace",
+    "Untitled.md",
+    "find.md",
+    "find-and-replace.drawio",
+    "find.ohm",
+    "experminents.md",
+    "#find.md#"
+  ]
+}
