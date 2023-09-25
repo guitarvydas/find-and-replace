@@ -175,6 +175,8 @@
   "lastOpenFiles": [
     "find-and-replace",
     "find-and-replace.o",
+    "rt/decode.js~",
+    "rt/decode.js",
     "#main.odin#",
     "find-and-replace.ld_T0LLOB",
     "process/#process.odin#",
@@ -183,8 +185,6 @@
     "find-and-replace.ld_suLGug",
     "test.md~",
     "test.md",
-    "find-and-replace.ld_S1CGHY",
-    "#Makefile#",
     "Key Ideas.md",
     "Untitled.md",
     "find.md",
