@@ -7,5 +7,5 @@
 - 0D
 - Drawware
 - tokenizing words
-- escaping whitespace in strings and comments
+- escaping whitespace in strings and comments, thwarting space skipping in strings and comments
 - 

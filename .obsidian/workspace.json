@@ -25,7 +25,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "experminents.md",
+                "file": "Key Ideas.md",
                 "mode": "source",
                 "source": false
               }
@@ -110,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "experminents.md",
+                "file": "Key Ideas.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "experminents.md",
+                "file": "Key Ideas.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "experminents.md"
+                "file": "Key Ideas.md"
               }
             }
           }
@@ -173,21 +173,20 @@
   },
   "active": "4599a4eef57448a6",
   "lastOpenFiles": [
+    "experminents.md",
     "find-and-replace",
     "find-and-replace.o",
+    "rt/#word.sem.js#",
     "rt/decode.js~",
     "rt/decode.js",
     "#main.odin#",
     "find-and-replace.ld_T0LLOB",
     "process/#process.odin#",
     "ohmjs/#ohmjs.js#",
-    "rt/#word.sem.js#",
     "find-and-replace.ld_suLGug",
-    "test.md~",
     "test.md",
     "Key Ideas.md",
     "Untitled.md",
-    "find.md",
-    "experminents.md"
+    "find.md"
   ]
 }
