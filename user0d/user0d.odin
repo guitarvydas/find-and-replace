@@ -53,6 +53,8 @@ components :: proc (leaves: ^[dynamic]reg.Leaf_Initializer) {
 
     append(leaves, reg.Leaf_Instantiator { name = "': '", init = leaf.colonspc_instantiate })
 
+    append(leaves, reg.Leaf_Instantiator { name = "'Find'", init = leaf.find_instantiate })
+
 }
 
 

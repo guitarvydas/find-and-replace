@@ -1109,3 +1109,15 @@ colonspc_instantiate :: proc(name: string) -> ^zd.Eh {
 colonspc_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
     zd.send(eh, "output", ": ")
 }
+
+///
+find_instantiate :: proc(name: string) -> ^zd.Eh {
+    @(static) counter := 0
+    counter += 1
+
+    name_with_id := fmt.aprintf("find (ID:%d)", counter)
+    return zd.make_leaf(name_with_id, find_proc)
+}
+find_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
+    zd.send(eh, "output", "Find")
+}
