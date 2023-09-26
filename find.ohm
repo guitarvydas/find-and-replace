@@ -4,7 +4,7 @@ Find {
   Heading = "#"+ "%20" Name
 
   Rule = RuleName (RuleBody | RuleBranch+)
-  AuxRule = "-" Rule
+  AuxRule = "-" AuxRuleName (RuleBody | RuleBranch+)
 
   RuleBranch = "-" Tag RuleBody
 
@@ -24,20 +24,22 @@ Find {
   ZeroOrMore = Vinculum "<" word<"sub"> ">" "0..." "</" word<"sub"> ">"
   Optional = Vinculum "<" word<"sub"> ">" "?" "</" word<"sub"> ">"
   Vinculum = "<" word<"u"> ">" MatchItem+ "</" word<"u"> ">"
-  Any = "<" word<"span"> word<"style"> "=" "color%3A%2300B040%3B" ">" "✓" "</" word<"span"> ">"
+  Any = "<" word<"span"> word<"style"> "=" string<"color%3A%2300B040%3B"> ">" "✓" "</" word<"span"> ">"
 
   Recursion = "↺"
 
-  NegativeMatch = "<" word<"span"> word<"style"> "=" dq "color%3A%20%23FF76C1%3B" dq ">" (Name | RuleApplication | character) "<" word<"sup"> ">" "≠" "</" word<"sup"> ">" "</" word<"span"> ">" 
+  NegativeMatch = "<" word<"span"> word<"style"> "=" string<"color%3A%20%23FF76C1%3B"> ">" (Name | RuleApplication | character) "<" word<"sup"> ">" "≠" "</" word<"sup"> ">" "</" word<"span"> ">" 
 
-  RuleName = "<" word<"mark"> ">" Name "</" word<"mark"> ">"
+  RuleName = "<" word<"mark"> ">" "<" word<"b"> ">" Name "</" word<"b"> ">" "</" word<"mark"> ">"
+  AuxRuleName = "<" word<"mark"> ">"  Name "</" word<"mark"> ">"
   RuleApplication = "<" word<"sub"> ">" "<" word<"i"> ">" Name "</" word<"i"> ">"  "</" word<"sub"> ">"
 
-  character = ~"<" ~">" ~"❲" ~"❳" ~"↺" ~"#" ~space any
+  character = ~"<" ~">" ~"❲" ~"❳" ~"↺" ~"#" ~"-" ~space any
 
     Tag = "#" Name
 
     word<s> = "❲" s "❳"
+    string<s> = dq s dq
 
 
       Name = "❲" NameChar+ "❳"
