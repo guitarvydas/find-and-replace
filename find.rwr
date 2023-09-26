@@ -3,52 +3,36 @@ Find {
 
   Heading [koctothorpe+ kblank Name] = ‛«koctothorpe»«kblank»«Name»’
 
-  Rule = RuleName (RuleBody | RuleBranch+)
-  AuxRule = "-" AuxRuleName (RuleBody | RuleBranch+)
+  Rule [RuleName RuleBody] = ‛«RuleName»«RuleBody»’
+  AuxRule [kdash RuleName RuleBody] = ‛«kdash»«RuleName»«RuleBody»’
 
-  RuleBranch = "-" Tag RuleBody
+  RuleBody [RuleBranch+] = ‛«RuleBranch»’
 
-  RuleBody = MatchItem+
+  Branch_tagged [kdash Tag MatchItems+] = ‛«kdash»«Tag»«MatchItems»’
+  Branch_untagged [MatchItems+] = ‛«MatchItems»’
 
-  MatchItem =
-    | RuleApplication -- ruleapplication
-    | Recursion       -- opRecursion
-    | NegativeMatch   -- negativeMatch
-    | Iteration       -- iteration
-    | Any             -- any
-    | Name            -- name
-    | character       -- character
-    
-  Iteration = OneOrMore | ZeroOrMore | Optional
-  OneOrMore = Vinculum "<" word<"sub"> ">" "1..." "</" word<"sub"> ">"
-  ZeroOrMore = Vinculum "<" word<"sub"> ">" "0..." "</" word<"sub"> ">"
-  Optional = Vinculum "<" word<"sub"> ">" "?" "</" word<"sub"> ">"
-  Vinculum = "<" word<"u"> ">" MatchItem+ "</" word<"u"> ">"
-  Any = "<" word<"span"> word<"style"> "=" string<"color%3A%2300B040%3B"> ">" "✓" "</" word<"span"> ">"
+  RuleName [lt kmark gt Name lts kmark2 gt2] = ‛«lt»«kmark»«gt»«Name»«lts»«mark2»«gt2»’
 
-  Recursion = "↺"
+  // MatchItem - covered by OhmJS
 
-  NegativeMatch = "<" word<"span"> word<"style"> "=" string<"color%3A%20%23FF76C1%3B"> ">" (Name | RuleApplication | character) "<" word<"sup"> ">" "≠" "</" word<"sup"> ">" "</" word<"span"> ">" 
+  RuleApplication [lt ksub gt lt ki gt Name lts ki gt  lts ksub gt] = ‛«lt»«ksub»«gt»«lt»«ki»«gt»«Name»«lts»«ki»«gt»«lts»«ksub»«gt»’
+  Recursion [krec] = ‛«krec»’
+  NegativeMatch [lt kspan kstyle keq red gt item lt ksup gt kne lts ksup gt lts kspan gt] = ‛«lt»«kspan»«kstyle»«keq»«red»«gt»«item»«lt»«ksup»«gt»«kne»«lts»«ksup»«gt»«lts»«kspan»«gt»’
+  // Iteration [OneOrMore | ZeroOrMore | Optional
+  OneOrMore [Vinculum lt ksub gt k1 lts ksub gt] = ‛«Vinculum»«lt»«ksub»«gt»«k1»«lts»«ksub»«gt»’
+  ZeroOrMore [Vinculum lt ksub gt k0 lts ksub gt] = ‛«Vinculum»«lt»«ksub»«gt»«k0»«lts»«ksub»«gt»’
+  Optional [Vinculum lt ksub gt kq lts ksub gt] = ‛«inculum»«lt»«ksub»«gt»«kq»«lts»«ksub»«gt»’
+  Vinculum [lt ku gt MatchItem+ lts ku gt] = ‛«lt»«ku»«gt»«MatchItem»«lts»«ku»«gt»’
+  Any [lt kspan kstyle keq green gt kcheckmark lts kspan gt] = ‛«lt»«kspan»«kstyle»«keq»«green»«gt»«kcheckmark»«lts»«kspan»«gt»’
 
-  RuleName = "<" word<"mark"> ">" "<" word<"b"> ">" Name "</" word<"b"> ">" "</" word<"mark"> ">"
-  AuxRuleName = "<" word<"mark"> ">"  Name "</" word<"mark"> ">"
-  RuleApplication = "<" word<"sub"> ">" "<" word<"i"> ">" Name "</" word<"i"> ">"  "</" word<"sub"> ">"
-
-  character = ~"<" ~">" ~"❲" ~"❳" ~"↺" ~"#" ~"-" ~space any
-
-    Tag = "#" Name
-
-    word<s> = "❲" s "❳"
-    string<s> = dq s dq
-
-
-      Name = "❲" NameChar+ "❳"
-      NameChar =
-	| "❲" NameChar* "❳" -- rec
-	| ~"❲" ~"❳" any  -- other
-
-      Line = "---"
-      space += applySyntactic<Line>
-
-      dq = "\""
+  // character
+  Tag [koctothorpe Name] = ‛«koctothorpe»«Name»’
+  word [lb s rb] = ‛«lb»«s»«rb»’
+  string [dq1 s dq2] = ‛«dq1»«s»«dq2»’
+  Name [lb cs+ rb] = ‛«lb»«cs»«rb»’
+  NameChar_rec [lb cs+ rb] = ‛«lb»«cs»«rb»’
+  // NameChar_other
+  // Line
+  // space
+  // dq
 }
