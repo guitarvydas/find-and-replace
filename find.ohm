@@ -15,6 +15,7 @@ Find {
     | Recursion       -- opRecursion
     | NegativeMatch   -- negativeMatch
     | Iteration       -- iteration
+    | Any             -- any
     | name            -- name
     | character       -- character
     
@@ -23,6 +24,7 @@ Find {
   ZeroOrMore = Vinculum "<" word<"sub"> ">" "0..." "</" word<"sub"> ">"
   Optional = Vinculum "<" word<"sub"> ">" "?" "</" word<"sub"> ">"
   Vinculum = "<" word<"u"> ">" MatchItem+ "</" word<"u"> ">"
+  Any = <❲span❳ ❲style❳="color%3A%2300B040%3B">✓</❲span❳>
 
   Recursion = "↺"
 
