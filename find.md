@@ -1,5 +1,5 @@
 ## Find
-<mark><b>Loop</b></mark>
+<mark>Loop</mark>
       loop over <sub><i>SymbolListName</i></sub> ⇒ <sub><i>SingleSymbolName</i></sub> {
           <sub><i>TerminationClause</i></sub> <sub><i>Iteration</i></sub> <sub><i>Clause</i></sub>
       }

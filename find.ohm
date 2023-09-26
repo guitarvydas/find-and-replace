@@ -3,12 +3,15 @@ Find {
 
   Heading = "#"+ "%20" Name
 
-  Rule = RuleName (RuleBody | RuleBranch+)
-  AuxRule = "-" AuxRuleName (RuleBody | RuleBranch+)
+  Rule =        RuleName RuleBody
+  AuxRule = "-" RuleName RuleBody
 
-  RuleBranch = "-" Tag RuleBody
+  RuleBody = Branch+
+  Branch =
+    | "-" Tag MatchItem+ -- tagged
+    | MatchItem+         -- untagged
 
-  RuleBody = MatchItem+
+  RuleName = "<" word<"mark"> ">" Name "</" word<"mark"> ">"
 
   MatchItem =
     | RuleApplication -- ruleapplication
@@ -19,6 +22,9 @@ Find {
     | Name            -- name
     | character       -- character
     
+  RuleApplication = "<" word<"sub"> ">" "<" word<"i"> ">" Name "</" word<"i"> ">"  "</" word<"sub"> ">"
+  Recursion = "↺"
+  NegativeMatch = "<" word<"span"> word<"style"> "=" string<"color%3A%20%23FF76C1%3B"> ">" (Name | RuleApplication | character) "<" word<"sup"> ">" "≠" "</" word<"sup"> ">" "</" word<"span"> ">" 
   Iteration = OneOrMore | ZeroOrMore | Optional
   OneOrMore = Vinculum "<" word<"sub"> ">" "1..." "</" word<"sub"> ">"
   ZeroOrMore = Vinculum "<" word<"sub"> ">" "0..." "</" word<"sub"> ">"
@@ -26,29 +32,21 @@ Find {
   Vinculum = "<" word<"u"> ">" MatchItem+ "</" word<"u"> ">"
   Any = "<" word<"span"> word<"style"> "=" string<"color%3A%2300B040%3B"> ">" "✓" "</" word<"span"> ">"
 
-  Recursion = "↺"
+    character = ~"<" ~">" ~"❲" ~"❳" ~"↺" ~"#" ~"-" ~space any
 
-  NegativeMatch = "<" word<"span"> word<"style"> "=" string<"color%3A%20%23FF76C1%3B"> ">" (Name | RuleApplication | character) "<" word<"sup"> ">" "≠" "</" word<"sup"> ">" "</" word<"span"> ">" 
+      Tag = "#" Name
 
-  RuleName = "<" word<"mark"> ">" "<" word<"b"> ">" Name "</" word<"b"> ">" "</" word<"mark"> ">"
-  AuxRuleName = "<" word<"mark"> ">"  Name "</" word<"mark"> ">"
-  RuleApplication = "<" word<"sub"> ">" "<" word<"i"> ">" Name "</" word<"i"> ">"  "</" word<"sub"> ">"
-
-  character = ~"<" ~">" ~"❲" ~"❳" ~"↺" ~"#" ~"-" ~space any
-
-    Tag = "#" Name
-
-    word<s> = "❲" s "❳"
-    string<s> = dq s dq
+      word<s> = "❲" s "❳"
+      string<s> = dq s dq
 
 
-      Name = "❲" NameChar+ "❳"
-      NameChar =
-	| "❲" NameChar* "❳" -- rec
-	| ~"❲" ~"❳" any  -- other
+	Name = "❲" NameChar+ "❳"
+	NameChar =
+	  | "❲" NameChar* "❳" -- rec
+	  | ~"❲" ~"❳" any  -- other
 
-      Line = "---"
-      space += applySyntactic<Line>
+	Line = "---"
+	space += applySyntactic<Line>
 
-      dq = "\""
+	dq = "\""
 }
