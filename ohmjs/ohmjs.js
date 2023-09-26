@@ -158,7 +158,6 @@ function main () {
 	let asst = hangOperationOntoAsst (emptyAsst, "rwr", rwrFileName);
 
 	let walked = processCST ("rwr", asst, cst)
-	console.error ("WALKED: " + walked);
 	return walked;
 	
     } catch (e) {
@@ -169,6 +168,5 @@ function main () {
 }
 
 var result = main ()
-console.error ("RESULT: " + result.trim ());
 console.log (result.trim ());
 console.error ("");

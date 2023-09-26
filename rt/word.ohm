@@ -3,14 +3,14 @@ RTWord {
   item =
     | string -- string
     | space -- space
-    | html -- html
     | separator -- separator
+    | integer -- integer
     | word -- word
 
   word = legalchar+
   legalchar = ~separator ~space any
 
-  html = "<" "/"? tagChar+ ">"
+  integer = digit+
   separator = ~alnum any
   comment = "//" (~"\n" any)* "\n"
   space += comment
