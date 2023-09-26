@@ -2,8 +2,8 @@
     input : function (items) {
 	return items.rwr ().join(''); },
     item : function (x) { return x.rwr ();},
-    word : function (legalchars) { return "❲" + legalchars.rwr ().join ('') + "❳";
-    },
+    word : function (legalchars) { return "❲" + legalchars.rwr ().join ('') + "❳"; },
+    hashSpace : function (khashSpace) { return "# %20 "; },
     integer : function (ds) { return ds.rwr ().join (''); },
     separator: function (c) { return c.rwr () },
     comment: function (kcomment, cs, nl) { return kcomment.rwr () + cs.rwr ().join ('') + nl.rwr (); },
