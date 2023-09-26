@@ -2,6 +2,7 @@ RTWord {
   input = item+
   item =
     | string -- string
+    | hashSpace -- hashSpace
     | space -- space
     | separator -- separator
     | integer -- integer
@@ -10,6 +11,7 @@ RTWord {
   word = legalchar+
   legalchar = ~separator ~space any
 
+  hashSpace = "# "
   integer = digit+
   separator = ~alnum any
   comment = "//" (~"\n" any)* "\n"

@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "find.md",
+                "file": "Key Ideas.md",
                 "mode": "source",
                 "source": false
               }
@@ -43,8 +43,7 @@
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -171,10 +170,14 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "4599a4eef57448a6",
+  "active": "81e66f22f9f7db0f",
   "lastOpenFiles": [
     "find-and-replace",
     "find-and-replace.o",
+    "#find.ohm#",
+    "old-find.ohm",
+    "find.md",
+    "Key Ideas.md",
     "#main.odin#",
     "experminents.md",
     "rt/#word.sem.js#",
@@ -183,10 +186,7 @@
     "find-and-replace.ld_T0LLOB",
     "process/#process.odin#",
     "ohmjs/#ohmjs.js#",
-    "find-and-replace.ld_suLGug",
     "test.md",
-    "Key Ideas.md",
-    "Untitled.md",
-    "find.md"
+    "Untitled.md"
   ]
 }

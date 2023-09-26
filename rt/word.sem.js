@@ -1,16 +1,7 @@
 {
     input : function (items) {
 	return items.rwr ().join(''); },
-    item_space : function (x) { 
-	return x.rwr ();},
-    item_integer : function (x) { 
-	return x.rwr ();},
-    item_separator : function (x) { 
-	return x.rwr ();},
-    item_string : function (x) { 
-	return x.rwr ();},
-    item_word : function (x) { 
-	return x.rwr ();},
+    item : function (x) { return x.rwr ();},
     word : function (legalchars) { return "❲" + legalchars.rwr ().join ('') + "❳";
     },
     integer : function (ds) { return ds.rwr ().join (''); },
