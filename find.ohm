@@ -1,7 +1,43 @@
 Find {
-  name = "❲" nameChar+ "❳"
-  nameChar =
-    | "❲" nameChar* "❳" -- rec
-    | ~"❲" ~"❳" any  -- other
+  FindSCN = Heading Rule+ AuxRule*
+
+  Heading = "#"+ "%20" Name
+
+  Rule = RuleName (RuleBody | RuleBranch+)
+  AuxRule = "-" Rule
+
+  RuleBranch = "-" Tag RuleBody
+
+  RuleBody = MatchItem+
+
+  MatchItem =
+    | RuleApplication -- ruleapplication
+    | Recursion       -- opRecursion
+    | NegativeMatch   -- negativeMatch
+    | Iteration       -- iteration
+    | name            -- name
+    | character       -- character
     
-    
+  Iteration = OneOrMore | ZeroOrMore | Optional
+  OneOrMore = Vinculum "<" word<"sub"> ">" "1..." "</" word<"sub"> ">"
+  ZeroOrMore = Vinculum "<" word<"sub"> ">" "0..." "</" word<"sub"> ">"
+  Optional = Vinculum "<" word<"sub"> ">" "?" "</" word<"sub"> ">"
+  Vinculum = "<" word<"u"> ">" MatchItem+ "</" word<"u"> ">"
+
+  Recursion = "↺"
+
+  NegativeMatch = "<" word<"span"> word<"style"> "=" dq "color%3A%20%23FF76C1%3B" dq ">" (name | RuleApplication | character) "<" word<"sup"> ">" "≠" "</" word<"sup"> ">" "</" word<"span"> ">" 
+
+    Tag = "#" Name
+
+    word<s> = "❲" s "❳"
+
+
+      Name = "❲" NameChar+ "❳"
+      NameChar =
+	| "❲" NameChar* "❳" -- rec
+	| ~"❲" ~"❳" any  -- other
+
+      Line = "---"
+      space += applySyntactic<Line>
+}

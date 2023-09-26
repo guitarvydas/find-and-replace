@@ -25,7 +25,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Key Ideas.md",
+                "file": "find.md",
                 "mode": "source",
                 "source": false
               }
@@ -43,7 +43,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -109,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Key Ideas.md",
+                "file": "find.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -126,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Key Ideas.md",
+                "file": "find.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -149,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Key Ideas.md"
+                "file": "find.md"
               }
             }
           }
@@ -170,22 +171,21 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "81e66f22f9f7db0f",
+  "active": "4599a4eef57448a6",
   "lastOpenFiles": [
+    "#find.ohm#",
+    "experminents.md",
+    "Key Ideas.md",
     "find-and-replace",
     "find-and-replace.ld_EPlk0t",
     "find-and-replace.o",
     "find-and-replace.ld_0FcZ7P",
-    "#find.ohm#",
     "old-find.ohm",
     "find.md",
-    "Key Ideas.md",
     "#main.odin#",
-    "experminents.md",
     "rt/#word.sem.js#",
     "rt/decode.js~",
     "rt/decode.js",
-    "find-and-replace.ld_T0LLOB",
     "test.md",
     "Untitled.md"
   ]
