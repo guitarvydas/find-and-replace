@@ -38,9 +38,9 @@ process_proc :: proc(eh: ^zd.Eh, msg: zd.Message, command: ^string) {
         if len(output) > 0 {
             str, ok := utf8_string(output)
             if ok {
-                zd.send(eh, port, str)
+                zd.send(eh, port, str, "$")
             } else {
-                zd.send(eh, port, output)
+                zd.send(eh, port, output, "$")
             }
         }
     }
@@ -147,7 +147,7 @@ command_proc :: proc(eh: ^zd.Eh, msg: zd.Message, inst: ^Command_Instance_Data) 
         inst.buffer = msg.datum.(string)
         received_input := msg.datum.(string)
         captured_output, _ := process.run_command (inst.buffer, received_input)
-        zd.send(eh, "stdout", captured_output)
+        zd.send(eh, "stdout", captured_output, "$")
     case:
         fmt.assertf (false, "!!! ERROR: command got an illegal message port %v", msg.port)
     }
@@ -169,7 +169,7 @@ icommand_proc :: proc(eh: ^zd.Eh, msg: zd.Message, inst: ^Command_Instance_Data)
     case "stdin":
         received_input := msg.datum.(string)
         captured_output, _ := process.run_command (inst.buffer, received_input)
-        zd.send(eh, "stdout", captured_output)
+        zd.send(eh, "stdout", captured_output, "$")
     case:
         fmt.assertf (false, "!!! ERROR: command got an illegal message port %v", msg.port)
     }
@@ -206,8 +206,8 @@ deracer_instantiate :: proc(name: string) -> ^zd.Eh {
 }
 
 send_first_then_second :: proc (eh : ^zd.Eh, inst: ^Deracer_Instance_Data) {
-    zd.send(eh, "1", inst.buffer.first.datum)
-    zd.send(eh, "2", inst.buffer.second.datum)
+    zd.send(eh, "1", inst.buffer.first.datum, "1")
+    zd.send(eh, "2", inst.buffer.second.datum, "2")
     reclaim_Buffers_from_heap (inst)
 }
 
@@ -283,9 +283,9 @@ nulltester_instantiate :: proc(name: string) -> ^zd.Eh {
 
 nulltester_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
     if "" == msg.datum.(string) {
-	zd.send(eh, "null", "")
+	zd.send(eh, "null", "", msg.port)
     } else {
-	zd.send(eh, "str", msg.datum.(string))
+	zd.send(eh, "str", msg.datum.(string), msg.port)
     }
 }
 
@@ -298,7 +298,7 @@ literalvsh_instantiate :: proc(name: string) -> ^zd.Eh {
 }
 
 literalvsh_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "literal", "vsh")
+    zd.send(eh, "literal", "vsh", msg.port)
 }
 
 literalgrep_instantiate :: proc(name: string) -> ^zd.Eh {
@@ -310,7 +310,7 @@ literalgrep_instantiate :: proc(name: string) -> ^zd.Eh {
 }
 
 literalgrep_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "literal", "grep ")
+    zd.send(eh, "literal", "grep ", msg.port)
 }
 
 ///
@@ -339,7 +339,7 @@ stringconcat_proc :: proc(eh: ^zd.Eh, msg: zd.Message, inst: ^StringConcat_Insta
 	    fmt.assertf (false, "TODO: something is wrong, 0 length string passed to stringconcat\n")
 	}
 	concatenated_string := fmt.aprintf ("%s%s", inst.buffer, s)
-	zd.send(eh, "str", concatenated_string)
+	zd.send(eh, "str", concatenated_string, msg.port)
     case:
         fmt.assertf (false, "bad msg.port for stringconcat: %v\n", msg.port)
     }
@@ -360,14 +360,14 @@ read_text_file_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
     if errnum == 0 {
 	data, success := os.read_entire_file_from_handle (fd)
 	if success {
-	    zd.send(eh, "str", transmute(string)data)
+	    zd.send(eh, "str", transmute(string)data, msg.port)
 	} else {
             emsg := fmt.aprintf("read error on file %s", msg.datum.(string))
-	    zd.send(eh, "error", emsg)
+	    zd.send(eh, "error", emsg, msg.port)
 	}
     } else {
         emsg := fmt.aprintf("open error on file %s with error code %v", msg.datum.(string), errnum)
-	zd.send(eh, "error", emsg)
+	zd.send(eh, "error", emsg, msg.port)
     }
 }
 
@@ -399,10 +399,10 @@ open_text_file_instantiate :: proc(name: string) -> ^zd.Eh {
 open_text_file_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
     fd, errnum := os.open (msg.datum.(string))
     if errnum == 0 {
-	zd.send(eh, "fd", fd)
+	zd.send(eh, "fd", fd, msg.port)
     } else {
         emsg := fmt.aprintf("open error on file %s with error code %v", msg.datum.(string), errnum)
-	zd.send(eh, "error", emsg)
+	zd.send(eh, "error", emsg, msg.port)
     }
 }
 
@@ -420,10 +420,10 @@ read_text_from_fd_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
     fd := msg.datum.(os.Handle)
     data, success := os.read_entire_file_from_handle (fd)
     if success {
-	zd.send(eh, "str", transmute(string)data)
+	zd.send(eh, "str", transmute(string)data, msg.port)
     } else {
         emsg := fmt.aprintf("read error on file %s", msg.datum.(string))
-	zd.send(eh, "error", emsg)
+	zd.send(eh, "error", emsg, msg.port)
     }
 }
 
@@ -457,13 +457,13 @@ transpiler_leaf_proc :: proc(eh: ^zd.Eh, msg: zd.Message, inst: ^Transpile_Insta
         cmd := fmt.aprintf ("./transpile %s %s %s", inst.grammar_name, inst.fab_name, inst.support_name)
 	captured_output, captured_stderr := process.run_command (cmd, received_input)
 	if string (captured_stderr) != "" {
-            zd.send(eh, "error", captured_stderr)
+            zd.send(eh, "error", captured_stderr, msg.port)
 	} else {
-            zd.send(eh, "output", captured_output)
+            zd.send(eh, "output", captured_output, msg.port)
 	}
      case:
         emsg := fmt.aprintf("!!! ERROR: transpile got an illegal message port %v", msg.port)
-	zd.send(eh, "error", emsg)
+	zd.send(eh, "error", emsg, msg.port)
     }
 }
 
@@ -490,7 +490,7 @@ syncfilewrite_proc :: proc(eh: ^zd.Eh, msg: zd.Message, inst: ^Syncfilewrite_Dat
 	contents := msg.datum.(string)
 	ok := os.write_entire_file (inst.filename, transmute([]u8)contents, true)
 	if !ok {
-	    zd.send (eh, "stderr", "write error")
+	    zd.send (eh, "stderr", "write error", msg.port)
 	}
     }
 }
@@ -516,9 +516,9 @@ suffix_proc :: proc(eh: ^zd.Eh, msg: zd.Message, inst: ^Suffix_Data) {
 	inst.suffix = msg.datum.(string)
     case "str":
 	s := fmt.aprintf ("%v%v", msg.datum.(string), inst.suffix)
-	zd.send (eh, "str", s)
+	zd.send (eh, "str", s, msg.port)
     case:
-	zd.send (eh, "error", fmt.aprintf ("illegal port for suffix: ~v", msg.port))
+	zd.send (eh, "error", fmt.aprintf ("illegal port for suffix: ~v", msg.port), msg.port)
     }
 }
 
@@ -846,13 +846,13 @@ hard_coded_rwr_support_instantiate :: proc(name: string) -> ^zd.Eh {
 }
 
 hard_coded_rwr_grammar_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", rwr_grammar)
+    zd.send(eh, "output", rwr_grammar, msg.port)
 }
 hard_coded_rwr_semantics_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", rwr_semobject)
+    zd.send(eh, "output", rwr_semobject, msg.port)
 }
 hard_coded_rwr_support_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", rwr_support_js)
+    zd.send(eh, "output", rwr_support_js, msg.port)
 }
 
 ///
@@ -865,7 +865,7 @@ bang_instantiate :: proc(name: string) -> ^zd.Eh {
 }
 
 bang_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", true)
+    zd.send(eh, "output", true, msg.port)
 }
 
 ///
@@ -891,7 +891,7 @@ concat_proc :: proc(eh: ^zd.Eh, msg: zd.Message, inst: ^Concat_Instance_Data) {
 	delete (inst.buffer)
 	inst.buffer = fmt.aprintf ("%s%s", inst.buffer, msg.datum.(string))
     case "flush":
-	zd.send(eh, "str", inst.buffer)
+	zd.send(eh, "str", inst.buffer, msg.port)
 	delete (inst.buffer)
 	inst.buffer = ""
     }
@@ -908,7 +908,7 @@ word_instantiate :: proc(name: string) -> ^zd.Eh {
 }
 
 word_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", "Word")
+    zd.send(eh, "output", "Word", msg.port)
 }
 
 
@@ -921,7 +921,7 @@ wordohm_instantiate :: proc(name: string) -> ^zd.Eh {
 }
 
 wordohm_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", "rt/word.ohm")
+    zd.send(eh, "output", "rt/word.ohm", msg.port)
 }
 
 wordjs_instantiate :: proc(name: string) -> ^zd.Eh {
@@ -933,7 +933,7 @@ wordjs_instantiate :: proc(name: string) -> ^zd.Eh {
 }
 
 wordjs_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", "rt/word.sem.js")
+    zd.send(eh, "output", "rt/word.sem.js", msg.port)
 }
 
 OhmJS_Instance_Data :: struct {
@@ -952,13 +952,13 @@ ohmjs_instantiate :: proc(name: string) -> ^zd.Eh {
     return zd.make_leaf_with_data (name_with_id, inst, ohmjs_proc)
 }
 
-ohmjs_maybe :: proc (eh: ^zd.Eh, inst: ^OhmJS_Instance_Data) {
+ohmjs_maybe :: proc (eh: ^zd.Eh, inst: ^OhmJS_Instance_Data, cause: string) {
     if "" != inst.grammarname && "" != inst.grammarfilename && "" != inst.semanticsfilename && "" != inst.input {
 
         cmd := fmt.aprintf ("ohmjs/ohmjs.js %s %s %s", inst.grammarname, inst.grammarfilename, inst.semanticsfilename)
 	captured_output, err := process.run_command (cmd, inst.input)
-        zd.send (eh, "output", captured_output)
-	zd.send (eh, "error", err)
+        zd.send (eh, "output", captured_output, cause)
+	zd.send (eh, "error", err, cause)
     }
 }
 
@@ -966,19 +966,19 @@ ohmjs_proc :: proc(eh: ^zd.Eh, msg: zd.Message, inst: ^OhmJS_Instance_Data) {
     switch (msg.port) {
     case "grammar name":
 	inst.grammarname = strings.clone (msg.datum.(string))
-	ohmjs_maybe (eh, inst)
+	ohmjs_maybe (eh, inst, msg.port)
     case "grammar":
 	inst.grammarfilename = strings.clone (msg.datum.(string))
-	ohmjs_maybe (eh, inst)
+	ohmjs_maybe (eh, inst, msg.port)
     case "semantics":
 	inst.semanticsfilename = strings.clone (msg.datum.(string))
-	ohmjs_maybe (eh, inst)
+	ohmjs_maybe (eh, inst, msg.port)
     case "input":
 	inst.input = strings.clone (msg.datum.(string))
-	ohmjs_maybe (eh, inst)
+	ohmjs_maybe (eh, inst, msg.port)
      case:
         emsg := fmt.aprintf("!!! ERROR: OhmJS got an illegal message port %v", msg.port)
-	zd.send(eh, "error", emsg)
+	zd.send(eh, "error", emsg, msg.port)
     }
 }
 
@@ -994,7 +994,7 @@ rwr_instantiate :: proc(name: string) -> ^zd.Eh {
     return zd.make_leaf(name_with_id, rwr_proc)
 }
 rwr_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", "RWR")
+    zd.send(eh, "output", "RWR", msg.port)
 }
 rwrohm_instantiate :: proc(name: string) -> ^zd.Eh {
     @(static) counter := 0
@@ -1004,7 +1004,7 @@ rwrohm_instantiate :: proc(name: string) -> ^zd.Eh {
     return zd.make_leaf(name_with_id, rwrohm_proc)
 }
 rwrohm_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", "rwr/rwr.ohm")
+    zd.send(eh, "output", "rwr/rwr.ohm", msg.port)
 }
 rwrsemjs_instantiate :: proc(name: string) -> ^zd.Eh {
     @(static) counter := 0
@@ -1014,7 +1014,7 @@ rwrsemjs_instantiate :: proc(name: string) -> ^zd.Eh {
     return zd.make_leaf(name_with_id, rwrsemjs_proc)
 }
 rwrsemjs_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", "rwr/rwr.sem.js")
+    zd.send(eh, "output", "rwr/rwr.sem.js", msg.port)
 }
 
 ///
@@ -1026,7 +1026,7 @@ escapes_instantiate :: proc(name: string) -> ^zd.Eh {
     return zd.make_leaf(name_with_id, escapes_proc)
 }
 escapes_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", "Escapes")
+    zd.send(eh, "output", "Escapes", msg.port)
 }
 escapesohm_instantiate :: proc(name: string) -> ^zd.Eh {
     @(static) counter := 0
@@ -1036,7 +1036,7 @@ escapesohm_instantiate :: proc(name: string) -> ^zd.Eh {
     return zd.make_leaf(name_with_id, escapesohm_proc)
 }
 escapesohm_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", "rt/escapes.ohm")
+    zd.send(eh, "output", "rt/escapes.ohm", msg.port)
 }
 escapesrwr_instantiate :: proc(name: string) -> ^zd.Eh {
     @(static) counter := 0
@@ -1046,7 +1046,7 @@ escapesrwr_instantiate :: proc(name: string) -> ^zd.Eh {
     return zd.make_leaf(name_with_id, escapesrwr_proc)
 }
 escapesrwr_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", "rt/escapes.rwr")
+    zd.send(eh, "output", "rt/escapes.rwr", msg.port)
 }
 
 //
@@ -1074,9 +1074,9 @@ syncfilewrite2_proc :: proc(eh: ^zd.Eh, msg: zd.Message, inst: ^Syncfilewrite_Da
 	contents := msg.datum.(string)
 	ok := os.write_entire_file (inst.filename, transmute([]u8)contents, true)
 	if !ok {
-	    zd.send (eh, "error", "write error")
+	    zd.send (eh, "error", "write error", msg.port)
 	}
-	zd.send (eh, "done", true)
+	zd.send (eh, "done", true, msg.port)
     }
 }
 
@@ -1092,7 +1092,7 @@ fakepipename_instantiate :: proc(name: string) -> ^zd.Eh {
 fakepipename_proc :: proc(eh: ^zd.Eh, msg: zd.Message, inst: ^Syncfilewrite_Data) {
     @(static) rand := 0
     rand += 1
-    zd.send (eh, "output", fmt.aprintf ("/tmp/fakepipename%d", rand))
+    zd.send (eh, "output", fmt.aprintf ("/tmp/fakepipename%d", rand), msg.port)
 }
 
 
@@ -1107,7 +1107,7 @@ colonspc_instantiate :: proc(name: string) -> ^zd.Eh {
     return zd.make_leaf(name_with_id, colonspc_proc)
 }
 colonspc_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", ": ")
+    zd.send(eh, "output", ": ", msg.port)
 }
 
 ///
@@ -1119,5 +1119,5 @@ find_instantiate :: proc(name: string) -> ^zd.Eh {
     return zd.make_leaf(name_with_id, find_proc)
 }
 find_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    zd.send(eh, "output", "Find")
+    zd.send(eh, "output", "Find", msg.port)
 }

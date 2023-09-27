@@ -91,17 +91,18 @@ make_leaf_with_data :: proc(name: string, data: ^$Data, handler: proc(^Eh, Messa
 
 // Sends a message on the given `port` with `data`, placing it on the output
 // of the given component.
-send :: proc(eh: ^Eh, port: string, data: $Data) {
+send :: proc(eh: ^Eh, port: string, data: $Data, causingPort: string) {
     when Data == any {
         msg := Message {
             port  = port,
             datum = clone_datum(data),
 	    comefrom = eh.name,
+	    cause = causingPort,
         }
     } else {
-        msg := make_message(port, data, eh.name)
+        msg := make_message(port, data, eh.name, causingPort)
     }
-    sendf("SEND 0x%p  %s(%s)", eh, eh.name, msg.port)
+    sendf("SEND 0x%p  %s(%s)[%s/%s]", eh, eh.name, msg.port, msg.comefrom, msg.cause)
     fifo_push(&eh.output, msg)
 }
 
@@ -122,7 +123,7 @@ output_list :: proc(eh: ^Eh, allocator := context.allocator) -> []Message {
 container_handler :: proc(eh: ^Eh, message: Message) {
     route(eh, nil, message)
     for any_child_ready(eh) {
-        step_children(eh)
+        step_children(eh, message.port)
     }
 }
 
@@ -229,10 +230,10 @@ outputf :: proc(fmt_str: string, args: ..any, location := #caller_location) {
 	log.logf(.Debug,   fmt_str, ..args, location=location)
 }
 
-step_children :: proc(container: ^Eh) {
+step_children :: proc(container: ^Eh, cause : string) {
     container.state = .idle
     for child in container.children {
-        msg: Message = make_message ("?", true)
+        msg: Message = make_message ("?", true, "?", "?")
         ok: bool
 
         switch {
@@ -240,7 +241,7 @@ step_children :: proc(container: ^Eh) {
             msg, ok = fifo_pop(&child.input)
 	case child.state != .idle:
 	    ok = true
-	    msg = make_message (".", true)
+	    msg = make_message (".", true, container.name, cause)
         }
 
         if ok {
@@ -264,7 +265,7 @@ step_children :: proc(container: ^Eh) {
 
 tick :: proc (eh: ^Eh) {
     if eh.state != .idle {
-	tick_msg := make_message (".", true)
+	tick_msg := make_message (".", true, eh.name, ".")
 	fifo_push (&eh.input, tick_msg)
     }
 }
@@ -292,7 +293,7 @@ route :: proc(container: ^Eh, from: ^Eh, message: Message) {
             }
 	}
     }
-    fmt.assertf (was_sent, "\n\n!!! message from %v dropped on floor: %v %v\n\n", from.name, message.port, message.datum)
+    fmt.assertf (was_sent, "\n\n!!! message from %v dropped on floor: %v %v [%v/%v]\n\n", from.name, message.port, message.datum, message.comefrom, message.cause)
 }
 
 any_child_ready :: proc(container: ^Eh) -> (ready: bool) {
@@ -327,7 +328,7 @@ print_output_list :: proc(eh: ^Eh) {
         if idx > 0 {
             write_string(&sb, ", ")
         }
-        fmt.sbprintf(&sb, "{{%s, %v}", msg.port, msg.datum)
+        fmt.sbprintf(&sb, "{{%s, %v, %v}", msg.port, msg.datum, msg.comefrom)
     }
     strings.write_rune(&sb, ']')
 
