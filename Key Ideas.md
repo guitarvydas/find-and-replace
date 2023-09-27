@@ -9,4 +9,5 @@
 - tokenizing words
 - escaping whitespace in strings and comments, thwarting space skipping in strings and comments
 	- encode spaces where you want to preserve them (comments, strings)
+- tracking provenance of messages instead of tracking serial control flow
 - 

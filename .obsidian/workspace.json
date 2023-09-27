@@ -43,8 +43,7 @@
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -110,7 +109,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "experminents.md",
+                "file": "Key Ideas.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +126,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "experminents.md",
+                "file": "Key Ideas.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +149,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "experminents.md"
+                "file": "Key Ideas.md"
               }
             }
           }
@@ -171,24 +170,24 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "4599a4eef57448a6",
+  "active": "81e66f22f9f7db0f",
   "lastOpenFiles": [
     "find-and-replace",
     "find-and-replace.o",
+    "#junk.lisp#",
+    "find-and-replace.ld_nh9rS3",
+    "junk.lisp~",
+    "junk.lisp",
     "leaf0d/#leaf0d.odin#",
+    "experminents.md",
     "0d/#0d.odin#",
+    "0d/#message.odin#",
     "find-and-replace.ld_BGwgFv",
     "user0d/#user0d.odin#",
     "find.md",
-    "fr/find.sem.js",
-    "fr/find.rwr~",
-    "fr/find.rwr",
-    "fr/find.ohm",
-    "fr/find.md~",
     "fr/find.md",
     "TODO.md",
     "tokenized.md",
-    "experminents.md",
     "Key Ideas.md",
     "test.md",
     "Untitled.md"

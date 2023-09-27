@@ -12,7 +12,6 @@ import "core:strings"
 Message :: struct {
     port:  string,
     datum: any,
-    comefrom: string,
     cause: string, // input port of comefrom that caused this message
 }
 
@@ -21,14 +20,13 @@ Message :: struct {
 
 // there are 3 places that parts of a message can be allocated: temp, heap, literal pool
 // this version assumes that ports are always string literals and that .datums never contain pointers
-make_message :: proc(port: string, data: $Data, from: string, cause: string) -> Message {
+make_message :: proc(port: string, data: $Data, cause: string) -> Message {
     data_ptr := new_clone(data)
     data_id := typeid_of(Data)
 
     return {
         port  = port,
         datum = any{data_ptr, data_id},
-	comefrom = from,
 	cause = cause,
     }
 }
@@ -38,7 +36,6 @@ message_clone :: proc(message: Message) -> Message {
     new_message := Message {
         port = message.port,
         datum = clone_datum(message.datum),
-	comefrom = message.comefrom,
 	cause = message.cause,
     }
     return new_message
@@ -61,4 +58,12 @@ destroy_message :: proc(msg: Message) {
 
 destroy_datum :: proc (d: any) {
     //log.errorf("TODO: destroy datum %v, but don't know how yet\n", typeid_of (type_of (d)))
+}
+
+mkcause :: proc (e: ^Eh, msg: Message) -> string {
+    return fmt.aprintf ("\n(%v/%v/%v)", e.name, msg.port, msg.cause);
+}
+
+mkcausep :: proc (e: ^Eh, p: string, cause: string) -> string {
+    return fmt.aprintf ("\n(%v/%v/%v)", e.name, p, cause)
 }

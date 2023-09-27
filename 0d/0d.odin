@@ -91,18 +91,17 @@ make_leaf_with_data :: proc(name: string, data: ^$Data, handler: proc(^Eh, Messa
 
 // Sends a message on the given `port` with `data`, placing it on the output
 // of the given component.
-send :: proc(eh: ^Eh, port: string, data: $Data, causingPort: string) {
+send :: proc(eh: ^Eh, port: string, data: $Data, cause: string) {
     when Data == any {
         msg := Message {
             port  = port,
             datum = clone_datum(data),
-	    comefrom = eh.name,
-	    cause = causingPort,
+	    cause = mkcausep (eh, port, cause),
         }
     } else {
-        msg := make_message(port, data, eh.name, causingPort)
+        msg := make_message(port, data, mkcausep (eh, port, cause))
     }
-    sendf("SEND 0x%p  %s(%s)[%s/%s]", eh, eh.name, msg.port, msg.comefrom, msg.cause)
+    sendf("SEND 0x%p  %s(%s)[%s]", eh, eh.name, msg.port, msg.cause)
     fifo_push(&eh.output, msg)
 }
 
@@ -123,7 +122,7 @@ output_list :: proc(eh: ^Eh, allocator := context.allocator) -> []Message {
 container_handler :: proc(eh: ^Eh, message: Message) {
     route(eh, nil, message)
     for any_child_ready(eh) {
-        step_children(eh, message.port)
+        step_children(eh, message)
     }
 }
 
@@ -230,10 +229,10 @@ outputf :: proc(fmt_str: string, args: ..any, location := #caller_location) {
 	log.logf(.Debug,   fmt_str, ..args, location=location)
 }
 
-step_children :: proc(container: ^Eh, cause : string) {
+step_children :: proc(container: ^Eh, causingmsg: Message) {
     container.state = .idle
     for child in container.children {
-        msg: Message = make_message ("?", true, "?", "?")
+        msg: Message = make_message ("?", true, mkcause (container, causingmsg))
         ok: bool
 
         switch {
@@ -241,7 +240,7 @@ step_children :: proc(container: ^Eh, cause : string) {
             msg, ok = fifo_pop(&child.input)
 	case child.state != .idle:
 	    ok = true
-	    msg = make_message (".", true, container.name, cause)
+	    msg = make_message (".", true, mkcause (container, causingmsg))
         }
 
         if ok {
@@ -263,9 +262,9 @@ step_children :: proc(container: ^Eh, cause : string) {
     }
 }
 
-tick :: proc (eh: ^Eh) {
+tick :: proc (eh: ^Eh, msg: Message) {
     if eh.state != .idle {
-	tick_msg := make_message (".", true, eh.name, ".")
+	tick_msg := make_message (".", true, mkcause (eh, msg))
 	fifo_push (&eh.input, tick_msg)
     }
 }
@@ -276,7 +275,7 @@ route :: proc(container: ^Eh, from: ^Eh, message: Message) {
     was_sent := false // for checking that output went somewhere (at least during bootstrap)
     if message.port == "." {
 	for child in container.children {
-	    tick (child)
+	    tick (child, message)
 	}
 	was_sent = true
     } else {
@@ -293,7 +292,7 @@ route :: proc(container: ^Eh, from: ^Eh, message: Message) {
             }
 	}
     }
-    fmt.assertf (was_sent, "\n\n!!! message from %v dropped on floor: %v %v [%v/%v]\n\n", from.name, message.port, message.datum, message.comefrom, message.cause)
+    fmt.assertf (was_sent, "\n\n!!! message from %v dropped on floor: %v %v [%v/%v]\n\n", from.name, message.port, message.datum, message.cause)
 }
 
 any_child_ready :: proc(container: ^Eh) -> (ready: bool) {
@@ -328,7 +327,7 @@ print_output_list :: proc(eh: ^Eh) {
         if idx > 0 {
             write_string(&sb, ", ")
         }
-        fmt.sbprintf(&sb, "{{%s, %v, %v}", msg.port, msg.datum, msg.comefrom)
+        fmt.sbprintf(&sb, "{{%s, %v, [%v]}", msg.port, msg.datum, msg.cause)
     }
     strings.write_rune(&sb, ']')
 
