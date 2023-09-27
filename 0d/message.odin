@@ -12,6 +12,7 @@ import "core:strings"
 Message :: struct {
     port:  string,
     datum: any,
+    comefrom: string,
 }
 
 // Utility for making a `Message`. Used to safely "seed" messages
@@ -19,13 +20,14 @@ Message :: struct {
 
 // there are 3 places that parts of a message can be allocated: temp, heap, literal pool
 // this version assumes that ports are always string literals and that .datums never contain pointers
-make_message :: proc(port: string, data: $Data) -> Message {
+make_message :: proc(port: string, data: $Data, from: string) -> Message {
     data_ptr := new_clone(data)
     data_id := typeid_of(Data)
 
     return {
         port  = port,
         datum = any{data_ptr, data_id},
+	comefrom = from,
     }
 }
 
@@ -34,6 +36,7 @@ message_clone :: proc(message: Message) -> Message {
     new_message := Message {
         port = message.port,
         datum = clone_datum(message.datum),
+	comefrom = message.comefrom,
     }
     return new_message
 }

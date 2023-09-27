@@ -96,9 +96,10 @@ send :: proc(eh: ^Eh, port: string, data: $Data) {
         msg := Message {
             port  = port,
             datum = clone_datum(data),
+	    comefrom = eh.name,
         }
     } else {
-        msg := make_message(port, data)
+        msg := make_message(port, data, eh.name)
     }
     sendf("SEND 0x%p  %s(%s)", eh, eh.name, msg.port)
     fifo_push(&eh.output, msg)
