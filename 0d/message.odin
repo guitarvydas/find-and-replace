@@ -61,9 +61,9 @@ destroy_datum :: proc (d: any) {
 }
 
 mkcause :: proc (e: ^Eh, msg: Message) -> string {
-    return fmt.aprintf ("\n(%v/%v/%v)", e.name, msg.port, msg.cause);
+    return fmt.aprintf ("\n(%v:%v:%v)", e.name, msg.port, msg.cause);
 }
 
 mkcausep :: proc (e: ^Eh, p: string, cause: string) -> string {
-    return fmt.aprintf ("\n(%v/%v/%v)", e.name, p, cause)
+    return fmt.aprintf ("\n(%v:%v:%v)", e.name, p, cause)
 }
