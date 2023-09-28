@@ -40,7 +40,7 @@ main :: proc() {
     // export native leaves
     reg.append_leaf (&leaves, reg.Leaf_Instantiator {
         name = "stdout",
-        init = leaf.stdout_instantiate,
+        instantiate = leaf.stdout_instantiate,
     })
 
     user.components (&leaves)

@@ -27,7 +27,7 @@ Container_Template :: struct {
 
 Leaf_Template :: struct {
     name: string,
-    init: proc(name: string) -> ^zd.Eh,
+    instantiate: proc(name: string) -> ^zd.Eh,
 }
 
 Leaf_Instantiator :: Leaf_Template
@@ -72,16 +72,16 @@ get_component_instance :: proc(reg: ^Component_Registry, name: string) -> (insta
     if ok {
         switch template in descriptor {
         case Leaf_Template:
-            instance = template.init(name)
+            instance = template.instantiate(name)
         case Container_Template:
-            instance = container_initializer(reg, template.decl)
+            instance = container_instantiator(reg, template.decl)
         }
 	reg.stats.ninstances += 1
     }
     return instance, ok
 }
 
-container_initializer :: proc(reg: ^Component_Registry, decl: syntax.Container_Decl) -> ^zd.Eh {
+container_instantiator :: proc(reg: ^Component_Registry, decl: syntax.Container_Decl) -> ^zd.Eh {
 
     container := zd.make_container(decl.name)
 
