@@ -118,7 +118,7 @@ collect_process_leaves :: proc(path: string, leaves: ^[dynamic]reg.Leaf_Instanti
             if strings.has_prefix(child.name, "$") {
                 leaf_instantiate := reg.Leaf_Instantiator {
                     name = child.name,
-                    init = process_instantiate,
+                    instantiate = process_instantiate,
                 }
                 append(leaves, leaf_instantiate)
             }
