@@ -30,7 +30,7 @@ clone_port :: proc (s : string) -> Port_Type {
 // Utility for making a `Message`. Used to safely "seed" messages
 // entering the very top of a network.
 
-make_message :: proc(port: Port_Type, data: Datum_Type, who : ^Eh, cause: Message) -> Message {
+make_message_with_Datum_Type :: proc(port: Port_Type, data: Datum_Type, who : ^Eh, cause: Message) -> Message {
     p := clone_port (port)
     data_ptr := new_clone(data)
     data_id := typeid_of (type_of (data))
@@ -43,6 +43,17 @@ make_message :: proc(port: Port_Type, data: Datum_Type, who : ^Eh, cause: Messag
 
     return m
 }
+
+make_message_with_string :: proc(port: Port_Type, s: string, who : ^Eh, cause: Message) -> Message {
+    a := any {raw_data (s), typeid_of (string)}
+    return make_message_with_Datum_Type (port, a, who, cause)
+}
+
+make_message :: proc {
+    make_message_with_string,
+    make_message_with_Datum_Type,
+}
+
 
 // Clones a message. Primarily used internally for "fanning out" a message to multiple destinations.
 message_clone :: proc(message: Message) -> Message {

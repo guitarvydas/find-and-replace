@@ -360,7 +360,8 @@ read_text_file_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
 }
 
 read_text_file_proc :: proc(eh: ^zd.Eh, msg: zd.Message) {
-    fd, errnum := os.open (msg.datum.(string))
+    fname := msg.datum.(string)
+    fd, errnum := os.open (fname)
     if errnum == 0 {
 	data, success := os.read_entire_file_from_handle (fd)
 	if success {
