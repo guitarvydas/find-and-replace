@@ -1,6 +1,7 @@
 package syntax
 
 import "core:fmt"
+import zd "../0d"
 
 Container_Decl :: struct {
     file:        string,
@@ -12,9 +13,9 @@ Container_Decl :: struct {
 Connect_Decl :: struct {
     dir:         Direction,
     source:      Elem_Reference,
-    source_port: string,
+    source_port: zd.Port_Type,
     target:      Elem_Reference,
-    target_port: string,
+    target_port: zd.Port_Type,
 }
 
 Direction :: enum {

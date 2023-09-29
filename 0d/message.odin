@@ -9,36 +9,49 @@ import "core:strings"
 //
 // `port` refers to the name of the incoming or outgoing port of this component.
 // `datum` is the data attached to this message.
-Message :: struct {
-    port:  string,
-    datum: any,
-    cause: string, // input port of comefrom that caused this message
+Message_Type :: struct {
+    port:  Port_Type,
+    datum: Datum_Type,
+    from: ^Eh,
+    cause: Message, // message that caused this message
 }
+
+Message :: ^Message_Type
+Port_Type :: string
+Datum_Type :: any
+
+
+clone_port :: proc (s : string) -> Port_Type {
+    p : Port_Type = strings.clone (s) // clone to heap
+    return p
+}
+
 
 // Utility for making a `Message`. Used to safely "seed" messages
 // entering the very top of a network.
 
-// there are 3 places that parts of a message can be allocated: temp, heap, literal pool
-// this version assumes that ports are always string literals and that .datums never contain pointers
-make_message :: proc(port: string, data: $Data, cause: string) -> Message {
+make_message :: proc(port: Port_Type, data: Datum_Type, who : ^Eh, cause: Message) -> Message {
+    p := clone_port (port)
     data_ptr := new_clone(data)
-    data_id := typeid_of(Data)
+    data_id := typeid_of (type_of (data))
 
-    return {
-        port  = port,
-        datum = any{data_ptr, data_id},
-	cause = cause,
-    }
+    m := new (Message_Type)
+    m.port  = p
+    m.datum = any{data_ptr, data_id}
+    m.from = who
+    m.cause = cause
+
+    return m
 }
 
 // Clones a message. Primarily used internally for "fanning out" a message to multiple destinations.
 message_clone :: proc(message: Message) -> Message {
-    new_message := Message {
-        port = message.port,
-        datum = clone_datum(message.datum),
-	cause = message.cause,
-    }
-    return new_message
+    m := new (Message_Type)
+    m.port = clone_port (message.port)
+    m.datum = clone_datum(message.datum)
+    m.from = message.from
+    m.cause = message.cause
+    return m
 }
 
 // Clones the datum portion of the message.
@@ -53,6 +66,7 @@ clone_datum :: proc(datum: any) -> any {
 
 // Frees a message.
 destroy_message :: proc(msg: Message) {
+    destroy_port (msg.port)
     destroy_datum (msg.datum)
 }
 
@@ -60,10 +74,8 @@ destroy_datum :: proc (d: any) {
     //log.errorf("TODO: destroy datum %v, but don't know how yet\n", typeid_of (type_of (d)))
 }
 
-mkcause :: proc (e: ^Eh, msg: Message) -> string {
-    return fmt.aprintf ("\n(%v:%v:%v)", e.name, msg.port, msg.cause);
+destroy_port :: proc (p : Port_Type) {
+    // TODO: implement GC or refcounting and avoid duplication of data when cloning
+    // TODO: don't know how to destroy a string
 }
 
-mkcausep :: proc (e: ^Eh, p: string, cause: string) -> string {
-    return fmt.aprintf ("\n(%v:%v:%v)", e.name, p, cause)
-}

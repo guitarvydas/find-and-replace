@@ -53,7 +53,7 @@ main :: proc() {
 run :: proc (r : ^reg.Component_Registry, main_container_name : string, diagram_source_file : string, injectfn : #type proc (^zd.Eh)) {
     pregstry := r
     // get entrypoint container
-    main_container, ok := reg.get_component_instance(pregstry, main_container_name)
+    main_container, ok := reg.get_component_instance(pregstry, main_container_name, owner=nil)
     fmt.assertf(
         ok,
         "Couldn't find main container with page name %s in file %s (check tab names, or disable compression?)\n",
@@ -68,5 +68,5 @@ run :: proc (r : ^reg.Component_Registry, main_container_name : string, diagram_
 }
 
 inject :: proc (main_container : ^zd.Eh) {
-    main_container.handler(main_container, zd.make_message("filename", "fr/find.md", "<>" ))
+    main_container.handler(main_container, zd.make_message("filename", "fr/find.md", main_container, nil ))
 }
