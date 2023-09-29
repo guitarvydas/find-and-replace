@@ -9,14 +9,13 @@ import "core:strings"
 //
 // `port` refers to the name of the incoming or outgoing port of this component.
 // `datum` is the data attached to this message.
-Message_Type :: struct {
+Message :: struct {
     port:  Port_Type,
     datum: Datum_Type,
     from: ^Eh,
-    cause: Message, // message that caused this message
+    cause: ^Message, // message that caused this message
 }
 
-Message :: ^Message_Type
 Port_Type :: string
 Datum_Type :: any
 
@@ -30,34 +29,24 @@ clone_port :: proc (s : string) -> Port_Type {
 // Utility for making a `Message`. Used to safely "seed" messages
 // entering the very top of a network.
 
-make_message_with_Datum_Type :: proc(port: Port_Type, data: Datum_Type, who : ^Eh, cause: Message) -> Message {
+make_message :: proc(port: Port_Type, data: Datum_Type, who : ^Eh, cause: Message) -> ^Message {
     p := clone_port (port)
     data_ptr := new_clone(data)
     data_id := typeid_of (type_of (data))
 
-    m := new (Message_Type)
+    m := new (Message)
     m.port  = p
     m.datum = any{data_ptr, data_id}
     m.from = who
-    m.cause = cause
+    cloned_cause := message_clone (cause)
+    m.cause = cloned_cause
 
     return m
 }
 
-make_message_with_string :: proc(port: Port_Type, s: string, who : ^Eh, cause: Message) -> Message {
-    a := any {raw_data (s), typeid_of (string)}
-    return make_message_with_Datum_Type (port, a, who, cause)
-}
-
-make_message :: proc {
-    make_message_with_string,
-    make_message_with_Datum_Type,
-}
-
-
 // Clones a message. Primarily used internally for "fanning out" a message to multiple destinations.
-message_clone :: proc(message: Message) -> Message {
-    m := new (Message_Type)
+message_clone :: proc(message: Message) -> ^Message {
+    m := new (Message)
     m.port = clone_port (message.port)
     m.datum = clone_datum(message.datum)
     m.from = message.from

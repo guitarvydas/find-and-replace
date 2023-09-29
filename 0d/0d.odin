@@ -21,7 +21,7 @@ Bang :: struct {}
 //
 // `handler` invokes the code that is attached to this component.
 //
-// `instance_data` is a pointer to any extra state data that the `leaf_handler`
+// `instance_data` is a pointer to instance data that the `leaf_handler`
 // function may want whenever it is invoked again.
 //
 Eh_States :: enum { idle, active }
@@ -32,7 +32,7 @@ Eh :: struct {
     owner:        ^Eh,
     children:     []^Eh,
     connections:  []Connector,
-    handler:      #type proc(eh: ^Eh, message: Message),
+    handler:      #type proc(eh: ^Eh, message: ^Message),
     instance_data: any,
     state:       Eh_States,
     kind: enum { container, leaf, }, // for debug
@@ -54,13 +54,13 @@ make_container :: proc(name: string, owner : ^Eh) -> ^Eh {
 // Creates a new leaf component out of a handler function, and optionally a user
 // data parameter that will be passed back to your handler when it is run.
 
-make_leaf_with_no_instance_data :: proc(name: string, owner : ^Eh, handler: proc(^Eh, Message)) -> ^Eh {
+make_leaf_with_no_instance_data :: proc(name: string, owner : ^Eh, handler: proc(^Eh, ^Message)) -> ^Eh {
     return make_leaf (name, owner, nil, handler)
 }
 
 // Creates a new leaf component out of a handler function, and a data parameter
 // that will be passed back to your handler when called.
-make_leaf :: proc(name: string, owner: ^Eh, instance_data: any, handler: proc(^Eh, Message)) -> ^Eh {
+make_leaf :: proc(name: string, owner: ^Eh, instance_data: any, handler: proc(^Eh, ^Message)) -> ^Eh {
     eh := new(Eh)
     eh.name = name
     eh.handler = handler
@@ -92,7 +92,7 @@ output_list :: proc(eh: ^Eh, allocator := context.allocator) -> []Message {
 }
 
 // The default handler for container components.
-container_handler :: proc(eh: ^Eh, message: Message) {
+container_handler :: proc(eh: ^Eh, message: ^Message) {
     route(eh, nil, message)
     for any_child_ready(eh) {
         step_children(eh, message)
@@ -113,7 +113,7 @@ destroy_container :: proc(eh: ^Eh) {
 }
 
 // Wrapper for corelib `queue.Queue` with FIFO semantics.
-FIFO       :: queue.Queue(Message)
+FIFO       :: queue.Queue(^Message)
 fifo_push  :: queue.push_back
 fifo_pop   :: queue.pop_front_safe
 
@@ -130,7 +130,7 @@ make_fifo_iterator :: proc(q: ^FIFO) -> FIFO_Iterator {
     return {q, 0}
 }
 
-fifo_iterate :: proc(iter: ^FIFO_Iterator) -> (item: Message, idx: uint, ok: bool) {
+fifo_iterate :: proc(iter: ^FIFO_Iterator) -> (item: ^Message, idx: uint, ok: bool) {
     if iter.q.len == 0 {
         ok = false
         return
@@ -205,7 +205,7 @@ outputf :: proc(fmt_str: string, args: ..any, location := #caller_location) {
 step_children :: proc(container: ^Eh, cause: Message) {
     container.state = .idle
     for child in container.children {
-        msg: Message = make_message ("?", true, container, cause)
+        msg: ^Message = make_message ("?", true, container, cause)
         ok: bool
 
         switch {
