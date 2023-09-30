@@ -72,16 +72,16 @@ make_leaf :: proc(name: string, owner: ^Eh, instance_data: any, handler: proc(^E
 
 // Sends a message on the given `port` with `data`, placing it on the output
 // of the given component.
-send :: proc(eh: ^Eh, port: string, data: Datum_Type, cause : Message) {
-    sendf("SEND 0x%p  %s(%s)[%s]", eh, eh.name, port, cause)
+send :: proc(eh: ^Eh, port: string, data: Datum_Type, cause : ^Message) {
+    sendf("SEND 0x%p  %s(%s)[%s]", eh, eh.name, port, cause^)
     msg := make_message(port, data, eh, cause)
     fifo_push(&eh.output, msg)
 }
 
 // Returns a list of all output messages on a container.
 // For testing / debugging purposes.
-output_list :: proc(eh: ^Eh, allocator := context.allocator) -> []Message {
-    list := make([]Message, eh.output.len)
+output_list :: proc(eh: ^Eh, allocator := context.allocator) -> []^Message {
+    list := make([]^Message, eh.output.len)
 
     iter := make_fifo_iterator(&eh.output)
     for msg, i in fifo_iterate(&iter) {
@@ -184,7 +184,7 @@ sender_eq :: proc(s1, s2: Sender) -> bool {
 }
 
 // Delivers the given message to the receiver of this connector.
-deposit :: proc(c: Connector, message: Message) {
+deposit :: proc(c: Connector, message: ^Message) {
     new_message := message_clone(message)
     new_message.port = c.receiver.port
     fifo_push(c.receiver.queue, new_message)
@@ -202,7 +202,7 @@ outputf :: proc(fmt_str: string, args: ..any, location := #caller_location) {
 	log.logf(.Debug,   fmt_str, ..args, location=location)
 }
 
-step_children :: proc(container: ^Eh, cause: Message) {
+step_children :: proc(container: ^Eh, cause: ^Message) {
     container.state = .idle
     for child in container.children {
         msg: ^Message = make_message ("?", true, container, cause)
@@ -235,7 +235,7 @@ step_children :: proc(container: ^Eh, cause: Message) {
     }
 }
 
-tick :: proc (eh: ^Eh, cause: Message) {
+tick :: proc (eh: ^Eh, cause: ^Message) {
     if eh.state != .idle {
 	tick_msg := make_message (".", true, eh, cause)
 	fifo_push (&eh.input, tick_msg)
@@ -244,7 +244,7 @@ tick :: proc (eh: ^Eh, cause: Message) {
 
 // Routes a single message to all matching destinations, according to
 // the container's connection network.
-route :: proc(container: ^Eh, from: ^Eh, message: Message) {
+route :: proc(container: ^Eh, from: ^Eh, message: ^Message) {
     was_sent := false // for checking that output went somewhere (at least during bootstrap)
     if message.port == "." {
 	for child in container.children {

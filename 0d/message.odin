@@ -29,7 +29,7 @@ clone_port :: proc (s : string) -> Port_Type {
 // Utility for making a `Message`. Used to safely "seed" messages
 // entering the very top of a network.
 
-make_message :: proc(port: Port_Type, data: Datum_Type, who : ^Eh, cause: Message) -> ^Message {
+make_message :: proc(port: Port_Type, data: Datum_Type, who : ^Eh, cause: ^Message) -> ^Message {
     p := clone_port (port)
     data_ptr := new_clone(data)
     data_id := typeid_of (type_of (data))
@@ -45,7 +45,7 @@ make_message :: proc(port: Port_Type, data: Datum_Type, who : ^Eh, cause: Messag
 }
 
 // Clones a message. Primarily used internally for "fanning out" a message to multiple destinations.
-message_clone :: proc(message: Message) -> ^Message {
+message_clone :: proc(message: ^Message) -> ^Message {
     m := new (Message)
     m.port = clone_port (message.port)
     m.datum = clone_datum(message.datum)
@@ -65,16 +65,16 @@ clone_datum :: proc(datum: any) -> any {
 }
 
 // Frees a message.
-destroy_message :: proc(msg: Message) {
-    destroy_port (msg.port)
-    destroy_datum (msg.datum)
+destroy_message :: proc(msg: ^Message) {
+    destroy_port (msg)
+    destroy_datum (msg)
 }
 
-destroy_datum :: proc (d: any) {
+destroy_datum :: proc (msg: ^Message) {
     //log.errorf("TODO: destroy datum %v, but don't know how yet\n", typeid_of (type_of (d)))
 }
 
-destroy_port :: proc (p : Port_Type) {
+destroy_port :: proc (msg: ^Message) {
     // TODO: implement GC or refcounting and avoid duplication of data when cloning
     // TODO: don't know how to destroy a string
 }

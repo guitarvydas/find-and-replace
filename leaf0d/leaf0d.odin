@@ -34,7 +34,7 @@ process_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
         return
     }
     
-    send_output :: proc(eh: ^zd.Eh, port: string, output: []byte, causingMsg: zd.Message) {
+    send_output :: proc(eh: ^zd.Eh, port: string, output: []byte, causingMsg: ^zd.Message) {
         if len(output) > 0 {
             str, ok := utf8_string(output)
             if ok {
@@ -178,9 +178,9 @@ icommand_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 }
 
 
-TwoAnys :: struct {
-    first : zd.Message,
-    second : zd.Message
+TwoMessages :: struct {
+    first : ^zd.Message,
+    second : ^zd.Message
 }
 
 
@@ -188,7 +188,7 @@ Deracer_States :: enum { idle, waitingForFirst, waitingForSecond }
 
 Deracer_Instance_Data :: struct {
     state : Deracer_States,
-    buffer : TwoAnys
+    buffer : TwoMessages
 }
 
 reclaim_Buffers_from_heap :: proc (inst : Deracer_Instance_Data) {
@@ -961,7 +961,7 @@ ohmjs_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     return zd.make_leaf (name_with_id, owner, inst, ohmjs_proc)
 }
 
-ohmjs_maybe :: proc (eh: ^zd.Eh, inst: OhmJS_Instance_Data, causingMsg: zd.Message) {
+ohmjs_maybe :: proc (eh: ^zd.Eh, inst: OhmJS_Instance_Data, causingMsg: ^zd.Message) {
     if "" != inst.grammarname && "" != inst.grammarfilename && "" != inst.semanticsfilename && "" != inst.input {
 
         cmd := fmt.aprintf ("ohmjs/ohmjs.js %s %s %s", inst.grammarname, inst.grammarfilename, inst.semanticsfilename)
