@@ -20,6 +20,16 @@
             }
           },
           {
+            "id": "b0b9e6105d4b263c",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.4.14"
+              }
+            }
+          },
+          {
             "id": "4599a4eef57448a6",
             "type": "leaf",
             "state": {
@@ -43,7 +53,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -170,13 +181,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "81e66f22f9f7db0f",
+  "active": "b0b9e6105d4b263c",
   "lastOpenFiles": [
     "0d/#0d.odin#",
+    "leaf0d/#leaf0d.odin#",
     "find-and-replace",
     "find-and-replace.ld_jvyimn",
     "find-and-replace.o",
-    "leaf0d/#leaf0d.odin#",
     "0d/#message.odin#",
     "syntax/#decls.odin#",
     "doc/Message.drawio",
