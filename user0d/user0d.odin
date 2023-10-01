@@ -19,7 +19,7 @@ components :: proc (leaves: ^[dynamic]reg.Leaf_Template) {
     append(leaves, reg.Leaf_Template { name = "panic", instantiate = leaf.panic_instantiate })
     append(leaves, reg.Leaf_Template { name = "command", instantiate = leaf.command_instantiate })
     append(leaves, reg.Leaf_Template { name = "icommand", instantiate = leaf.icommand_instantiate })
-    append(leaves, reg.Leaf_Template { name = "Read Text File", instantiate = leaf.read_text_file_instantiate })
+    append(leaves, reg.Leaf_Template { name = "Low Level Read Text File", instantiate = leaf.low_level_read_text_file_instantiate })
     append(leaves, reg.Leaf_Template { name = "Read Text From FD", instantiate = leaf.read_text_from_fd_instantiate })
     append(leaves, reg.Leaf_Template { name = "Open Text File", instantiate = leaf.open_text_file_instantiate })
 

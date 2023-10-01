@@ -72,9 +72,9 @@ make_leaf :: proc(name: string, owner: ^Eh, instance_data: any, handler: proc(^E
 
 // Sends a message on the given `port` with `data`, placing it on the output
 // of the given component.
-send :: proc(eh: ^Eh, port: string, data: Datum_Type, cause : ^Message) {
+send :: proc(eh: ^Eh, port: string, datum: ^Datum, cause : ^Message) {
     sendf("SEND 0x%p  %s(%s)[%s]", eh, eh.name, port, cause^)
-    msg := make_message(port, data, eh, cause)
+    msg := make_message(port, datum, eh, cause)
     fifo_push(&eh.output, msg)
 }
 

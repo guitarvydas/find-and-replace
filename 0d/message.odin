@@ -11,13 +11,12 @@ import "core:strings"
 // `datum` is the data attached to this message.
 Message :: struct {
     port:  Port_Type,
-    datum: Datum_Type,
+    datum: ^Datum,
     from: ^Eh,
     cause: ^Message, // message that caused this message
 }
 
 Port_Type :: string
-Datum_Type :: any
 
 
 clone_port :: proc (s : string) -> Port_Type {
@@ -29,17 +28,15 @@ clone_port :: proc (s : string) -> Port_Type {
 // Utility for making a `Message`. Used to safely "seed" messages
 // entering the very top of a network.
 
-make_message :: proc(port: Port_Type, data: Datum_Type, who : ^Eh, cause: ^Message) -> ^Message {
+make_message :: proc(port: Port_Type, datum: ^Datum, who : ^Eh, cause: ^Message) -> ^Message {
+    fmt.printf ("make_message port=%v data=%v\n", port, data)
     p := clone_port (port)
-    data_ptr := new_clone(data)
-    data_id := typeid_of (type_of (data))
 
     m := new (Message)
     m.port  = p
-    m.datum = any{data_ptr, data_id}
+    m.datum = datum.clone (datum)
     m.from = who
-    cloned_cause := message_clone (cause)
-    m.cause = cloned_cause
+    m.cause = cause
 
     return m
 }
@@ -48,20 +45,10 @@ make_message :: proc(port: Port_Type, data: Datum_Type, who : ^Eh, cause: ^Messa
 message_clone :: proc(message: ^Message) -> ^Message {
     m := new (Message)
     m.port = clone_port (message.port)
-    m.datum = clone_datum(message.datum)
+    m.datum = datum.clone (message.datum)
     m.from = message.from
     m.cause = message.cause
     return m
-}
-
-// Clones the datum portion of the message.
-clone_datum :: proc(datum: any) -> any {
-    datum_ti := type_info_of(datum.id)
-
-    new_datum_ptr := mem.alloc(datum_ti.size, datum_ti.align) or_else panic("data_ptr alloc")
-    mem.copy_non_overlapping(new_datum_ptr, datum.data, datum_ti.size)
-
-    return any{new_datum_ptr, datum.id},
 }
 
 // Frees a message.

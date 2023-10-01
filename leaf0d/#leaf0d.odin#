@@ -1131,3 +1131,5 @@ find_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
 find_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
     zd.send(eh, "output", "Find", msg)
 }
+
+///
