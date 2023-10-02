@@ -69,7 +69,7 @@ run :: proc (r : ^reg.Component_Registry, main_container_name : string, diagram_
 
 inject :: proc (main_container : ^zd.Eh) {
     fmt.println ("A")
-    d := zd.make_operand ("fr/find.md")
+    d := zd.new_datum_string ("fr/find.md")
     fmt.printf ("A d=%v\n", d)
     msg := zd.make_message("filename", d, main_container, nil )
     fmt.println ("B")

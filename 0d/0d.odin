@@ -73,9 +73,22 @@ make_leaf :: proc(name: string, owner: ^Eh, instance_data: any, handler: proc(^E
 // Sends a message on the given `port` with `data`, placing it on the output
 // of the given component.
 send :: proc(eh: ^Eh, port: string, datum: ^Datum, cause : ^Message) {
-    sendf("SEND 0x%p  %s(%s)[%s]", eh, eh.name, port, cause^)
+    sendf("SEND 0x%p %s(%s)[%v]", eh, eh.name, port, cause^)
     msg := make_message(port, datum, eh, cause)
     fifo_push(&eh.output, msg)
+}
+
+send_string :: proc(eh: ^Eh, port: string, s : string, cause : ^Message) {
+    sendf("SEND 0x%p %s(%s)[%v]", eh, eh.name, port, cause^)
+    datum := new_datum_string (s)
+    msg := make_message(port, datum, eh, cause)
+    fifo_push(&eh.output, msg)
+}
+
+forward :: proc(eh: ^Eh, port: string, msg: ^Message) {
+    sendf("FORWARD 0x%p %v[%s]", eh, msg, msg^)
+    fmsg := make_message(port, msg.datum, eh, msg)
+    fifo_push(&eh.output, fmsg)
 }
 
 // Returns a list of all output messages on a container.
@@ -205,7 +218,7 @@ outputf :: proc(fmt_str: string, args: ..any, location := #caller_location) {
 step_children :: proc(container: ^Eh, cause: ^Message) {
     container.state = .idle
     for child in container.children {
-        msg: ^Message = make_message ("?", true, container, cause)
+        msg: ^Message = make_message ("?", new_datum_bang (), container, cause)
         ok: bool
 
         switch {
@@ -213,7 +226,7 @@ step_children :: proc(container: ^Eh, cause: ^Message) {
             msg, ok = fifo_pop(&child.input)
 	case child.state != .idle:
 	    ok = true
-	    msg = make_message (".", true, container, cause)
+	    msg = make_message (".", new_datum_bang (), container, cause)
         }
 
         if ok {
@@ -237,7 +250,7 @@ step_children :: proc(container: ^Eh, cause: ^Message) {
 
 tick :: proc (eh: ^Eh, cause: ^Message) {
     if eh.state != .idle {
-	tick_msg := make_message (".", true, eh, cause)
+	tick_msg := make_message (".", new_datum_bang (), eh, cause)
 	fifo_push (&eh.input, tick_msg)
     }
 }
@@ -320,7 +333,7 @@ fetch_first_output_mustbestring :: proc (eh :^Eh, port: Port_Type) -> string {
     iter := make_fifo_iterator(&eh.output)
     for msg, idx in fifo_iterate(&iter) {
 	if msg.port == port {
-	    return msg.datum.(string)
+	    return msg.datum.data.(string)
 	}
     }
     return ""
