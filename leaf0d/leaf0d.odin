@@ -361,7 +361,9 @@ low_level_read_text_file_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^z
 
 low_level_read_text_file_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
     fname := msg.datum.data.(string)
+    fmt.printf ("llrtfp fname=%s\n", fname)
     fd, errnum := os.open (fname)
+    fmt.println (fd)
     if errnum == 0 {
 	data, success := os.read_entire_file_from_handle (fd)
 	if success {
@@ -845,15 +847,16 @@ find_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 ensure_string_datum_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     @(static) counter := 0
     counter += 1
-
-    name_with_id := fmt.aprintf("colonspc[%d]", counter)
+    
+    name_with_id := fmt.aprintf("Ensure String Datum[%d]", counter)
     return zd.make_leaf (name_with_id, owner, nil, ensure_string_datum_proc)
 }
+
 ensure_string_datum_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
     switch x in msg.datum.data {
     case string:
 	zd.forward (eh, "output", msg)
-	case:
+    case:
 	zd.send_string (eh, "error", "ensure: type error (expected a string datum)", msg)
     }
 }

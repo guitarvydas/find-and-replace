@@ -79,14 +79,14 @@ send :: proc(eh: ^Eh, port: string, datum: ^Datum, cause : ^Message) {
 }
 
 send_string :: proc(eh: ^Eh, port: string, s : string, cause : ^Message) {
-    sendf("SEND 0x%p %s(%s)[%v]", eh, eh.name, port, cause^)
+    sendf("SEND 0x%p %s(%s)[%v]", eh, eh.name, port, cause.port)
     datum := new_datum_string (s)
     msg := make_message(port, datum, eh, cause)
     fifo_push(&eh.output, msg)
 }
 
 forward :: proc(eh: ^Eh, port: string, msg: ^Message) {
-    sendf("FORWARD 0x%p %v[%s]", eh, msg, msg^)
+    sendf("FORWARD 0x%p %s->%v", eh, eh.name, msg.port)
     fmsg := make_message(port, msg.datum, eh, msg)
     fifo_push(&eh.output, fmsg)
 }

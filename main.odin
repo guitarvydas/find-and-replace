@@ -1,4 +1,6 @@
-package transpiler
+package find_and_replace
+
+import "debug"
 
 import "core:fmt"
 import "core:log"
@@ -67,15 +69,19 @@ run :: proc (r : ^reg.Component_Registry, main_container_name : string, diagram_
     zd.print_specific_output (main_container, "output")
 }
 
+
 inject :: proc (main_container : ^zd.Eh) {
-    fmt.println ("A")
-    d := zd.new_datum_string ("fr/find.md")
-    fmt.printf ("A d=%v\n", d)
-    msg := zd.make_message("filename", d, main_container, nil )
-    fmt.println ("B")
-    fmt.println (msg)
-    fmt.println (msg.datum)
-    fmt.println ("Ba")
+    p := zd.new_datum_string ("fr/find.md")
+    fmt.printf ("A0 p=0x%p 0x%x 0x%x\n",
+		p,
+		(transmute(runtime.Raw_String)(p.data.(string))).data,
+		(transmute(runtime.Raw_String)(p.data.(string))).len
+	       )
+    fmt.printf ("A1 len=0x%x\n", len(p.data.(string)))
+    fmt.printf ("A2 len=0x%x p.data.(string)=%s\n", len(p.data.(string)), p.data.(string))
+    msg := zd.make_message("filename", p, main_container, nil )
+    fmt.printf ("B\n")
+    fmt.printf ("msg=%v\n", msg)
+    fmt.printf ("C\n")
     main_container.handler(main_container, msg)
-    fmt.println ("C")
 }
