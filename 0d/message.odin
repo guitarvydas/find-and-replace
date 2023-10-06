@@ -10,49 +10,56 @@ import "core:strings"
 // `port` refers to the name of the incoming or outgoing port of this component.
 // `datum` is the data attached to this message.
 Message :: struct {
-    port:  string,
-    datum: any,
+    port:  Port_Type,
+    datum: ^Datum,
+    from: ^Eh,
+    cause: ^Message, // message that caused this message
 }
+
+Port_Type :: string
+
+
+clone_port :: proc (s : string) -> Port_Type {
+    p : Port_Type = strings.clone (s) // clone to heap
+    return p
+}
+
 
 // Utility for making a `Message`. Used to safely "seed" messages
 // entering the very top of a network.
 
-// there are 3 places that parts of a message can be allocated: temp, heap, literal pool
-// this version assumes that ports are always string literals and that .datums never contain pointers
-make_message :: proc(port: string, data: $Data) -> Message {
-    data_ptr := new_clone(data)
-    data_id := typeid_of(Data)
-
-    return {
-        port  = port,
-        datum = any{data_ptr, data_id},
-    }
+make_message :: proc(port: Port_Type, datum: ^Datum, who : ^Eh, cause: ^Message) -> ^Message {
+    p := clone_port (port)
+    m := new (Message)
+    m.port  = p
+    m.datum = datum.clone (datum)
+    m.from = who
+    m.cause = cause
+    return m
 }
 
 // Clones a message. Primarily used internally for "fanning out" a message to multiple destinations.
-message_clone :: proc(message: Message) -> Message {
-    new_message := Message {
-        port = message.port,
-        datum = clone_datum(message.datum),
-    }
-    return new_message
-}
-
-// Clones the datum portion of the message.
-clone_datum :: proc(datum: any) -> any {
-    datum_ti := type_info_of(datum.id)
-
-    new_datum_ptr := mem.alloc(datum_ti.size, datum_ti.align) or_else panic("data_ptr alloc")
-    mem.copy_non_overlapping(new_datum_ptr, datum.data, datum_ti.size)
-
-    return any{new_datum_ptr, datum.id},
+message_clone :: proc(message: ^Message) -> ^Message {
+    m := new (Message)
+    m.port = clone_port (message.port)
+    m.datum = message.datum.clone (message.datum)
+    m.from = message.from
+    m.cause = message.cause
+    return m
 }
 
 // Frees a message.
-destroy_message :: proc(msg: Message) {
-    destroy_datum (msg.datum)
+destroy_message :: proc(msg: ^Message) {
+    destroy_port (msg)
+    destroy_datum (msg)
 }
 
-destroy_datum :: proc (d: any) {
+destroy_datum :: proc (msg: ^Message) {
     //log.errorf("TODO: destroy datum %v, but don't know how yet\n", typeid_of (type_of (d)))
 }
+
+destroy_port :: proc (msg: ^Message) {
+    // TODO: implement GC or refcounting and avoid duplication of data when cloning
+    // TODO: don't know how to destroy a string
+}
+

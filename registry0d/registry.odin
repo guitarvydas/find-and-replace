@@ -14,36 +14,39 @@ Registry_Stats :: struct {
 }
 
 Component_Registry :: struct {
-    initializers: map[string]Initializer,
+    templates: map[string]Template,
     stats : Registry_Stats,
 }
 
-Container_Initializer :: struct {
+Template_Kind :: enum {Leaf, Container}
+
+Container_Template :: struct {
+    name: string,
     decl: syntax.Container_Decl,
 }
 
-Leaf_Initializer :: struct {
+Leaf_Template :: struct {
     name: string,
-    init: proc(name: string) -> ^zd.Eh,
+    instantiate: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh,
 }
 
-Leaf_Instantiator :: Leaf_Initializer
+Leaf_Instantiator :: Leaf_Template
 
-Initializer :: union {
-    Leaf_Initializer,
-    Container_Initializer,
+Template :: union {
+    Leaf_Template,
+    Container_Template,
 }
 
 
-make_component_registry :: proc(leaves: []Leaf_Initializer, container_xml: string) -> Component_Registry {
+make_component_registry :: proc(leaves: []Leaf_Template, container_xml: string) -> Component_Registry {
 
 //    dump_diagram (container_xml)
 
     reg: Component_Registry
 
-    for leaf_init in leaves {
-	fmt.assertf (!(leaf_init.name in reg.initializers), "Leaf \"%v\" already declared", leaf_init.name)
-        reg.initializers[leaf_init.name] = leaf_init
+    for leaf_template in leaves {
+	fmt.assertf (!(leaf_template.name in reg.templates), "Leaf \"%v\" already declared", leaf_template.name)
+        reg.templates[leaf_template.name] = leaf_template
 	reg.stats.nleaves += 1
     }
 
@@ -51,35 +54,36 @@ make_component_registry :: proc(leaves: []Leaf_Initializer, container_xml: strin
     assert(err == .None, "Failed parsing container XML")
 
     for decl in decls {
-        container_init := Container_Initializer {
+        container_template := Container_Template {
+	    name=decl.name,
             decl = decl,
         }
-	fmt.assertf (!(decl.name in reg.initializers), "component \"%v\" already declared", decl.name)
-        reg.initializers[decl.name] = container_init
+	fmt.assertf (!(decl.name in reg.templates), "component \"%v\" already declared", decl.name)
+        reg.templates[decl.name] = container_template
 	reg.stats.ncontainers += 1
     }
 
     return reg
 }
 
-get_component_instance :: proc(reg: ^Component_Registry, name: string) -> (instance: ^zd.Eh, ok: bool) {
-    initializer: Initializer
-    initializer, ok = reg.initializers[name]
+get_component_instance :: proc(reg: ^Component_Registry, name: string, owner : ^zd.Eh) -> (instance: ^zd.Eh, ok: bool) {
+    descriptor: Template
+    descriptor, ok = reg.templates[name]
     if ok {
-        switch init in initializer {
-        case Leaf_Initializer:
-            instance = init.init(name)
-        case Container_Initializer:
-            instance = container_initializer(reg, init.decl)
+        switch template in descriptor {
+        case Leaf_Template:
+            instance = template.instantiate(name, owner)
+        case Container_Template:
+            instance = container_instantiator(reg, owner, template.decl)
         }
 	reg.stats.ninstances += 1
     }
     return instance, ok
 }
 
-container_initializer :: proc(reg: ^Component_Registry, decl: syntax.Container_Decl) -> ^zd.Eh {
+container_instantiator :: proc(reg: ^Component_Registry, owner : ^zd.Eh, decl: syntax.Container_Decl) -> ^zd.Eh {
 
-    container := zd.make_container(decl.name)
+    container := zd.make_container(decl.name, owner)
 
     children := make([dynamic]^zd.Eh)
 
@@ -91,7 +95,7 @@ container_initializer :: proc(reg: ^Component_Registry, decl: syntax.Container_D
     // collect children
     {
         for child_decl in decl.children {
-            child_instance, ok := get_component_instance(reg, child_decl.name)
+            child_instance, ok := get_component_instance(reg, child_decl.name, container)
             if !ok {
                 fmt.println ("\n###           Can't find component", child_decl.name)
 		fmt.println ()
@@ -195,14 +199,14 @@ container_initializer :: proc(reg: ^Component_Registry, decl: syntax.Container_D
     return container
 }
 
-append_leaf :: proc (template_map: ^[dynamic]Leaf_Instantiator, template: Leaf_Instantiator) {
+append_leaf :: proc (template_map: ^[dynamic]Leaf_Instantiator, template: Leaf_Template) {
     append (template_map, template)
 }
 
 dump_registry:: proc (reg : Component_Registry) {
   fmt.println ()
   fmt.println ("*** PALETTE ***")
-  for c in reg.initializers {
+  for c in reg.templates {
     fmt.println(c);
   }
   fmt.println ("***************")

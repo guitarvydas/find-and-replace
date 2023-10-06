@@ -1,4 +1,6 @@
-package transpiler
+package find_and_replace
+
+import "debug"
 
 import "core:fmt"
 import "core:log"
@@ -17,11 +19,11 @@ import leaf "leaf0d"
 
 main :: proc() {
 
-    /* fmt.println ("*** starting logger ***") */
-    /* context.logger = log.create_console_logger( */
-    /* 	lowest=log.Level.Debug, */
-    /*     opt={.Level, .Time, .Terminal_Color}, */
-    /* ) */
+    fmt.println ("*** starting logger ***")
+    context.logger = log.create_console_logger(
+	lowest=log.Level.Debug,
+        opt={.Level, .Time, .Terminal_Color},
+    )
 
     // load arguments
     diagram_source_file := slice.get(os.args, 1) or_else "find-and-replace.drawio"
@@ -40,7 +42,7 @@ main :: proc() {
     // export native leaves
     reg.append_leaf (&leaves, reg.Leaf_Instantiator {
         name = "stdout",
-        init = leaf.stdout_instantiate,
+        instantiate = leaf.stdout_instantiate,
     })
 
     user.components (&leaves)
@@ -53,7 +55,7 @@ main :: proc() {
 run :: proc (r : ^reg.Component_Registry, main_container_name : string, diagram_source_file : string, injectfn : #type proc (^zd.Eh)) {
     pregstry := r
     // get entrypoint container
-    main_container, ok := reg.get_component_instance(pregstry, main_container_name)
+    main_container, ok := reg.get_component_instance(pregstry, main_container_name, owner=nil)
     fmt.assertf(
         ok,
         "Couldn't find main container with page name %s in file %s (check tab names, or disable compression?)\n",
@@ -67,6 +69,9 @@ run :: proc (r : ^reg.Component_Registry, main_container_name : string, diagram_
     zd.print_specific_output (main_container, "output")
 }
 
+
 inject :: proc (main_container : ^zd.Eh) {
-    main_container.handler(main_container, zd.make_message("filename", "fr/find.md" ))
+    p := zd.new_datum_string ("fr/find.md")
+    msg := zd.make_message("filename", p, main_container, nil )
+    main_container.handler(main_container, msg)
 }

@@ -20,6 +20,16 @@
             }
           },
           {
+            "id": "b0b9e6105d4b263c",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.4.14"
+              }
+            }
+          },
+          {
             "id": "4599a4eef57448a6",
             "type": "leaf",
             "state": {
@@ -110,7 +120,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "experminents.md",
+                "file": "Key Ideas.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +137,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "experminents.md",
+                "file": "Key Ideas.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +160,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "experminents.md"
+                "file": "Key Ideas.md"
               }
             }
           }
@@ -171,24 +181,24 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "4599a4eef57448a6",
+  "active": "b0b9e6105d4b263c",
   "lastOpenFiles": [
     "find-and-replace",
     "find-and-replace.o",
-    "find-and-replace.ld_BGwgFv",
-    "user0d/#user0d.odin#",
+    "0d/#message.odin#",
+    "find-and-replace.ld_BHp5m6",
+    "0d/#datum.odin#",
+    "find-and-replace.ld_xzsJdi",
+    "#main.odin#",
+    "find-and-replace.ld_rzyCJt",
+    "find-and-replace.ld_lLlWTC",
+    "find-and-replace.ld_ge4Nj6",
+    "debug/debug.odin~",
+    "experminents.md",
     "find.md",
-    "fr/find.sem.js",
-    "fr/find.rwr~",
-    "fr/find.rwr",
-    "fr/find.ohm",
-    "fr/find.md~",
     "fr/find.md",
-    "fr",
-    "TODO.md~",
     "TODO.md",
     "tokenized.md",
-    "experminents.md",
     "Key Ideas.md",
     "test.md",
     "Untitled.md"
