@@ -137,12 +137,13 @@ command_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     counter += 1
 
     name_with_id := fmt.aprintf("command[%d]", counter)
-    inst := new (Command_Instance_Data)
-    return zd.make_leaf (name_with_id, owner, inst, command_proc)
+    instp := new (Command_Instance_Data)
+    return zd.make_leaf (name_with_id, owner, instp, command_proc)
 }
 
 command_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    inst := eh.instance_data.(Command_Instance_Data)
+    instp := eh.instance_data.(^Command_Instance_Data)
+    inst := instp^
     switch msg.port {
     case "command":
         inst.buffer = msg.datum.data.(string)
@@ -159,12 +160,13 @@ icommand_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     counter += 1
 
     name_with_id := fmt.aprintf("icommand[%d]", counter)
-    inst := new (Command_Instance_Data)
-    return zd.make_leaf (name_with_id, owner, inst, icommand_proc)
+    instp := new (Command_Instance_Data)
+    return zd.make_leaf (name_with_id, owner, instp, icommand_proc)
 }
 
 icommand_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    inst := eh.instance_data.(Command_Instance_Data)
+    instp := eh.instance_data.(^Command_Instance_Data)
+    inst := instp^
     switch msg.port {
     case "command":
         inst.buffer = msg.datum.data.(string)
@@ -201,9 +203,9 @@ deracer_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     counter += 1
 
     name_with_id := fmt.aprintf("deracer[%d]", counter)
-    inst := new (Deracer_Instance_Data) // allocate in the heap
-    eh := zd.make_leaf (name_with_id, owner, inst, deracer_proc)
-    inst.state = .idle
+    instp := new (Deracer_Instance_Data) // allocate in the heap
+    eh := zd.make_leaf (name_with_id, owner, instp, deracer_proc)
+    instp.state = .idle
     return eh
 }
 
@@ -214,7 +216,8 @@ send_first_then_second :: proc (eh : ^zd.Eh, inst: Deracer_Instance_Data) {
 }
 
 deracer_proc :: proc(eh: ^zd.Eh,  msg: ^zd.Message) {
-    inst := eh.instance_data.(Deracer_Instance_Data)
+    instp := eh.instance_data.(^Deracer_Instance_Data)
+    inst := instp^
     switch (inst.state) {
     case .idle:
         switch msg.port {
@@ -327,12 +330,13 @@ stringconcat_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     counter += 1
 
     name_with_id := fmt.aprintf("stringconcat[%d]", counter)
-    inst := new (StringConcat_Instance_Data)
-    return zd.make_leaf (name_with_id, owner, inst, stringconcat_proc)
+    instp := new (StringConcat_Instance_Data)
+    return zd.make_leaf (name_with_id, owner, instp, stringconcat_proc)
 }
 
 stringconcat_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    inst := eh.instance_data.(StringConcat_Instance_Data)
+    instp := eh.instance_data.(^StringConcat_Instance_Data)
+    inst := instp^
     switch msg.port {
     case "1":
 	inst.buffer = strings.clone (msg.datum.data.(string))
@@ -445,12 +449,13 @@ transpiler_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     counter += 1
 
     name_with_id := fmt.aprintf("Transpiler[%d]", counter)
-    inst := new (Transpile_Instance_Data)
-    return zd.make_leaf (name_with_id, owner, inst, transpiler_leaf_proc)
+    instp := new (Transpile_Instance_Data)
+    return zd.make_leaf (name_with_id, owner, instp, transpiler_leaf_proc)
 }
 
 transpiler_leaf_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    inst := eh.instance_data.(Transpile_Instance_Data)
+    instp := eh.instance_data.(^Transpile_Instance_Data)
+    inst := instp^
     switch msg.port {
     case "grammar":
         inst.grammar_name = msg.datum.data.(string)
@@ -484,12 +489,13 @@ syncfilewrite_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     counter += 1
 
     name_with_id := fmt.aprintf("syncfilewrite[%d]", counter)
-    inst := new (Syncfilewrite_Data)
-    return zd.make_leaf (name_with_id, owner, inst, syncfilewrite_proc)
+    instp := new (Syncfilewrite_Data)
+    return zd.make_leaf (name_with_id, owner, instp, syncfilewrite_proc)
 }
 
 syncfilewrite_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    inst := eh.instance_data.(Syncfilewrite_Data)
+    instp := eh.instance_data.(^Syncfilewrite_Data)
+    inst := instp^
     switch msg.port {
     case "filename":
 	inst.filename = msg.datum.data.(string)
@@ -512,13 +518,13 @@ suffix_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     @(static) counter := 0
     counter += 1
     name_with_id := fmt.aprintf("suffix[%d]", counter)
-    inst := new (Suffix_Data)
-    inst.suffix = ""
-    return zd.make_leaf (name_with_id, owner, inst, suffix_proc)
+    instp := new (Suffix_Data)
+    instp.suffix = ""
+    return zd.make_leaf (name_with_id, owner, instp, suffix_proc)
 }
 
 suffix_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    inst := eh.instance_data.(Suffix_Data)
+    inst := eh.instance_data.(^Suffix_Data)
     switch msg.port {
     case "suffix":
 	inst.suffix = msg.datum.data.(string)
@@ -595,13 +601,13 @@ concat_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     counter += 1
 
     name_with_id := fmt.aprintf("concat[%d]", counter)
-    inst := new (Concat_Instance_Data)
-    inst.buffer = strings.clone (empty_string)
-    return zd.make_leaf (name_with_id, owner, inst, concat_proc)
+    instp := new (Concat_Instance_Data)
+    instp.buffer = strings.clone (empty_string)
+    return zd.make_leaf (name_with_id, owner, instp, concat_proc)
 }
 
 concat_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    inst := eh.instance_data.(Concat_Instance_Data)
+    inst := eh.instance_data.(^Concat_Instance_Data)
     switch (msg.port) {
     case "str":
 	delete (inst.buffer)
@@ -668,7 +674,7 @@ ohmjs_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     return zd.make_leaf (name_with_id, owner, inst, ohmjs_proc)
 }
 
-ohmjs_maybe :: proc (eh: ^zd.Eh, inst: OhmJS_Instance_Data, causingMsg: ^zd.Message) {
+ohmjs_maybe :: proc (eh: ^zd.Eh, inst: ^OhmJS_Instance_Data, causingMsg: ^zd.Message) {
     if "" != inst.grammarname && "" != inst.grammarfilename && "" != inst.semanticsfilename && "" != inst.input {
 
         cmd := fmt.aprintf ("ohmjs/ohmjs.js %s %s %s", inst.grammarname, inst.grammarfilename, inst.semanticsfilename)
@@ -679,7 +685,7 @@ ohmjs_maybe :: proc (eh: ^zd.Eh, inst: OhmJS_Instance_Data, causingMsg: ^zd.Mess
 }
 
 ohmjs_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    inst := eh.instance_data.(OhmJS_Instance_Data)
+    inst := eh.instance_data.(^OhmJS_Instance_Data)
     switch (msg.port) {
     case "grammar name":
 	inst.grammarname = strings.clone (msg.datum.data.(string))
@@ -784,7 +790,7 @@ syncfilewrite2_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
 }
 
 syncfilewrite2_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    inst := eh.instance_data.(Syncfilewrite_Data)
+    inst := eh.instance_data.(^Syncfilewrite_Data)
     switch msg.port {
     case "filename":
 	inst.filename = msg.datum.data.(string)
