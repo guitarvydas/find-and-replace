@@ -13,7 +13,6 @@ Datum :: struct {
 }
 
 new_datum_string :: proc (s : string) -> ^Datum {
-    fmt.printf ("new_datum_string\n")
     string_in_heap := new (string)
     string_in_heap^ = strings.clone (s)
     datum_in_heap := new (Datum)
@@ -24,18 +23,9 @@ new_datum_string :: proc (s : string) -> ^Datum {
 }
 
 clone_datum_string :: proc (src: ^Datum) -> ^Datum {
-    fmt.printf ("clone_datum_string\n")
     cloned_string_in_heap := new (string)
     temp_datum : Datum = src^
     a := temp_datum.data
-	fmt.printf ("types .data=%v a=%v\n",
-		    typeid_of (type_of (temp_datum.data)),
-		    typeid_of (type_of (a)),
-		   )
-    fmt.printf ("a .data=%v .id=%v\n", 
-		(transmute(runtime.Raw_Any)a).data,
-		(transmute(runtime.Raw_Any)a).id
-	       )
     temp_str := strings.clone (temp_datum.data.(string))
     cloned_string_in_heap^ = temp_str
     datum_in_heap := new (Datum)

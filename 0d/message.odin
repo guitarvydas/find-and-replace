@@ -40,13 +40,8 @@ make_message :: proc(port: Port_Type, datum: ^Datum, who : ^Eh, cause: ^Message)
 
 // Clones a message. Primarily used internally for "fanning out" a message to multiple destinations.
 message_clone :: proc(message: ^Message) -> ^Message {
-    fmt.printf ("\nmessage_clone message=%p message contents=%v\n", message, message)
     m := new (Message)
     m.port = clone_port (message.port)
-    fmt.printf ("\nmessage_clone message.datum=%p message.data/contents=%v\n",
-		message.datum,
-		message.datum
-	       )
     m.datum = message.datum.clone (message.datum)
     m.from = message.from
     m.cause = message.cause

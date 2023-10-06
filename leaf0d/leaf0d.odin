@@ -361,9 +361,7 @@ low_level_read_text_file_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^z
 
 low_level_read_text_file_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
     fname := msg.datum.data.(string)
-    fmt.printf ("llrtfp fname=%s\n", fname)
     fd, errnum := os.open (fname)
-    fmt.println (fd)
     if errnum == 0 {
 	data, success := os.read_entire_file_from_handle (fd)
 	if success {
@@ -853,7 +851,6 @@ ensure_string_datum_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh 
 }
 
 ensure_string_datum_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    fmt.printf ("ensure: msg.datum.data=%v\n", msg.datum.data)
     switch x in msg.datum.data {
     case string:
 	zd.forward (eh, "output", msg)

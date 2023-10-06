@@ -198,7 +198,6 @@ sender_eq :: proc(s1, s2: Sender) -> bool {
 
 // Delivers the given message to the receiver of this connector.
 deposit :: proc(c: Connector, message: ^Message) {
-    fmt.printf ("deposit connector=%v message=%v\n", c, message)
     new_message := message_clone(message)
     new_message.port = c.receiver.port
     fifo_push(c.receiver.queue, new_message)
@@ -259,7 +258,6 @@ tick :: proc (eh: ^Eh, cause: ^Message) {
 // Routes a single message to all matching destinations, according to
 // the container's connection network.
 route :: proc(container: ^Eh, from: ^Eh, message: ^Message) {
-    fmt.printf ("routing inside %v\n", container.name)
     was_sent := false // for checking that output went somewhere (at least during bootstrap)
     if message.port == "." {
 	for child in container.children {
