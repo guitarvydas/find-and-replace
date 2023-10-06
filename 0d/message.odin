@@ -29,27 +29,24 @@ clone_port :: proc (s : string) -> Port_Type {
 // entering the very top of a network.
 
 make_message :: proc(port: Port_Type, datum: ^Datum, who : ^Eh, cause: ^Message) -> ^Message {
-    fmt.printf ("F len=%v datum.data.(string)=%s\n", len(datum.data.(string)), datum.data.(string))
     p := clone_port (port)
-    fmt.printf ("G datum.data.(string)=%s\n", datum.data.(string))
     m := new (Message)
-    fmt.printf ("H\n")
     m.port  = p
-    fmt.printf ("I\n")
     m.datum = datum.clone (datum)
-    fmt.printf ("J\n")
     m.from = who
-    fmt.printf ("K\n")
     m.cause = cause
-    fmt.printf ("L\n")
-
     return m
 }
 
 // Clones a message. Primarily used internally for "fanning out" a message to multiple destinations.
 message_clone :: proc(message: ^Message) -> ^Message {
+    fmt.printf ("\nmessage_clone message=%p message contents=%v\n", message, message)
     m := new (Message)
     m.port = clone_port (message.port)
+    fmt.printf ("\nmessage_clone message.datum=%p message.data/contents=%v\n",
+		message.datum,
+		message.datum
+	       )
     m.datum = message.datum.clone (message.datum)
     m.from = message.from
     m.cause = message.cause

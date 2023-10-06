@@ -17,21 +17,29 @@ new_datum_string :: proc (s : string) -> ^Datum {
     string_in_heap := new (string)
     string_in_heap^ = strings.clone (s)
     datum_in_heap := new (Datum)
-    fmt.printf ("string_in_heap type=%v\n", typeid_of (type_of (string_in_heap)))
-    datum_in_heap.data = string_in_heap
-    fmt.printf ("datum_in_heap.data type=%v\n", typeid_of (type_of (datum_in_heap.data)))
+    datum_in_heap.data = string_in_heap^
     datum_in_heap.clone = clone_datum_string
     datum_in_heap.reclaim = reclaim_datum_string    
-    fmt.printf ("datum_in_heap.data.(string) type=%v\n", typeid_of (type_of (datum_in_heap.data.(string))))
     return datum_in_heap
 }
 
 clone_datum_string :: proc (src: ^Datum) -> ^Datum {
-    fmt.printf ("clone_datum_string src.data.(string)=%s\n", src.data.(string))
-    string_in_heap := new (string)
-    string_in_heap^ = strings.clone (src.data.(string))
+    fmt.printf ("clone_datum_string\n")
+    cloned_string_in_heap := new (string)
+    temp_datum : Datum = src^
+    a := temp_datum.data
+	fmt.printf ("types .data=%v a=%v\n",
+		    typeid_of (type_of (temp_datum.data)),
+		    typeid_of (type_of (a)),
+		   )
+    fmt.printf ("a .data=%v .id=%v\n", 
+		(transmute(runtime.Raw_Any)a).data,
+		(transmute(runtime.Raw_Any)a).id
+	       )
+    temp_str := strings.clone (temp_datum.data.(string))
+    cloned_string_in_heap^ = temp_str
     datum_in_heap := new (Datum)
-    datum_in_heap.data = string_in_heap
+    datum_in_heap.data = cloned_string_in_heap^
     datum_in_heap.clone = src.clone
     datum_in_heap.reclaim = src.reclaim
     return datum_in_heap

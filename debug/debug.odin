@@ -9,6 +9,11 @@ TwoQuads :: struct {
 
 RawStr :: runtime.Raw_String
 
+/* Raw_Any :: struct { */
+/* 	data: rawptr, */
+/* 	id:   typeid, */
+/* } */
+
 /* Raw_String :: struct { */
 /* 	data: [^]byte, */
 /* 	len:  int, */
