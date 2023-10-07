@@ -1,6 +1,7 @@
 package leaf0d
 
 import "core:fmt"
+import "core:runtime"
 import "core:log"
 import "core:strings"
 import "core:slice"
@@ -138,12 +139,11 @@ command_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
 
     name_with_id := fmt.aprintf("command[%d]", counter)
     instp := new (Command_Instance_Data)
-    return zd.make_leaf (name_with_id, owner, instp^, command_proc)
+    return zd.make_leaf (name_with_id, owner, instp, command_proc)
 }
 
 command_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    instp := eh.instance_data.(^Command_Instance_Data)
-    inst := instp^
+    inst := eh.instance_data.(Command_Instance_Data)
     switch msg.port {
     case "command":
         inst.buffer = msg.datum.data.(string)
@@ -161,12 +161,11 @@ icommand_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
 
     name_with_id := fmt.aprintf("icommand[%d]", counter)
     instp := new (Command_Instance_Data)
-    return zd.make_leaf (name_with_id, owner, instp^, icommand_proc)
+    return zd.make_leaf (name_with_id, owner, instp, icommand_proc)
 }
 
 icommand_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    instp := eh.instance_data.(^Command_Instance_Data)
-    inst := instp^
+    inst := eh.instance_data.(Command_Instance_Data)
     switch msg.port {
     case "command":
         inst.buffer = msg.datum.data.(string)
@@ -217,7 +216,8 @@ send_first_then_second :: proc (eh : ^zd.Eh, inst: Deracer_Instance_Data) {
 
 deracer_proc :: proc(eh: ^zd.Eh,  msg: ^zd.Message) {
     inst := eh.instance_data.(Deracer_Instance_Data)
-    fmt.printf ("deracer inst = %v\n", inst)
+    //fmt.printf ("deracer inst = %v\n", inst)
+    fmt.printf ("deracer  eh.instance_data in %v %v\n", (transmute(runtime.Raw_Any)eh.instance_data).id, transmute([2]rawptr)eh.instance_data )
     switch (inst.state) {
     case .idle:
         switch msg.port {
@@ -335,8 +335,7 @@ stringconcat_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
 }
 
 stringconcat_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
-    instp := eh.instance_data.(^StringConcat_Instance_Data)
-    inst := instp^
+    inst := eh.instance_data.(StringConcat_Instance_Data)
     switch msg.port {
     case "1":
 	inst.buffer = strings.clone (msg.datum.data.(string))

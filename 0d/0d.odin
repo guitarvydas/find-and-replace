@@ -3,6 +3,7 @@ package zd
 import "core:container/queue"
 import "core:fmt"
 import "core:mem"
+import "core:runtime"
 import "core:strings"
 import "core:intrinsics"
 import "core:log"
@@ -64,7 +65,14 @@ make_leaf :: proc(name: string, owner: ^Eh, instance_data: any, handler: proc(^E
     eh := new(Eh)
     eh.name = name
     eh.handler = handler
-    eh.instance_data = instance_data
+    // want eh.instance_data to be exact duplicate of instance_data
+    fmt.printf ("make_leaf instance_data in %v %v\n", (transmute(runtime.Raw_Any)eh.instance_data).id, transmute([2]rawptr)instance_data )
+    rp := (transmute(runtime.Raw_Any)instance_data).data
+    id := (transmute(runtime.Raw_Any)instance_data).id
+    eh.instance_data = transmute(type_of(instance_data))(runtime.Raw_Any{rp,id})
+    fmt.printf ("make_leaf eh.instance_data in %v %v\n", (transmute(runtime.Raw_Any)eh.instance_data).id, transmute([2]rawptr)eh.instance_data )
+//    (transmute(runtime.Raw_Any)eh.instance_data).id = (transmute(runtime.Raw_Any)instance_data).id
+
     eh.state = .idle
     eh.kind = .leaf
     return eh
