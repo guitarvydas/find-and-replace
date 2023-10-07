@@ -193,7 +193,7 @@ Deracer_Instance_Data :: struct {
     buffer : TwoMessages
 }
 
-reclaim_Buffers_from_heap :: proc (inst : Deracer_Instance_Data) {
+reclaim_Buffers_from_heap :: proc (inst : ^Deracer_Instance_Data) {
     zd.destroy_message (inst.buffer.first)
     zd.destroy_message (inst.buffer.second)
 }
@@ -203,21 +203,23 @@ deracer_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     counter += 1
 
     name_with_id := fmt.aprintf("deracer[%d]", counter)
-    instp := new (Deracer_Instance_Data) // allocate in the heap
-    eh := zd.make_leaf (name_with_id, owner, instp, deracer_proc)
-    instp.state = .idle
+    inst := new (Deracer_Instance_Data) // allocate in the heap
+    inst.state = .idle
+    fmt.printf ("deracer instantiate = %v\n", inst)
+    eh := zd.make_leaf (name_with_id, owner, inst, deracer_proc)
+    fmt.printf ("deracer eh.instance_data.(^Deracer_Instance_Data) instantiate = %v\n", eh.instance_data.(^Deracer_Instance_Data))
     return eh
 }
 
-send_first_then_second :: proc (eh : ^zd.Eh, inst: Deracer_Instance_Data) {
+send_first_then_second :: proc (eh : ^zd.Eh, inst: ^Deracer_Instance_Data) {
     zd.forward (eh, "1", inst.buffer.first)
     zd.forward (eh, "2", inst.buffer.second)
     reclaim_Buffers_from_heap (inst)
 }
 
 deracer_proc :: proc(eh: ^zd.Eh,  msg: ^zd.Message) {
-    instp := eh.instance_data.(^Deracer_Instance_Data)
-    inst := instp^
+    inst := eh.instance_data.(^Deracer_Instance_Data)
+    fmt.printf ("deracer inst = %v\n", inst)
     switch (inst.state) {
     case .idle:
         switch msg.port {
@@ -227,7 +229,7 @@ deracer_proc :: proc(eh: ^zd.Eh,  msg: ^zd.Message) {
         case "2":
             inst.buffer.second = msg
             inst.state = .waitingForFirst
-            case:
+        case:
             fmt.assertf (false, "bad msg.port A for deracer %v\n", msg.port)
         }
     case .waitingForFirst:
@@ -236,7 +238,7 @@ deracer_proc :: proc(eh: ^zd.Eh,  msg: ^zd.Message) {
             inst.buffer.first = msg
             send_first_then_second (eh, inst)
             inst.state = .idle
-            case:
+        case:
             fmt.assertf (false, "bad msg.port B for deracer %v\n", msg.port)
         }
     case .waitingForSecond:
@@ -245,10 +247,10 @@ deracer_proc :: proc(eh: ^zd.Eh,  msg: ^zd.Message) {
             inst.buffer.second = msg
             send_first_then_second (eh, inst)
             inst.state = .idle
-            case:
+        case:
             fmt.assertf (false, "bad msg.port C for deracer %v\n", msg.port)
         }
-	case:
+    case:
         fmt.assertf (false, "bad state for deracer %v\n", eh.state)
     }
 }
