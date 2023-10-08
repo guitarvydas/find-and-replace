@@ -231,6 +231,7 @@ deracer_proc :: proc(eh: ^zd.Eh,  msg: ^zd.Message) {
         case "2":
             inst.buffer.second = msg
             inst.state = .waitingForFirst
+	    fmt.printf ("inst %p %v\n", inst, inst)
         case:
             fmt.assertf (false, "bad msg.port A for deracer %v\n", msg.port)
         }
