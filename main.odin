@@ -19,11 +19,11 @@ import leaf "leaf0d"
 
 main :: proc() {
 
-    fmt.println ("*** starting logger ***")
-    context.logger = log.create_console_logger(
-	lowest=log.Level.Debug,
-        opt={.Level, .Time, .Terminal_Color},
-    )
+    /* fmt.println ("*** starting logger ***") */
+    /* context.logger = log.create_console_logger( */
+    /* 	lowest=log.Level.Debug, */
+    /*     opt={.Level, .Time, .Terminal_Color}, */
+    /* ) */
 
     // load arguments
     diagram_source_file := slice.get(os.args, 1) or_else "find-and-replace.drawio"

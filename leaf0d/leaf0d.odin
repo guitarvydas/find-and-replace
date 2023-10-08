@@ -221,8 +221,7 @@ send_first_then_second :: proc (eh : ^zd.Eh, inst: Deracer_Instance_Data) {
 
 deracer_proc :: proc(eh: ^zd.Eh,  msg: ^zd.Message) {
     inst := eh.instance_data.(Deracer_Instance_Data)
-    //fmt.printf ("deracer inst = %v\n", inst)
-    fmt.printf ("deracer  eh.instance_data in %v %v\n", (transmute(runtime.Raw_Any)eh.instance_data).id, transmute([2]rawptr)eh.instance_data )
+    fmt.printf ("deracer inst=%v msg=%v\n", inst, msg)
     switch (inst.state) {
     case .idle:
         switch msg.port {
