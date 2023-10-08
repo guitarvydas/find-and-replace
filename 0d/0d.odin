@@ -314,7 +314,7 @@ print_output_list :: proc(eh: ^Eh) {
         if idx > 0 {
             write_string(&sb, ", ")
         }
-        fmt.sbprintf(&sb, "{{%s, %v, [%v]}", msg.port, msg.datum, msg.cause)
+        fmt.sbprintf(&sb, "{{«%v» ⎨%v⎬ %v}}", msg.port, msg.datum.asString (msg.datum), msg)
     }
     strings.write_rune(&sb, ']')
 
@@ -330,22 +330,22 @@ set_idle :: proc (eh: ^Eh) {
 }
 
 // Utility for printing a specific output message.
-fetch_first_output_mustbestring :: proc (eh :^Eh, port: Port_Type) -> string {
+fetch_first_output :: proc (eh :^Eh, port: Port_Type) -> Datum {
     iter := make_fifo_iterator(&eh.output)
     for msg, idx in fifo_iterate(&iter) {
 	if msg.port == port {
-	    return msg.datum.data.(string)
+	    return msg.datum^
 	}
     }
-    return ""
+    return Datum{}
 }
 
 print_specific_output :: proc(eh: ^Eh, port: string) {
     sb: strings.Builder
     defer strings.builder_destroy(&sb)
 
-    datum := fetch_first_output_mustbestring (eh, port)
-    fmt.sbprintf(&sb, "%v", datum)
+    datum := fetch_first_output (eh, port)
+    fmt.sbprintf(&sb, "%v", datum.data)
     fmt.println(strings.to_string(sb))
 }
 
