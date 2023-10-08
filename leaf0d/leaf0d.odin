@@ -13,6 +13,14 @@ import "../process"
 import "../syntax"
 import zd "../0d"
 
+gensym :: proc (s : string) -> string {
+    @(static) counter := 0
+    counter += 1
+    name_with_id := fmt.aprintf("%s◦%d", s, counter)
+    return name_with_id
+}
+
+
 stdout_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     return zd.make_leaf(name, owner, nil, stdout_proc)
 }
@@ -139,7 +147,7 @@ command_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
 
     name_with_id := fmt.aprintf("command[%d]", counter)
     instp := new (Command_Instance_Data)
-    return zd.make_leaf (name_with_id, owner, instp, command_proc)
+    return zd.make_leaf (name_with_id, owner, instp^, command_proc)
 }
 
 command_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
@@ -161,7 +169,7 @@ icommand_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
 
     name_with_id := fmt.aprintf("icommand[%d]", counter)
     instp := new (Command_Instance_Data)
-    return zd.make_leaf (name_with_id, owner, instp, icommand_proc)
+    return zd.make_leaf (name_with_id, owner, instp^, icommand_proc)
 }
 
 icommand_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
@@ -198,10 +206,7 @@ reclaim_Buffers_from_heap :: proc (inst : Deracer_Instance_Data) {
 }
 
 deracer_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("deracer[%d]", counter)
+    name_with_id := gensym ("deracer")
     inst := new (Deracer_Instance_Data) // allocate in the heap
     inst.state = .idle
     eh := zd.make_leaf (name_with_id, owner, inst^, deracer_proc)
