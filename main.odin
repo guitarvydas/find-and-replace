@@ -19,11 +19,12 @@ import leaf "leaf0d"
 
 main :: proc() {
 
-    /* fmt.println ("*** starting logger ***") */
-    /* context.logger = log.create_console_logger( */
-    /* 	lowest=log.Level.Debug, */
-    /*     opt={.Level, .Time, .Terminal_Color}, */
-    /* ) */
+    log_level := zd.log_handlers
+    fmt.println ("*** starting logger level %v ***", log_level)
+    context.logger = log.create_console_logger(
+	lowest=cast(runtime.Logger_Level)log_level,
+        opt={.Level, .Time, .Terminal_Color},
+    )
 
     // load arguments
     diagram_source_file := slice.get(os.args, 1) or_else "find-and-replace.drawio"
@@ -62,8 +63,9 @@ run :: proc (r : ^reg.Component_Registry, main_container_name : string, diagram_
         main_container_name,
         diagram_source_file,
     )
+    debug.print_hierarchy (main_container)
     inject (main_container)
-    fmt.println("--- Outputs ---")
+    fmt.println("\n\n--- Outputs ---")
     zd.print_output_list(main_container)
     // reg.print_stats (pregstry)
     zd.print_specific_output (main_container, "output")

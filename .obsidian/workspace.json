@@ -20,16 +20,6 @@
             }
           },
           {
-            "id": "b0b9e6105d4b263c",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.4.14"
-              }
-            }
-          },
-          {
             "id": "4599a4eef57448a6",
             "type": "leaf",
             "state": {
@@ -47,14 +37,14 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "experminents.md",
+                "file": "Loop syntax.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -120,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Key Ideas.md",
+                "file": "Loop syntax.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -137,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Key Ideas.md",
+                "file": "Loop syntax.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -160,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Key Ideas.md"
+                "file": "Loop syntax.md"
               }
             }
           }
@@ -181,25 +171,25 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "b0b9e6105d4b263c",
+  "active": "3a5d83cfe262be1b",
   "lastOpenFiles": [
     "find-and-replace",
-    "find-and-replace.ld_E1b8Pu",
+    "find-and-replace.ld_2f0HBG",
     "find-and-replace.o",
+    "#main.odin#",
+    "experminents.md",
+    "Key Ideas.md",
+    "find-and-replace.ld_vFxfO5",
+    "debug/debug.odin~",
+    "debug/#debug.odin#",
+    "debug/debug.odin",
+    "find-and-replace.ld_E1b8Pu",
     "0d/#0d.odin#",
     "0d/#message.odin#",
-    "leaf0d/#leaf0d.odin#",
-    "#junk.txt#",
-    "doc/find-and-replace.drawio",
-    "debug/debug.odin.txt",
-    "debug/debug.odin",
-    "0d/#datum.odin#",
-    "experminents.md",
     "find.md",
     "fr/find.md",
     "TODO.md",
     "tokenized.md",
-    "Key Ideas.md",
     "test.md",
     "Untitled.md"
   ]

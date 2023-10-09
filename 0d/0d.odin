@@ -9,7 +9,8 @@ import "core:intrinsics"
 import "core:log"
 
 Bang :: struct {}
-
+log_all :: 0
+log_handlers :: 5
 
 // Data for an asyncronous component - effectively, a function with input
 // and output queues of messages.
@@ -207,15 +208,15 @@ deposit :: proc(c: Connector, message: ^Message) {
 }
 
 receivef :: proc(fmt_str: string, args: ..any, location := #caller_location) {
-	log.logf(.Debug,   fmt_str, ..args, location=location)
+    log.logf(cast(runtime.Logger_Level)log_handlers,   fmt_str, ..args, location=location)
 }
 
 sendf :: proc(fmt_str: string, args: ..any, location := #caller_location) {
-	log.logf(.Debug,   fmt_str, ..args, location=location)
+	log.logf(cast(runtime.Logger_Level)log_all,   fmt_str, ..args, location=location)
 }
 
 outputf :: proc(fmt_str: string, args: ..any, location := #caller_location) {
-	log.logf(.Debug,   fmt_str, ..args, location=location)
+	log.logf(cast(runtime.Logger_Level)log_all,   fmt_str, ..args, location=location)
 }
 
 step_children :: proc(container: ^Eh, causingMessage: ^Message) {
