@@ -215,7 +215,6 @@ send_first_then_second :: proc (eh : ^zd.Eh, inst: ^Deracer_Instance_Data) {
 
 deracer_handle :: proc(eh: ^zd.Eh,  msg: ^zd.Message) {
     inst := &eh.instance_data.(Deracer_Instance_Data)
-    fmt.printf ("deracer inst=%v msg=%v\n", inst, msg)
     switch (inst.state) {
     case .idle:
         switch msg.port {
@@ -609,8 +608,8 @@ ohmjs_maybe :: proc (eh: ^zd.Eh, inst: ^OhmJS_Instance_Data, causingMsg: ^zd.Mes
 
         cmd := fmt.aprintf ("ohmjs/ohmjs.js %s %s %s", inst.grammarname, inst.grammarfilename, inst.semanticsfilename)
 	captured_output, err := process.run_command (cmd, inst.input)
-        zd.send_string (eh, "output", captured_output, cause=causingMsg)
-	zd.send_string (eh, "error", err, cause=causingMsg)
+        zd.send_string (eh, "output", strings.trim_space (captured_output), causingMsg)
+	zd.send_string (eh, "error", strings.trim_space (err), causingMsg)
     }
 }
 

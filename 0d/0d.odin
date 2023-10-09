@@ -73,23 +73,25 @@ make_leaf :: proc(name: string, owner: ^Eh, instance_data: any, handler: proc(^E
 
 // Sends a message on the given `port` with `data`, placing it on the output
 // of the given component.
-send :: proc(eh: ^Eh, port: string, datum: ^Datum, cause : ^Message) {
-    sendf("SEND 0x%p %s(%s)[%v]", eh, eh.name, port, cause^)
-    msg := make_message(port, datum, eh, cause)
+send :: proc(eh: ^Eh, port: string, datum: ^Datum, causingMessage : ^Message) {
+    cause := make_cause (eh, causingMessage)
+    sendf("SEND 0x%p %s(%s)[%v]", eh, eh.name, cause)
+    msg := make_message(port, datum, cause)
     fifo_push(&eh.output, msg)
 }
 
-send_string :: proc(eh: ^Eh, port: string, s : string, cause : ^Message) {
-    sendf("SEND 0x%p %s(%s)[%v]", eh, eh.name, port, cause.port)
+send_string :: proc(eh: ^Eh, port: string, s : string, causingMessage : ^Message) {
+    cause := make_cause (eh, causingMessage)
+    sendf("SEND 0x%p %s [%v]", eh, eh.name, port, cause.message.port)
     datum := new_datum_string (s)
-    msg := make_message(port, datum, eh, cause)
+    msg := make_message(port, datum, cause)
     fifo_push(&eh.output, msg)
 }
 
 forward :: proc(eh: ^Eh, port: string, msg: ^Message) {
-    sendf("FORWARD 0x%p %s->%v", eh, eh.name, msg.port)
-    fmsg := make_message(port, msg.datum, eh, msg)
-    fifo_push(&eh.output, fmsg)
+    sendf("FORWARD 0x%p %s->%v", eh, eh.name, port)
+    fwdmsg := make_message(port, msg.datum, make_cause (eh, msg))
+    fifo_push(&eh.output, fwdmsg)
 }
 
 // Returns a list of all output messages on a container.
@@ -216,10 +218,10 @@ outputf :: proc(fmt_str: string, args: ..any, location := #caller_location) {
 	log.logf(.Debug,   fmt_str, ..args, location=location)
 }
 
-step_children :: proc(container: ^Eh, cause: ^Message) {
+step_children :: proc(container: ^Eh, causingMessage: ^Message) {
     container.state = .idle
     for child in container.children {
-        msg: ^Message = make_message ("?", new_datum_bang (), container, cause)
+        msg: ^Message = make_message ("?", new_datum_bang (), make_cause (container, causingMessage))
         ok: bool
 
         switch {
@@ -227,7 +229,7 @@ step_children :: proc(container: ^Eh, cause: ^Message) {
             msg, ok = fifo_pop(&child.input)
 	case child.state != .idle:
 	    ok = true
-	    msg = make_message (".", new_datum_bang (), container, cause)
+	    msg = make_message (".", new_datum_bang (), make_cause (container, causingMessage))
         }
 
         if ok {
@@ -249,9 +251,9 @@ step_children :: proc(container: ^Eh, cause: ^Message) {
     }
 }
 
-tick :: proc (eh: ^Eh, cause: ^Message) {
+tick :: proc (eh: ^Eh, causingMessage: ^Message) {
     if eh.state != .idle {
-	tick_msg := make_message (".", new_datum_bang (), eh, cause)
+	tick_msg := make_message (".", new_datum_bang (), make_cause (eh, causingMessage))
 	fifo_push (&eh.input, tick_msg)
     }
 }
@@ -314,7 +316,10 @@ print_output_list :: proc(eh: ^Eh) {
         if idx > 0 {
             write_string(&sb, ", ")
         }
-        fmt.sbprintf(&sb, "{{«%v» ⎨%v⎬ %v}}", msg.port, msg.datum.asString (msg.datum), msg)
+	cause := msg.cause
+        fmt.sbprintf(&sb, "{{«%v» ⎨%v⎬ <- ⟨%v,%v⟩}}", 
+		     msg.port, msg.datum.asString (msg.datum),
+		     cause.who.name, cause.message.port)
     }
     strings.write_rune(&sb, ']')
 
