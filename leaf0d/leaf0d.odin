@@ -142,10 +142,7 @@ Command_Instance_Data :: struct {
 }
 
 command_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("command[%d]", counter)
+    name_with_id := gensym("command")
     instp := new (Command_Instance_Data)
     return zd.make_leaf (name_with_id, owner, instp^, command_proc)
 }
@@ -164,10 +161,7 @@ command_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 }
 
 icommand_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("icommand[%d]", counter)
+    name_with_id := gensym("icommand[%d]")
     instp := new (Command_Instance_Data)
     return zd.make_leaf (name_with_id, owner, instp^, icommand_proc)
 }
@@ -260,10 +254,7 @@ deracer_proc :: proc(eh: ^zd.Eh,  msg: ^zd.Message) {
 /////////
 
 probe_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("?%d", counter)
+    name_with_id := gensym("?")
     return zd.make_leaf (name_with_id, owner, nil, probe_proc)
 }
 
@@ -272,10 +263,7 @@ probe_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 }
 
 trash_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("trash%d", counter)
+    name_with_id := gensym("trash")
     return zd.make_leaf (name_with_id, owner, nil, trash_proc)
 }
 
@@ -284,10 +272,7 @@ trash_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 }
 
 nulltester_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("nulltester[%d]", counter)
+    name_with_id := gensym("nulltester")
     return zd.make_leaf (name_with_id, owner, nil, nulltester_proc)
 }
 
@@ -300,10 +285,7 @@ nulltester_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 }
 
 literalvsh_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("literalvsh[%d]", counter)
+    name_with_id := gensym("literalvsh")
     return zd.make_leaf (name_with_id, owner, nil, literalvsh_proc)
 }
 
@@ -312,10 +294,7 @@ literalvsh_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 }
 
 literalgrep_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("literalgrep[%d]", counter)
+    name_with_id := gensym("literalgrep")
     return zd.make_leaf (name_with_id, owner, nil, literalgrep_proc)
 }
 
@@ -330,10 +309,7 @@ StringConcat_Instance_Data :: struct {
 }
 
 stringconcat_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("stringconcat[%d]", counter)
+    name_with_id := gensym("stringconcat")
     instp := new (StringConcat_Instance_Data)
     return zd.make_leaf (name_with_id, owner, instp^, stringconcat_proc)
 }
@@ -359,10 +335,7 @@ stringconcat_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 ////////
 
 low_level_read_text_file_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("Low Level Read Text File[%d]", counter)
+    name_with_id := gensym("Low Level Read Text File")
     return zd.make_leaf (name_with_id, owner, nil, low_level_read_text_file_proc)
 }
 
@@ -386,10 +359,7 @@ low_level_read_text_file_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 ////////
 
 panic_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("panic[%d]", counter)
+    name_with_id := gensym("panic")
     return zd.make_leaf (name_with_id, owner, nil, panic_proc)
 }
 
@@ -401,10 +371,7 @@ panic_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 ////
 
 open_text_file_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("Open Text File[%d]", counter)
+    name_with_id := gensym("Open Text File")
     return zd.make_leaf (name_with_id, owner, nil, open_text_file_proc)
 }
 
@@ -421,10 +388,7 @@ open_text_file_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 ////////
 
 read_text_from_fd_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("Low Level Read Text From FD[%d]", counter)
+    name_with_id := gensym("Low Level Read Text From FD")
     return zd.make_leaf (name_with_id, owner, nil, low_level_read_text_from_fd_proc)
 }
 
@@ -448,10 +412,7 @@ Transpile_Instance_Data :: struct {
 }
 
 transpiler_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("Transpiler[%d]", counter)
+    name_with_id := gensym("Transpiler")
     instp := new (Transpile_Instance_Data)
     return zd.make_leaf (name_with_id, owner, instp^, transpiler_leaf_proc)
 }
@@ -487,10 +448,7 @@ Syncfilewrite_Data :: struct {
 }
 
 syncfilewrite_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("syncfilewrite[%d]", counter)
+    name_with_id := gensym("syncfilewrite")
     instp := new (Syncfilewrite_Data)
     return zd.make_leaf (name_with_id, owner, instp^, syncfilewrite_proc)
 }
@@ -516,9 +474,7 @@ Suffix_Data :: struct {
 }
 
 suffix_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-    name_with_id := fmt.aprintf("suffix[%d]", counter)
+    name_with_id := gensym("suffix")
     instp := new (Suffix_Data)
     instp.suffix = ""
     return zd.make_leaf (name_with_id, owner, instp^, suffix_proc)
@@ -544,26 +500,17 @@ rwr_semobject := ""
 rwr_support_js := ""
 
 hard_coded_rwr_grammar_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("hard_coded_rwr_grammar[%d]", counter)
+    name_with_id := gensym("hard_coded_rwr_grammar")
     return zd.make_leaf (name_with_id, owner, nil, hard_coded_rwr_grammar_proc)
 }
 
 hard_coded_rwr_semantics_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("hard_coded_rwr_semantics[%d]", counter)
+    name_with_id := gensym("hard_coded_rwr_semantics")
     return zd.make_leaf (name_with_id, owner, nil, hard_coded_rwr_semantics_proc)
 }
 
 hard_coded_rwr_support_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("hard_coded_rwr_support[%d]", counter)
+    name_with_id := gensym("hard_coded_rwr_support")
     return zd.make_leaf (name_with_id, owner, nil, hard_coded_rwr_support_proc)
 }
 
@@ -579,10 +526,7 @@ hard_coded_rwr_support_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 
 ///
 bang_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("bang[%d]", counter)
+    name_with_id := gensym("bang[%d]")
     return zd.make_leaf (name_with_id, owner, nil, bang_proc)
 }
 
@@ -598,10 +542,7 @@ Concat_Instance_Data :: struct {
 empty_string := ""
 
 concat_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("concat[%d]", counter)
+    name_with_id := gensym("concat")
     instp := new (Concat_Instance_Data)
     instp.buffer = strings.clone (empty_string)
     return zd.make_leaf (name_with_id, owner, instp^, concat_proc)
@@ -623,10 +564,7 @@ concat_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 ////
 
 word_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("word[%d]", counter)
+    name_with_id := gensym("word")
     return zd.make_leaf (name_with_id, owner, nil, word_proc)
 }
 
@@ -636,10 +574,7 @@ word_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 
 
 wordohm_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("word[%d]", counter)
+    name_with_id := gensym("word")
     return zd.make_leaf (name_with_id, owner, nil, wordohm_proc)
 }
 
@@ -648,10 +583,7 @@ wordohm_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 }
 
 wordjs_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("wordjs[%d]", counter)
+    name_with_id := gensym("wordjs")
     return zd.make_leaf (name_with_id, owner, nil, wordjs_proc)
 }
 
@@ -667,10 +599,7 @@ OhmJS_Instance_Data :: struct {
 }
 
 ohmjs_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("OhmJS[%d]", counter)
+    name_with_id := gensym("OhmJS")
     inst := new (OhmJS_Instance_Data) // all fields have zero value before any messages are received
     return zd.make_leaf (name_with_id, owner, inst^, ohmjs_proc)
 }
@@ -711,30 +640,21 @@ ohmjs_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 /// RWR rewriter generates semantics from .rwr spec
 
 rwr_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("rwr[%d]", counter)
+    name_with_id := gensym("rwr")
     return zd.make_leaf (name_with_id, owner, nil, rwr_proc)
 }
 rwr_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
     zd.send_string (eh, "output", "RWR", msg)
 }
 rwrohm_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("rwrohm[%d]", counter)
+    name_with_id := gensym("rwrohm")
     return zd.make_leaf (name_with_id, owner, nil, rwrohm_proc)
 }
 rwrohm_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
     zd.send_string (eh, "output", "rwr/rwr.ohm", msg)
 }
 rwrsemjs_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("rwrsemjs[%d]", counter)
+    name_with_id := gensym("rwrsemjs")
     return zd.make_leaf (name_with_id, owner, nil, rwrsemjs_proc)
 }
 rwrsemjs_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
@@ -743,30 +663,21 @@ rwrsemjs_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 
 ///
 escapes_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("escapes[%d]", counter)
+    name_with_id := gensym("escapes")
     return zd.make_leaf (name_with_id, owner, nil, escapes_proc)
 }
 escapes_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
     zd.send_string (eh, "output", "Escapes", msg)
 }
 escapesohm_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("escapesohm[%d]", counter)
+    name_with_id := gensym("escapesohm")
     return zd.make_leaf (name_with_id, owner, nil, escapesohm_proc)
 }
 escapesohm_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
     zd.send_string (eh, "output", "rt/escapes.ohm", msg)
 }
 escapesrwr_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("escapesrwr[%d]", counter)
+    name_with_id := gensym("escapesrwr")
     return zd.make_leaf (name_with_id, owner, nil, escapesrwr_proc)
 }
 escapesrwr_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
@@ -782,10 +693,7 @@ escapesrwr_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 // temp copy for bootstrap, sends "done" (error during bootstrap if not wired)
 
 syncfilewrite2_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("syncfilewrite2[%d]", counter)
+    name_with_id := gensym("syncfilewrite2")
     inst := new (Syncfilewrite_Data)
     return zd.make_leaf (name_with_id, owner, inst^, syncfilewrite2_proc)
 }
@@ -807,10 +715,7 @@ syncfilewrite2_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 }
 
 fakepipename_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("fakepipename[%d]", counter)
+    name_with_id := gensym("fakepipename")
     return zd.make_leaf (name_with_id, owner, nil, fakepipename_proc)
 }
 
@@ -825,10 +730,7 @@ fakepipename_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 
 
 colonspc_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("colonspc[%d]", counter)
+    name_with_id := gensym("colonspc")
     return zd.make_leaf (name_with_id, owner, nil, colonspc_proc)
 }
 colonspc_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
@@ -837,10 +739,7 @@ colonspc_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 
 ///
 find_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-
-    name_with_id := fmt.aprintf("find[%d]", counter)
+    name_with_id := gensym("find")
     return zd.make_leaf (name_with_id, owner, nil, find_proc)
 }
 find_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
@@ -850,10 +749,7 @@ find_proc :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 ///
 
 ensure_string_datum_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
-    @(static) counter := 0
-    counter += 1
-    
-    name_with_id := fmt.aprintf("Ensure String Datum[%d]", counter)
+    name_with_id := gensym("Ensure String Datum")
     return zd.make_leaf (name_with_id, owner, nil, ensure_string_datum_proc)
 }
 
