@@ -1,12 +1,17 @@
 package debug
 
+import "core:log"
 import "core:fmt"
 import zd "../0d"
 
-print_hierarchy :: proc (c : ^zd.Eh) {
-    fmt.printf ("\n(%s", c.name)
+log_hierarchy :: proc (c : ^zd.Eh) {
+    log.infof ("%s\n", build_hierarchy (c))
+}
+
+build_hierarchy :: proc (c : ^zd.Eh) -> string {
+    s := ""
     for child in c.children {
-	print_hierarchy (child)
+	s = fmt.aprintf ("%s%s", s, build_hierarchy (child))
     }
-    fmt.printf (")")
+    return fmt.aprintf ("\n(%s%s)", c.name, s)
 }

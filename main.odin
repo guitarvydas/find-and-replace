@@ -19,8 +19,9 @@ import leaf "leaf0d"
 
 main :: proc() {
 
-    log_level := zd.log_handlers
-    fmt.println ("*** starting logger level %v ***", log_level)
+    //log_level := zd.log_handlers
+    log_level := runtime.Logger_Level.Info
+    fmt.printf ("\n*** starting logger level %v ***\n", log_level)
     context.logger = log.create_console_logger(
 	lowest=cast(runtime.Logger_Level)log_level,
         opt={.Level, .Time, .Terminal_Color},
@@ -63,7 +64,7 @@ run :: proc (r : ^reg.Component_Registry, main_container_name : string, diagram_
         main_container_name,
         diagram_source_file,
     )
-    debug.print_hierarchy (main_container)
+    debug.log_hierarchy (main_container)
     inject (main_container)
     fmt.println("\n\n--- Outputs ---")
     zd.print_output_list(main_container)
