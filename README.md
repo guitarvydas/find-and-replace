@@ -1,7 +1,7 @@
 - debugging odd behaviour of Ohm-JS using a script ./dev.bash
 - it appears that Ohm-JS is calling sem.js rule "Name" with undefined parameters
 - in the past, all problems have devolved into being my errors, which implies that this problem is probably something caused by my code
-- see README.md in 
+- see README.md in https://github.com/guitarvydas/find-and-replace/tree/debugrwr
 - I haven't whittled this down to something simpler yet
 - running ./dev.bash results in:
   - a list of names of valid operations `[ 'rwr' ]`
