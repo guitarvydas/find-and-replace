@@ -13,7 +13,13 @@
   - 3 outputs (again) regarding the 3 parameters `Name: function (lb,cs,rb) {...}`
 
 background:
-- src.md looks nice when using the Obsidian markdown editor
+- src.md looks nicer when using the Obsidian markdown editor, when the unicode brackets have been deleted
+- src.md is a "tokenized" file - all names have been bracketed by Unicode brackets `Name = "❲" NameChar+ "❳"` 
+  - a lexical pass tokenizes the input
+  - then, Syntactic rules can be used against the tokenized input
+  - the ultimate goal is to transpile src.md into a prepass that parses Loop syntax and leaves everything else alone
+  - at this point, I am not attempting to achieve the ultimate goal, I am simply trying to parse src.md and output it "as is" - an identity transform. Something in my code is misbehaving.
+
 
 
 Demonstration of a combination of a number of simple concepts ostensibly to play with new syntax:
