@@ -125,8 +125,24 @@ function hangOperationOntoAsst (asst, opName, opFileName) {
     }
 }
 /////
+let src;
+
 function processCST (opName, asst, cst) {
-    return (asst (cst) [opName]) ();
+    console.error (asst.getOperationNames ())
+    console.error (opName)
+    try {
+	return (asst (cst) [opName]) ();
+    } catch (e) {
+	_tracing = true;
+	console.error ('error during processing of the AST, src written to /tmp/src');
+	console.error (argv);
+	fs.writeFileSync ('/tmp/src', src);
+	try {
+	    return (asst (cst) [opName]) ();
+	} catch (eagain) {
+	    throw eagain;
+	}
+    }
 }
 /////
 
@@ -134,14 +150,13 @@ function main () {
     // top level command, prints on stdout and stderr (if error) then exits with 0 or 1 (OK, or not OK, resp.)
     try {
 	argv = require('yargs/yargs')(process.argv.slice(2)).argv;
-
 	let grammarName = argv._[0];
 	let grammarFileName = argv._[1];
 	let rwrFileName = argv._[2];
-	let src = fs.readFileSync ('/dev/fd/0', 'utf-8');
+	src = fs.readFileSync ('/dev/fd/0', 'utf-8');
 
+	_traceDepth = 0;
 	if (argv.trace) {
-	    _traceDepth = 0;
 	    _tracing = true;
 	}
 

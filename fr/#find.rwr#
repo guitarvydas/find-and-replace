@@ -25,14 +25,13 @@ Find {
   Vinculum [lt ku gt MatchItem+ lts ku gt] = ‛«lt»«ku»«gt»«MatchItem»«lts»«ku»«gt»’
   Any [lt kspan kstyle keq green gt kcheckmark lts kspan gt] = ‛«lt»«kspan»«kstyle»«keq»«green»«gt»«kcheckmark»«lts»«kspan»«gt»’
 
-  character [c] = ‛«c»’ // character
+  // character
   Tag [koctothorpe Name] = ‛«koctothorpe»«Name»’
   word [lb s rb] = ‛«lb»«s»«rb»’
   string [dq1 s dq2] = ‛«dq1»«s»«dq2»’
   Name [lb cs+ rb] = ‛«lb»«cs»«rb»’
   NameChar_rec [lb cs+ rb] = ‛«lb»«cs»«rb»’
   NameChar_other [c] = ‛«c»’
-  Line [c] = ‛«c»’ // Line
-  space [c] = ‛«c»’ // space
-  dq [c] = ‛«c»’ // dq
+  // space
+  // dq
 }

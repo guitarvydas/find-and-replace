@@ -610,6 +610,7 @@ ohmjs_maybe :: proc (eh: ^zd.Eh, inst: ^OhmJS_Instance_Data, causingMsg: ^zd.Mes
 	captured_output, err := process.run_command (cmd, inst.input)
         zd.send_string (eh, "output", strings.trim_space (captured_output), causingMsg)
 	zd.send_string (eh, "error", strings.trim_space (err), causingMsg)
+	fmt.printf ("ohmjs_maybe: %v\n", cmd) //, strings.trim_space (err))
     }
 }
 
