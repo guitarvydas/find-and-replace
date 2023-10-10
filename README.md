@@ -12,7 +12,8 @@
   - a trace of the semantic rules being called (`[1] ... [5]`)
   - 3 outputs (again) regarding the 3 parameters `Name: function (lb,cs,rb) {...}`
 
-
+background:
+- src.md looks nice when using the Obsidian markdown editor
 
 
 Demonstration of a combination of a number of simple concepts ostensibly to play with new syntax:

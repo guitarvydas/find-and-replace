@@ -1,1 +1,1 @@
-ohmjs/ohmjs.js Find grammar.ohm sem.js <src.txt
+ohmjs/ohmjs.js Find grammar.ohm sem.js <src.md
