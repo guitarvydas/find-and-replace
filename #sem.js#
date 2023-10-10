@@ -1,7 +1,7 @@
 {
-    FindSCN: function (Heading) {
+    FindSCN: function (Heading,Rule,AuxRule) {
 	_ruleEnter ("FindSCN");
-	console.error (`A ${Heading === undefined}`);
+	console.error (`A ${Heading === undefined} ${Rule === undefined} ${AuxRule === undefined}`);
 	Heading = Heading.rwr ();
 	console.error ('B');
 	Rule = Rule.rwr ().join ('');

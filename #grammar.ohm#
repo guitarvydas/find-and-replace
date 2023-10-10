@@ -1,5 +1,5 @@
 Find {
-  FindSCN = Heading
+  FindSCN = Heading Rule+ AuxRule*
 
   Heading = "#"+ "%20" Name
 
