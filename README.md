@@ -1,3 +1,20 @@
+- debugging odd behaviour of Ohm-JS using a script ./dev.bash
+- it appears that Ohm-JS is calling sem.js rule "Name" with undefined parameters
+- in the past, all problems have devolved into being my errors, which implies that this problem is probably something caused by my code
+- see README.md in 
+- I haven't whittled this down to something simpler yet
+- running ./dev.bash results in:
+  - a list of names of valid operations `[ 'rwr' ]`
+	  - `rwr` is my mnemonic for `rewrite`
+  - the name of the operation being invoked `rwr`
+  - 3 outputs regarding the the undefined-edness of the 3 parameters to the JavaScript function 'Name'
+  - a dump of argv for this invocation of ohmjs.js
+  - a trace of the semantic rules being called (`[1] ... [5]`)
+  - 3 outputs (again) regarding the 3 parameters `Name: function (lb,cs,rb) {...}`
+
+
+
+
 Demonstration of a combination of a number of simple concepts ostensibly to play with new syntax:
 - 0D
 - drawware
