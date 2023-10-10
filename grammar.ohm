@@ -1,0 +1,52 @@
+Find {
+  FindSCN = Heading Rule+ AuxRule*
+
+  Heading = "#"+ "%20" Name
+
+  Rule =        RuleName RuleBody
+  AuxRule = "-" RuleName RuleBody
+
+  RuleBody = Branch+
+  Branch =
+    | "-" Tag MatchItem+ -- tagged
+    | MatchItem+         -- untagged
+
+  RuleName = "<" word<"mark"> ">" Name "</" word<"mark"> ">"
+
+  MatchItem =
+    | RuleApplication -- ruleapplication
+    | Recursion       -- opRecursion
+    | NegativeMatch   -- negativeMatch
+    | Iteration       -- iteration
+    | Any             -- any
+    | Name            -- name
+    | character       -- character
+    
+  RuleApplication = "<" word<"sub"> ">" "<" word<"i"> ">" Name "</" word<"i"> ">"  "</" word<"sub"> ">"
+  Recursion = "↺"
+  NegativeMatch = "<" word<"span"> word<"style"> "=" string<"color%3A%20%23FF76C1%3B"> ">" (Name | RuleApplication | character) "<" word<"sup"> ">" "≠" "</" word<"sup"> ">" "</" word<"span"> ">" 
+  Iteration = OneOrMore | ZeroOrMore | Optional
+  OneOrMore = Vinculum "<" word<"sub"> ">" "1..." "</" word<"sub"> ">"
+  ZeroOrMore = Vinculum "<" word<"sub"> ">" "0..." "</" word<"sub"> ">"
+  Optional = Vinculum "<" word<"sub"> ">" "?" "</" word<"sub"> ">"
+  Vinculum = "<" word<"u"> ">" MatchItem+ "</" word<"u"> ">"
+  Any = "<" word<"span"> word<"style"> "=" string<"color%3A%2300B040%3B"> ">" "✓" "</" word<"span"> ">"
+
+    character = ~"<" ~">" ~"❲" ~"❳" ~"↺" ~"#" ~"-" ~space any
+
+      Tag = "#" Name
+
+      word<s> = "❲" s "❳"
+      string<s> = dq s dq
+
+
+	Name = "❲" NameChar+ "❳"
+	NameChar =
+	  | "❲" NameChar* "❳" -- rec
+	  | ~"❲" ~"❳" any  -- other
+
+	Line = "---"
+	space += applySyntactic<Line>
+
+	dq = "\""
+}
