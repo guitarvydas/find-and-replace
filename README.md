@@ -17,10 +17,11 @@ background:
 - src.md is a "tokenized" file - all names have been bracketed by Unicode brackets `Name = "❲" NameChar+ "❳"` 
   - a lexical pass tokenizes the input
   - then, Syntactic rules can be used against the tokenized input
-  - the ultimate goal is to transpile src.md into a prepass that parses Loop syntax and leaves everything else alone
+  - the ultimate goal is to transpile src.md into a prepass that parses Loop syntax and leaves everything else alone (i.e a "macro" processor for non-Lisp languages)
   - at this point, I am not attempting to achieve the ultimate goal, I am simply trying to parse src.md and output it "as is" - an identity transform. Something in my code is misbehaving.
 
 
+---
 
 Demonstration of a combination of a number of simple concepts ostensibly to play with new syntax:
 - 0D
