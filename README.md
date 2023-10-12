@@ -35,7 +35,7 @@ Demonstration of a combination of a number of simple concepts ostensibly to play
 - debugging using probes
 - syntax-driven translation
 - explicit stacks
-- DOWN calls in RWR
+- BEFORE calls in RWR
 - mechanisms
 
 - syntactic vs. Lexical grammars

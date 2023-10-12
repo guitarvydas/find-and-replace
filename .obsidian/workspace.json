@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Loop syntax.md",
+                "file": "junk-src.md",
                 "mode": "source",
                 "source": false
               }
@@ -110,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Loop syntax.md",
+                "file": "junk-src.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Loop syntax.md",
+                "file": "junk-src.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Loop syntax.md"
+                "file": "junk-src.md"
               }
             }
           }
@@ -173,6 +173,17 @@
   },
   "active": "3a5d83cfe262be1b",
   "lastOpenFiles": [
+    "find-and-replace",
+    "find-and-replace.o",
+    "find-and-replace.ld_Ptxhjg",
+    "Key Ideas.md",
+    "Loop syntax.md",
+    "parsing atoms.md",
+    "README.md",
+    "src.md",
+    "test.md",
+    "TODO.md",
+    "tokenized.md",
     "#grammar.ohm#",
     "#sem.js#",
     "#src.md#",
@@ -180,19 +191,11 @@
     "grammar.ohm~",
     "junk-src.md",
     "#README.md#",
-    "src.md",
     "sem.js~",
     "dev.bash~",
-    "#dev.bash#",
-    "src.txt",
-    "sem.js",
     "experminents.md",
-    "Key Ideas.md",
     "find.md",
     "fr/find.md",
-    "TODO.md",
-    "tokenized.md",
-    "test.md",
     "Untitled.md"
   ]
 }

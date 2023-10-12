@@ -501,9 +501,9 @@ function getRuleName () { return ruleName; }
 
 function hangOperationOntoAsst (asst, opName, opFileName) {
     console.error ('0');
-    semanticsFunctionsAsNamespaceString = fs.readFileSync (opFileName, 'utf-8');
+//    semanticsFunctionsAsNamespaceString = fs.readFileSync (opFileName, 'utf-8');
     console.error ('1');
-    let evalableSemanticsFunctionsString = '(' + semanticsFunctionsAsNamespaceString + ')';
+//    let evalableSemanticsFunctionsString = '(' + semanticsFunctionsAsNamespaceString + ')';
     console.error ('2');
     try {
     console.error ('3');
