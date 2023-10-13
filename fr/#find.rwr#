@@ -25,7 +25,7 @@ Find {
   Recursion [krec] = ‛«krec»’
   NegativeMatch [lt kspan kstyle keq red gt item lt2 ksup gt2 kne lts ksup2 gt3 lts2 kspan2 gt4] = ‛ ~(«item»)’
   // Iteration [OneOrMore | ZeroOrMore | Optional
-  OneOrMore [Vinculum lt ksub gt k1 lts ksub2 gt2] = ‛«Vinculum»«lt»«ksub»«gt»«k1»«lts»«ksub2»«gt2»’
+  OneOrMore [Vinculum lt ksub gt k1 lts ksub2 gt2] = ‛+’
   ZeroOrMore [Vinculum lt ksub gt k0 lts ksub2 gt2] = ‛«Vinculum»«lt»«ksub»«gt»«k0»«lts»«ksub2»«gt2»’
   Optional [Vinculum lt ksub gt kq lts ksub2 gt2] = ‛«Vinculum»«lt»«ksub»«gt»«kq»«lts»«ksub2»«gt2»’
   Vinculum [lt ku gt MatchItem+ lts ku2 gt2] = ‛«lt»«ku»«gt»«MatchItem»«lts»«ku2»«gt2»’
