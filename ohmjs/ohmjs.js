@@ -35,7 +35,8 @@ Find {
 	  | "❲" NameChar* "❳" -- rec
 	  | ~"❲" ~"❳" any  -- other
 
-	Line = "---"
+	line = "---"
+	space += line
 
 	dq = "\""
 }
@@ -129,11 +130,11 @@ let semanticsObject = {
 	_ruleExit ("NameChar_other");
 	return `${c}`;
     },
-    Line: function (c) {
-	_ruleEnter ("Line");
+    line: function (c) {
+	_ruleEnter ("line");
 	c = c.rwr ();
 
-	_ruleExit ("Line");
+	_ruleExit ("line");
 	return `${c}`;
     },
     space: function (c) {
