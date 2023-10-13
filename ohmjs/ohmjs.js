@@ -13,14 +13,14 @@ const ohm = require ('ohm-js');
 let argv;
 
 let src = String.raw`
-~~ ❲Find❳
+❲Find❳
 `;
 
 let grammarText = String.raw`
 Find {
   FindSCN = Heading
 
-  Heading = "~~"+ Name
+  Heading = Name
 
     character = ~"<" ~">" ~"❲" ~"❳" ~"↺" ~"#" ~"-" ~space any
 
@@ -59,9 +59,9 @@ let semanticsObject = {
 	_ruleExit ("FindSCN");
 	return `${Heading}${Rule}${AuxRule}`;
     },
-    Heading: function (koctothorpe,Name) {
+    Heading: function (Name) {
 	_ruleEnter ("Heading");
-	koctothorpe = koctothorpe.rwr ().join ('');
+	koctothorpe = " <# removed> ";
 	kblank = " <removed> ";
 	Name = Name.rwr ();
 
