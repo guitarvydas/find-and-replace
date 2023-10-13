@@ -20,7 +20,7 @@ let grammarText = String.raw`
 Find {
   FindSCN = Heading
 
-  Heading = Name
+  Heading = "❲" "Find" "❳"
 
     character = ~"<" ~">" ~"❲" ~"❳" ~"↺" ~"#" ~"-" ~space any
 
@@ -59,14 +59,13 @@ let semanticsObject = {
 	_ruleExit ("FindSCN");
 	return `${Heading}${Rule}${AuxRule}`;
     },
-    Heading: function (Name) {
+    Heading: function (lb,id,rb) {
 	_ruleEnter ("Heading");
-	koctothorpe = " <# removed> ";
-	kblank = " <removed> ";
-	Name = Name.rwr ();
-
+	lb = lb.rwr ();
+	id = id.rwr ();
+	rb = rb.rwr ();
 	_ruleExit ("Heading");
-	return `${koctothorpe}${kblank}${Name}`;
+	return `${lb}${id}${rb}`;
     },
     character: function (c) {
 	_ruleEnter ("character");
