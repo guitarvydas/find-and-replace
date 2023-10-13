@@ -148,6 +148,7 @@
   },
   "active": "3a5d83cfe262be1b",
   "lastOpenFiles": [
+    "ohmjs/#ohmjs.js#",
     "#Makefile#",
     "find-and-replace.drawio",
     "Loop syntax.md",
@@ -162,7 +163,6 @@
     "#sem.js#",
     "test.md",
     "experminents.md",
-    "syntax/syntax.odin",
     "fr/find.md",
     "Key Ideas.md",
     "README.md",
