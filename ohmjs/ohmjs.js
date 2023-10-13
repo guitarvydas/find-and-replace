@@ -13,14 +13,14 @@ const ohm = require ('ohm-js');
 let argv;
 
 let src = String.raw`
-~~ ❲Find❳
+Find
 `;
 
 let grammarText = String.raw`
 Find {
   FindSCN = Heading
 
-  Heading = "~~"+ Name
+  Heading = "Find"
 
     character = ~"<" ~">" ~"❲" ~"❳" ~"↺" ~"#" ~"-" ~space any
 
@@ -35,8 +35,8 @@ Find {
 	  | "❲" NameChar* "❳" -- rec
 	  | ~"❲" ~"❳" any  -- other
 
-	Line = "---"
-	space += applySyntactic<Line>
+	line = "---"
+	space += line
 
 	dq = "\""
 }
@@ -48,25 +48,17 @@ let semanticsObject = {
 	console.error (`A ${Heading === undefined}`);
 	Heading = Heading.rwr ();
 	console.error ('B');
-	// Rule = Rule.rwr ().join ('');
-	// console.error ('C');
-	// AuxRule = AuxRule.rwr ().join ('');
-	// console.error ('D');
-
-	Rule = "N/A";
-	AuxRule = "N/A";
+	Rule = " <N/A> ";
+	AuxRule = " <N/A> ";
 
 	_ruleExit ("FindSCN");
 	return `${Heading}${Rule}${AuxRule}`;
     },
-    Heading: function (koctothorpe,Name) {
+    Heading: function (id) {
 	_ruleEnter ("Heading");
-	koctothorpe = koctothorpe.rwr ().join ('');
-	kblank = " <removed> ";
-	Name = Name.rwr ();
-
+	id = id.rwr ();
 	_ruleExit ("Heading");
-	return `${koctothorpe}${kblank}${Name}`;
+	return `${id}`;
     },
     character: function (c) {
 	_ruleEnter ("character");
@@ -138,11 +130,11 @@ let semanticsObject = {
 	_ruleExit ("NameChar_other");
 	return `${c}`;
     },
-    Line: function (c) {
-	_ruleEnter ("Line");
+    line: function (c) {
+	_ruleEnter ("line");
 	c = c.rwr ();
 
-	_ruleExit ("Line");
+	_ruleExit ("line");
 	return `${c}`;
     },
     space: function (c) {
