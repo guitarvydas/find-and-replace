@@ -36,7 +36,6 @@ Find {
 	  | ~"❲" ~"❳" any  -- other
 
 	Line = "---"
-	space += applySyntactic<Line>
 
 	dq = "\""
 }
