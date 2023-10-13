@@ -148,6 +148,7 @@
   },
   "active": "3a5d83cfe262be1b",
   "lastOpenFiles": [
+    "#Makefile#",
     "find-and-replace.drawio",
     "Loop syntax.md",
     "debug/debug.odin.txt",
@@ -162,7 +163,6 @@
     "test.md",
     "experminents.md",
     "syntax/syntax.odin",
-    "syntax/drawio_mxgraph.odin~",
     "fr/find.md",
     "Key Ideas.md",
     "README.md",

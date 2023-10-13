@@ -16,29 +16,6 @@ let src = String.raw`
 ~~ %20 ❲Find❳
 `;
 
-let orig_src = String.raw`
-## %20 ❲Find❳
-<❲mark❳>❲Loop❳</❲mark❳>
-      ❲loop❳ ❲over❳ <❲sub❳><❲i❳>❲SymbolListName❳</❲i❳></❲sub❳> ⇒ <❲sub❳><❲i❳>❲SingleSymbolName❳</❲i❳></❲sub❳> {
-          <❲sub❳><❲i❳>❲TerminationClause❳</❲i❳></❲sub❳> <❲sub❳><❲i❳>❲Iteration❳</❲i❳></❲sub❳> <❲sub❳><❲i❳>❲Clause❳</❲i❳></❲sub❳>
-      }
-
-
-
-  ---
-
- - <❲mark❳>❲TerminationClause❳</❲mark❳>    ❲termination❳ : <❲sub❳><❲i❳>❲Clause❳</❲i❳></❲sub❳> ;
- - <❲mark❳>❲IterationClause❳</❲mark❳>           ❲iteration❳ : <❲u❳><❲sub❳><❲i❳>❲Statement❳</❲i❳></❲sub❳></❲u❳><❲sub❳>?</❲sub❳>
- - <❲mark❳>❲Clause❳</❲mark❳>
-	- #❲nested❳                        { <❲sub❳><❲i❳>❲Statement❳</❲i❳></❲sub❳> } ↺
-	- #❲other❳                         <❲u❳><❲span❳ ❲style❳="color%3A%20%23FF76C1%3B">;<❲sup❳>≠</❲sup❳></❲span❳> <❲span❳ ❲style❳="color%3A%20%23FF76C1%3B">{<❲sup❳>≠</❲sup❳></❲span❳> <❲span❳ ❲style❳="color%3A%20%23FF76C1%3B">}<❲sup❳>≠</❲sup❳></❲span❳> <❲span❳ ❲style❳="color%3A%2300B040%3B">✓</❲span❳></❲u❳><❲sub❳>1...</❲sub❳>  ↺
-
-- <❲mark❳>❲Statement❳</❲mark❳>                   <❲sub❳><❲i❳>❲Clause❳</❲i❳></❲sub❳> ;
-
-- <❲mark❳>❲SymbolListName❳</❲mark❳>       \`=\` <❲sub❳><❲i❳>❲word❳</❲i❳></❲sub❳>
-- <❲mark❳>❲SingleSymbolName❳</❲mark❳>  \`=\` <❲sub❳><❲i❳>❲word❳</❲i❳></❲sub❳>
-`;
-
 let grammarText = String.raw`
 Find {
   FindSCN = Heading
@@ -241,7 +218,7 @@ function makeASST (ast) {
 }
 /////
 var _traceDepth = 0;
-var _tracing = false;
+var _tracing = true;
 
 function _ruleInit () {
 }
@@ -297,25 +274,12 @@ function getRuleName () { return ruleName; }
 
 
 function hangOperationOntoAsst (asst, opName, opFileName) {
-    console.error ('0');
-//    semanticsFunctionsAsNamespaceString = fs.readFileSync (opFileName, 'utf-8');
-    console.error ('1');
-//    let evalableSemanticsFunctionsString = '(' + semanticsFunctionsAsNamespaceString + ')';
-    console.error ('2');
     try {
-    console.error ('3');
-//	console.error (evalableSemanticsFunctionsString);
-//	compiledSemantics = eval (evalableSemanticsFunctionsString);
-    console.error ('4');
-//	let sem = asst.addOperation (opName, compiledSemantics);
 	let sem = asst.addOperation (opName, semanticsObject);
-    console.error ('4a');
 	return sem;
     } catch (e) {
-    console.error ('5');
 	throw Error (`while loading operation ${opName}: ${e.message}`);
     }
-    console.error ('6');
 }
 /////
 
@@ -345,18 +309,11 @@ function main () {
     try {
 	argv = require('yargs/yargs')(process.argv.slice(2)).argv;
 	let grammarName = "Find";
-//	let grammarName = argv._[0];
-	let grammarFileName = argv._[1];
-	let rwrFileName = argv._[2];
-//	src = fs.readFileSync ('/dev/fd/0', 'utf-8');
+	let grammarFileName = "";
+	let rwrFileName = "";
 
 	_traceDepth = 0;
-//	if (argv.trace) {
-	    _tracing = true;
-//	}
-
-	// let grammarText = fs.readFileSync (grammarFileName, 'utf-8');
-	// let rwr = fs.readFileSync (rwrFileName, 'utf-8');
+	_tracing = true;
 
 	let ast = makeAST (grammarName, grammarText);
 	let cst = patternMatch (src, ast);

@@ -1,6 +1,9 @@
 ODIN_FLAGS ?= -debug -o:none
 
-all: dev
+all: debugrwr
+
+debugrwr:
+	ohmjs/ohmjs.js
 
 simple-dev: 
 	ohmjs/ohmjs.js Word rt/word.ohm rt/word.sem.js <test.md
