@@ -11,19 +11,19 @@ Find {
   Branch_tagged [kdash Tag MatchItems+] = ‛«kdash»«Tag»«MatchItems»’
   Branch_untagged [MatchItems+] = ‛«MatchItems»’
 
-  RuleName [lt kmark gt Name lts kmark2 gt2] = ‛«lt»«kmark»«gt»«Name»«lts»«mark2»«gt2»’
+  RuleName [lt kmark gt Name lts kmark2 gt2] = ‛«lt»«kmark»«gt»«Name»«lts»«kmark2»«gt2»’
 
   // MatchItem - covered by OhmJS
 
-  RuleApplication [lt ksub gt lt ki gt Name lts ki gt  lts ksub gt] = ‛«lt»«ksub»«gt»«lt»«ki»«gt»«Name»«lts»«ki»«gt»«lts»«ksub»«gt»’
+  RuleApplication [lt ksub gt0 lt2 ki gt1 Name lts ki2 gt2  lts2 ksub2 gt3] = ‛«lt»«ksub»«gt0»«lt2»«ki»«gt1»«Name»«lts»«ki2»«gt2»«lts2»«ksub2»«gt3»’
   Recursion [krec] = ‛«krec»’
-  NegativeMatch [lt kspan kstyle keq red gt item lt ksup gt kne lts ksup gt lts kspan gt] = ‛«lt»«kspan»«kstyle»«keq»«red»«gt»«item»«lt»«ksup»«gt»«kne»«lts»«ksup»«gt»«lts»«kspan»«gt»’
+  NegativeMatch [lt kspan kstyle keq red gt item lt ksup gt2 kne lts ksup gt3 lts kspan gt4] = ‛«lt»«kspan»«kstyle»«keq»«red»«gt»«item»«lt»«ksup»«gt2»«kne»«lts»«ksup»«gt3»«lts»«kspan»«gt4»’
   // Iteration [OneOrMore | ZeroOrMore | Optional
-  OneOrMore [Vinculum lt ksub gt k1 lts ksub gt] = ‛«Vinculum»«lt»«ksub»«gt»«k1»«lts»«ksub»«gt»’
-  ZeroOrMore [Vinculum lt ksub gt k0 lts ksub gt] = ‛«Vinculum»«lt»«ksub»«gt»«k0»«lts»«ksub»«gt»’
-  Optional [Vinculum lt ksub gt kq lts ksub gt] = ‛«inculum»«lt»«ksub»«gt»«kq»«lts»«ksub»«gt»’
-  Vinculum [lt ku gt MatchItem+ lts ku gt] = ‛«lt»«ku»«gt»«MatchItem»«lts»«ku»«gt»’
-  Any [lt kspan kstyle keq green gt kcheckmark lts kspan gt] = ‛«lt»«kspan»«kstyle»«keq»«green»«gt»«kcheckmark»«lts»«kspan»«gt»’
+  OneOrMore [Vinculum lt ksub gt k1 lts ksub2 gt2] = ‛«Vinculum»«lt»«ksub»«gt»«k1»«lts»«ksub2»«gt2»’
+  ZeroOrMore [Vinculum lt ksub gt k0 lts ksub2 gt2] = ‛«Vinculum»«lt»«ksub»«gt»«k0»«lts»«ksub2»«gt2»’
+  Optional [Vinculum lt ksub gt kq lts ksub2 gt2] = ‛«inculum»«lt»«ksub»«gt»«kq»«lts»«ksub2»«gt2»’
+  Vinculum [lt ku gt MatchItem+ lts ku gt2] = ‛«lt»«ku»«gt»«MatchItem»«lts»«ku»«gt2»’
+  Any [lt kspan kstyle keq green gt kcheckmark lts kspan gt2] = ‛«lt»«kspan»«kstyle»«keq»«green»«gt»«kcheckmark»«lts»«kspan»«gt2»’
 
   character [c] = ‛«c»’ // character
   Tag [koctothorpe Name] = ‛«koctothorpe»«Name»’
@@ -32,7 +32,7 @@ Find {
   Name [lb cs+ rb] = ‛«lb»«cs»«rb»’
   NameChar_rec [lb cs+ rb] = ‛«lb»«cs»«rb»’
   NameChar_other [c] = ‛«c»’
-  Line [c] = ‛«c»’ // Line
+  line [c] = ‛«c»’ // line
   space [c] = ‛«c»’ // space
   dq [c] = ‛«c»’ // dq
 }

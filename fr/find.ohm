@@ -45,8 +45,8 @@ Find {
 	  | "❲" NameChar* "❳" -- rec
 	  | ~"❲" ~"❳" any  -- other
 
-	Line = "---"
-	space += applySyntactic<Line>
+	line = "---"
+	space += line
 
 	dq = "\""
 }
