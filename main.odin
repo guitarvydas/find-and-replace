@@ -69,6 +69,7 @@ run :: proc (r : ^reg.Component_Registry, main_container_name : string, diagram_
     fmt.println("\n\n--- Outputs ---")
     zd.print_output_list(main_container)
     // reg.print_stats (pregstry)
+    fmt.println("\n\n--- RESULT ---")
     zd.print_specific_output (main_container, "output")
 }
 

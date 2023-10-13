@@ -150,6 +150,7 @@
   "lastOpenFiles": [
     "find-and-replace",
     "find-and-replace.o",
+    "fr/find-identity.rwr",
     "fr/#find.rwr#",
     "find-and-replace.ld_odfnio",
     "ohmjs/#ohmjs.js#",
@@ -159,7 +160,6 @@
     "debug/debug.odin.txt",
     "debug/debug.odin",
     "debug/debug.odin~",
-    "debug",
     "TODO.md",
     "test.md",
     "experminents.md",
