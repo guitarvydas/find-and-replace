@@ -48,13 +48,8 @@ let semanticsObject = {
 	console.error (`A ${Heading === undefined}`);
 	Heading = Heading.rwr ();
 	console.error ('B');
-	// Rule = Rule.rwr ().join ('');
-	// console.error ('C');
-	// AuxRule = AuxRule.rwr ().join ('');
-	// console.error ('D');
-
-	Rule = "N/A";
-	AuxRule = "N/A";
+	Rule = " <N/A> ";
+	AuxRule = " <N/A> ";
 
 	_ruleExit ("FindSCN");
 	return `${Heading}${Rule}${AuxRule}`;
