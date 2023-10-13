@@ -150,6 +150,8 @@
   "lastOpenFiles": [
     "find-and-replace",
     "find-and-replace.o",
+    "fr/#find.rwr#",
+    "find-and-replace.ld_odfnio",
     "ohmjs/#ohmjs.js#",
     "#Makefile#",
     "find-and-replace.drawio",
@@ -158,8 +160,6 @@
     "debug/debug.odin",
     "debug/debug.odin~",
     "debug",
-    "process/process.odin~",
-    "process/process.odin",
     "TODO.md",
     "test.md",
     "experminents.md",

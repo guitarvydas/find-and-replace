@@ -17,13 +17,13 @@ Find {
 
   RuleApplication [lt ksub gt0 lt2 ki gt1 Name lts ki2 gt2  lts2 ksub2 gt3] = ‛«lt»«ksub»«gt0»«lt2»«ki»«gt1»«Name»«lts»«ki2»«gt2»«lts2»«ksub2»«gt3»’
   Recursion [krec] = ‛«krec»’
-  NegativeMatch [lt kspan kstyle keq red gt item lt ksup gt2 kne lts ksup gt3 lts kspan gt4] = ‛«lt»«kspan»«kstyle»«keq»«red»«gt»«item»«lt»«ksup»«gt2»«kne»«lts»«ksup»«gt3»«lts»«kspan»«gt4»’
+  NegativeMatch [lt kspan kstyle keq red gt item lt2 ksup gt2 kne lts ksup2 gt3 lts2 kspan2 gt4] = ‛«lt»«kspan»«kstyle»«keq»«red»«gt»«item»«lt2»«ksup»«gt2»«kne»«lts»«ksup2»«gt3»«lts2»«kspan2»«gt4»’
   // Iteration [OneOrMore | ZeroOrMore | Optional
   OneOrMore [Vinculum lt ksub gt k1 lts ksub2 gt2] = ‛«Vinculum»«lt»«ksub»«gt»«k1»«lts»«ksub2»«gt2»’
   ZeroOrMore [Vinculum lt ksub gt k0 lts ksub2 gt2] = ‛«Vinculum»«lt»«ksub»«gt»«k0»«lts»«ksub2»«gt2»’
-  Optional [Vinculum lt ksub gt kq lts ksub2 gt2] = ‛«inculum»«lt»«ksub»«gt»«kq»«lts»«ksub2»«gt2»’
-  Vinculum [lt ku gt MatchItem+ lts ku gt2] = ‛«lt»«ku»«gt»«MatchItem»«lts»«ku»«gt2»’
-  Any [lt kspan kstyle keq green gt kcheckmark lts kspan gt2] = ‛«lt»«kspan»«kstyle»«keq»«green»«gt»«kcheckmark»«lts»«kspan»«gt2»’
+  Optional [Vinculum lt ksub gt kq lts ksub2 gt2] = ‛«Vinculum»«lt»«ksub»«gt»«kq»«lts»«ksub2»«gt2»’
+  Vinculum [lt ku gt MatchItem+ lts ku2 gt2] = ‛«lt»«ku»«gt»«MatchItem»«lts»«ku2»«gt2»’
+  Any [lt kspan kstyle keq green gt kcheckmark lts kspan2 gt2] = ‛«lt»«kspan»«kstyle»«keq»«green»«gt»«kcheckmark»«lts»«kspan2»«gt2»’
 
   character [c] = ‛«c»’ // character
   Tag [koctothorpe Name] = ‛«koctothorpe»«Name»’
