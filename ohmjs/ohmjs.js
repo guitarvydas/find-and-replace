@@ -13,6 +13,10 @@ const ohm = require ('ohm-js');
 let argv;
 
 let src = String.raw`
+~~ %20 ❲Find❳
+`;
+
+let orig_src = String.raw`
 ## %20 ❲Find❳
 <❲mark❳>❲Loop❳</❲mark❳>
       ❲loop❳ ❲over❳ <❲sub❳><❲i❳>❲SymbolListName❳</❲i❳></❲sub❳> ⇒ <❲sub❳><❲i❳>❲SingleSymbolName❳</❲i❳></❲sub❳> {
@@ -37,38 +41,9 @@ let src = String.raw`
 
 let grammarText = String.raw`
 Find {
-  FindSCN = Heading Rule+ AuxRule*
+  FindSCN = Heading
 
-  Heading = "#"+ "%20" Name
-
-  Rule =        RuleName RuleBody
-  AuxRule = "-" RuleName RuleBody
-
-  RuleBody = Branch+
-  Branch =
-    | "-" Tag MatchItem+ -- tagged
-    | MatchItem+         -- untagged
-
-  RuleName = "<" word<"mark"> ">" Name "</" word<"mark"> ">"
-
-  MatchItem =
-    | RuleApplication -- ruleapplication
-    | Recursion       -- opRecursion
-    | NegativeMatch   -- negativeMatch
-    | Iteration       -- iteration
-    | Any             -- any
-    | Name            -- name
-    | character       -- character
-    
-  RuleApplication = "<" word<"sub"> ">" "<" word<"i"> ">" Name "</" word<"i"> ">"  "</" word<"sub"> ">"
-  Recursion = "↺"
-  NegativeMatch = "<" word<"span"> word<"style"> "=" string<"color%3A%20%23FF76C1%3B"> ">" (Name | RuleApplication | character) "<" word<"sup"> ">" "≠" "</" word<"sup"> ">" "</" word<"span"> ">" 
-  Iteration = OneOrMore | ZeroOrMore | Optional
-  OneOrMore = Vinculum "<" word<"sub"> ">" "1..." "</" word<"sub"> ">"
-  ZeroOrMore = Vinculum "<" word<"sub"> ">" "0..." "</" word<"sub"> ">"
-  Optional = Vinculum "<" word<"sub"> ">" "?" "</" word<"sub"> ">"
-  Vinculum = "<" word<"u"> ">" MatchItem+ "</" word<"u"> ">"
-  Any = "<" word<"span"> word<"style"> "=" string<"color%3A%2300B040%3B"> ">" "✓" "</" word<"span"> ">"
+  Heading = "~~"+ "%20" Name
 
     character = ~"<" ~">" ~"❲" ~"❳" ~"↺" ~"#" ~"-" ~space any
 
@@ -91,15 +66,18 @@ Find {
 `;
 
 let semanticsObject = {
-    FindSCN: function (Heading,Rule,AuxRule) {
+    FindSCN: function (Heading) {
 	_ruleEnter ("FindSCN");
-	console.error (`A ${Heading === undefined} ${Rule === undefined} ${AuxRule === undefined}`);
+	console.error (`A ${Heading === undefined}`);
 	Heading = Heading.rwr ();
 	console.error ('B');
-	Rule = Rule.rwr ().join ('');
-	console.error ('C');
-	AuxRule = AuxRule.rwr ().join ('');
-	console.error ('D');
+	// Rule = Rule.rwr ().join ('');
+	// console.error ('C');
+	// AuxRule = AuxRule.rwr ().join ('');
+	// console.error ('D');
+
+	Rule = "N/A";
+	AuxRule = "N/A";
 
 	_ruleExit ("FindSCN");
 	return `${Heading}${Rule}${AuxRule}`;
@@ -112,179 +90,6 @@ let semanticsObject = {
 
 	_ruleExit ("Heading");
 	return `${koctothorpe}${kblank}${Name}`;
-    },
-    Rule: function (RuleName,RuleBody) {
-	_ruleEnter ("Rule");
-	RuleName = RuleName.rwr ();
-	RuleBody = RuleBody.rwr ();
-
-	_ruleExit ("Rule");
-	return `${RuleName}${RuleBody}`;
-    },
-    AuxRule: function (kdash,RuleName,RuleBody) {
-	_ruleEnter ("AuxRule");
-	kdash = kdash.rwr ();
-	RuleName = RuleName.rwr ();
-	RuleBody = RuleBody.rwr ();
-
-	_ruleExit ("AuxRule");
-	return `${kdash}${RuleName}${RuleBody}`;
-    },
-    RuleBody: function (RuleBranch) {
-	_ruleEnter ("RuleBody");
-	RuleBranch = RuleBranch.rwr ().join ('');
-
-	_ruleExit ("RuleBody");
-	return `${RuleBranch}`;
-    },
-    Branch_tagged: function (kdash,Tag,MatchItems) {
-	_ruleEnter ("Branch_tagged");
-	kdash = kdash.rwr ();
-	Tag = Tag.rwr ();
-	MatchItems = MatchItems.rwr ().join ('');
-
-	_ruleExit ("Branch_tagged");
-	return `${kdash}${Tag}${MatchItems}`;
-    },
-    Branch_untagged: function (MatchItems) {
-	_ruleEnter ("Branch_untagged");
-	MatchItems = MatchItems.rwr ().join ('');
-
-	_ruleExit ("Branch_untagged");
-	return `${MatchItems}`;
-    },
-    RuleName: function (lt,kmark,gt,Name,lts,kmark2,gt2) {
-	_ruleEnter ("RuleName");
-	lt = lt.rwr ();
-	kmark = kmark.rwr ();
-	gt = gt.rwr ();
-	Name = Name.rwr ();
-	lts = lts.rwr ();
-	kmark2 = kmark2.rwr ();
-	gt2 = gt2.rwr ();
-
-	_ruleExit ("RuleName");
-	return `${lt}${kmark}${gt}${Name}${lts}${mark2}${gt2}`;
-    },
-    RuleApplication: function (lt,ksub,gt,lt,ki,gt,Name,lts,ki,gt,lts,ksub,gt) {
-	_ruleEnter ("RuleApplication");
-	lt = lt.rwr ();
-	ksub = ksub.rwr ();
-	gt = gt.rwr ();
-	lt = lt.rwr ();
-	ki = ki.rwr ();
-	gt = gt.rwr ();
-	Name = Name.rwr ();
-	lts = lts.rwr ();
-	ki = ki.rwr ();
-	gt = gt.rwr ();
-	lts = lts.rwr ();
-	ksub = ksub.rwr ();
-	gt = gt.rwr ();
-
-	_ruleExit ("RuleApplication");
-	return `${lt}${ksub}${gt}${lt}${ki}${gt}${Name}${lts}${ki}${gt}${lts}${ksub}${gt}`;
-    },
-    Recursion: function (krec) {
-	_ruleEnter ("Recursion");
-	krec = krec.rwr ();
-
-	_ruleExit ("Recursion");
-	return `${krec}`;
-    },
-    NegativeMatch: function (lt,kspan,kstyle,keq,red,gt,item,lt,ksup,gt,kne,lts,ksup,gt,lts,kspan,gt) {
-	_ruleEnter ("NegativeMatch");
-	lt = lt.rwr ();
-	kspan = kspan.rwr ();
-	kstyle = kstyle.rwr ();
-	keq = keq.rwr ();
-	red = red.rwr ();
-	gt = gt.rwr ();
-	item = item.rwr ();
-	lt = lt.rwr ();
-	ksup = ksup.rwr ();
-	gt = gt.rwr ();
-	kne = kne.rwr ();
-	lts = lts.rwr ();
-	ksup = ksup.rwr ();
-	gt = gt.rwr ();
-	lts = lts.rwr ();
-	kspan = kspan.rwr ();
-	gt = gt.rwr ();
-
-	_ruleExit ("NegativeMatch");
-	return `${lt}${kspan}${kstyle}${keq}${red}${gt}${item}${lt}${ksup}${gt}${kne}${lts}${ksup}${gt}${lts}${kspan}${gt}`;
-    },
-    OneOrMore: function (Vinculum,lt,ksub,gt,k1,lts,ksub,gt) {
-	_ruleEnter ("OneOrMore");
-	Vinculum = Vinculum.rwr ();
-	lt = lt.rwr ();
-	ksub = ksub.rwr ();
-	gt = gt.rwr ();
-	k1 = k1.rwr ();
-	lts = lts.rwr ();
-	ksub = ksub.rwr ();
-	gt = gt.rwr ();
-
-	_ruleExit ("OneOrMore");
-	return `${Vinculum}${lt}${ksub}${gt}${k1}${lts}${ksub}${gt}`;
-    },
-    ZeroOrMore: function (Vinculum,lt,ksub,gt,k0,lts,ksub,gt) {
-	_ruleEnter ("ZeroOrMore");
-	Vinculum = Vinculum.rwr ();
-	lt = lt.rwr ();
-	ksub = ksub.rwr ();
-	gt = gt.rwr ();
-	k0 = k0.rwr ();
-	lts = lts.rwr ();
-	ksub = ksub.rwr ();
-	gt = gt.rwr ();
-
-	_ruleExit ("ZeroOrMore");
-	return `${Vinculum}${lt}${ksub}${gt}${k0}${lts}${ksub}${gt}`;
-    },
-    Optional: function (Vinculum,lt,ksub,gt,kq,lts,ksub,gt) {
-	_ruleEnter ("Optional");
-	Vinculum = Vinculum.rwr ();
-	lt = lt.rwr ();
-	ksub = ksub.rwr ();
-	gt = gt.rwr ();
-	kq = kq.rwr ();
-	lts = lts.rwr ();
-	ksub = ksub.rwr ();
-	gt = gt.rwr ();
-
-	_ruleExit ("Optional");
-	return `${inculum}${lt}${ksub}${gt}${kq}${lts}${ksub}${gt}`;
-    },
-    Vinculum: function (lt,ku,gt,MatchItem,lts,ku,gt) {
-	_ruleEnter ("Vinculum");
-	lt = lt.rwr ();
-	ku = ku.rwr ();
-	gt = gt.rwr ();
-	MatchItem = MatchItem.rwr ().join ('');
-	lts = lts.rwr ();
-	ku = ku.rwr ();
-	gt = gt.rwr ();
-
-	_ruleExit ("Vinculum");
-	return `${lt}${ku}${gt}${MatchItem}${lts}${ku}${gt}`;
-    },
-    Any: function (lt,kspan,kstyle,keq,green,gt,kcheckmark,lts,kspan,gt) {
-	_ruleEnter ("Any");
-	lt = lt.rwr ();
-	kspan = kspan.rwr ();
-	kstyle = kstyle.rwr ();
-	keq = keq.rwr ();
-	green = green.rwr ();
-	gt = gt.rwr ();
-	kcheckmark = kcheckmark.rwr ();
-	lts = lts.rwr ();
-	kspan = kspan.rwr ();
-	gt = gt.rwr ();
-
-	_ruleExit ("Any");
-	return `${lt}${kspan}${kstyle}${keq}${green}${gt}${kcheckmark}${lts}${kspan}${gt}`;
     },
     character: function (c) {
 	_ruleEnter ("character");
@@ -384,14 +189,6 @@ let semanticsObject = {
     space: function (x) { return this.sourceString; },
 
 
-    // manually added
-    MatchItem : function (x) {
-	_ruleEnter ("MatchItem");
-	x = x.rwr ();
-
-	_ruleExit ("MatchItem");
-	return `${x}`;
-    }
 };
 
 
@@ -516,7 +313,7 @@ function hangOperationOntoAsst (asst, opName, opFileName) {
 	return sem;
     } catch (e) {
     console.error ('5');
-	throw Error (`while loading operation ${opName}: ${evalableSemanticsFunctionsString}: ${e.message}`);
+	throw Error (`while loading operation ${opName}: ${e.message}`);
     }
     console.error ('6');
 }

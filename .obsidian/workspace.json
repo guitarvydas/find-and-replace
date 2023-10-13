@@ -8,30 +8,6 @@
         "type": "tabs",
         "children": [
           {
-            "id": "81e66f22f9f7db0f",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Key Ideas.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "4599a4eef57448a6",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "experminents.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
             "id": "3a5d83cfe262be1b",
             "type": "leaf",
             "state": {
@@ -43,8 +19,7 @@
               }
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -173,29 +148,29 @@
   },
   "active": "3a5d83cfe262be1b",
   "lastOpenFiles": [
-    "find-and-replace",
-    "find-and-replace.o",
-    "find-and-replace.ld_Ptxhjg",
-    "Key Ideas.md",
+    "find-and-replace.drawio",
     "Loop syntax.md",
-    "parsing atoms.md",
-    "README.md",
-    "src.md",
-    "test.md",
+    "debug/debug.odin.txt",
+    "debug/debug.odin",
+    "debug/debug.odin~",
+    "debug",
+    "process/process.odin~",
+    "process/process.odin",
+    "process",
     "TODO.md",
-    "tokenized.md",
-    "#grammar.ohm#",
     "#sem.js#",
-    "#src.md#",
-    "ohmjs/#ohmjs.js#",
-    "grammar.ohm~",
-    "junk-src.md",
-    "#README.md#",
-    "sem.js~",
-    "dev.bash~",
+    "test.md",
     "experminents.md",
-    "find.md",
+    "syntax/syntax.odin",
+    "syntax/drawio_mxgraph.odin~",
     "fr/find.md",
-    "Untitled.md"
+    "Key Ideas.md",
+    "README.md",
+    "Untitled.md",
+    "parsing atoms.md",
+    "tokenized.md",
+    "src.md",
+    "junk-src.md",
+    "find.md"
   ]
 }
