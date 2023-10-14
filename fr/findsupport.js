@@ -300,44 +300,56 @@ _ = {
 
 
     // binding stack for RWR
+    debug (x, y, z) {
+	if (y === undefined) {
+	    console.log (x);
+	} else if (z === undefined) {
+	    console.log (x, y);
+	} else {
+	    console.log (x, y, z); 
+	}
+    },
+
     
     bindingstack: "nil",
     popbindings: function () {
-	//console.error ("popbindings");
+	_.debug ("popbindings");
 	_.bindingstack = _.rest (_.bindingstack);
 	return "";
     },
     pushnewbindings: function () {
-	//console.error ("pushnewbindings");
+	_.debug ("pushnewbindings");
 	_.bindingstack = _.push (_.bindingstack.push, new Map ());
 	return "";
     },
     bind: function (name, value) {
-	console.error ("bind 1a", _.bindingstack);
+	_.debug ("bind 1a", _.bindingstack);
 	let item = _.top (_.bindingstack);
-	console.error ("bind 1b", item);
+	_.debug ("bind 1b", item);
 	item.set (name, value);
-	console.error ("bind 1c", item);
+	_.debug ("bind 1c", item);
+	_.debug ("bind 1d", _.bindingstack);
 	return "";
     },
     top: function () {
-	//console.error ("top");
+	_.debug ("top");
 	return _.car (_.bindingstack);
     },
     fetch: function (name) {
-	//console.error ("fetch");
+	_.debug ("00000", _.bindingstack);
+	_.debug ("fetch", _.bindingstack);
 	return _.fetchbinding (name, _.bindingstack);
     },
     fetchbinding: function (name, stack) {
-	//console.error ("fetchbinding");
+	_.debug ("fetchbinding", name, stack);
 	if (_.isEmpty (stack)) {
-	    return "";
+	    return "<empty>";
 	} else {
 	    let item0 = _.top (_.bindingstack);
-	    console.error ("fetchbinding 2a", _.bindingstack);
-	    console.error ("fetchbinding 2b", item0);
+	    _.debug ("fetchbinding 2a", _.bindingstack);
+	    _.debug ("fetchbinding 2b", item0);
 	    let v = item0.get (name);
-	    console.error ("fetchbinding 3", v);
+	    _.debug ("fetchbinding 3", v);
 	    if (undefined != v) {
 		return v;
 	    } else {

@@ -159,6 +159,9 @@ function main () {
 	if (argv.trace) {
 	    _tracing = true;
 	}
+	// if ('Find' === grammarName) {
+	//     _tracing = true;
+	// }
 
 	let grammarText = fs.readFileSync (grammarFileName, 'utf-8');
 	let rwr = fs.readFileSync (rwrFileName, 'utf-8');
