@@ -1,10 +1,11 @@
 Find {
-  FindSCN = Heading Rule+ AuxRule*
+  FindSCN = Heading Rule+ AuxRule* EquivalentRule*
 
   Heading = "#"+ "%20" Name
 
   Rule =        RuleName RuleBody
   AuxRule = "-" RuleName RuleBody
+  EquivalentRule = "≡" "<" word<"sub"> ">" "<" word<"i"> ">⎣" Name "⎦</" word<"i"> ">"  "</" word<"sub"> ">"
 
   RuleBody = Branch+
   Branch =
@@ -31,6 +32,9 @@ Find {
   Optional = Vinculum "<" word<"sub"> ">" "?" "</" word<"sub"> ">"
   Vinculum = "<" word<"u"> ">" MatchItem+ "</" word<"u"> ">"
   Any = "<" word<"span"> word<"style"> "=" string<"color%3A%2300B040%3B"> ">" "✓" "</" word<"span"> ">"
+
+
+
 
     character = ~"<" ~">" ~"❲" ~"❳" ~"↺" ~"#" ~"-" ~space any
 
