@@ -1,18 +1,20 @@
 Find {
-  FindSCN = Heading Rule+ AuxRule* EquivalentRule*
+  FindSCN = Heading Rule+ AuxRule*
 
   Heading = "#"+ "%20" Name
 
   Rule =        RuleName RuleBody
   AuxRule = "-" RuleName RuleBody
-  EquivalentRule = "≡" "<" word<"sub"> ">" "<" word<"i"> ">⎣" Name "⎦</" word<"i"> ">"  "</" word<"sub"> ">"
 
   RuleBody = Branch+
   Branch =
     | "-" Tag MatchItem+ -- tagged
-    | MatchItem+         -- untagged
+    | Equivalence -- equivalence
+    | MatchItem+     -- untagged
 
   RuleName = "<" word<"mark"> ">" Name "</" word<"mark"> ">"
+
+  Equivalence = "≡" "<" word<"sub"> ">" "<" word<"i"> ">⎣" Name "⎦</" word<"i"> ">"  "</" word<"sub"> ">"
 
   MatchItem =
     | RuleApplication -- ruleapplication

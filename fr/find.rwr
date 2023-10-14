@@ -6,12 +6,16 @@ Find {
   Rule [RuleName RuleBody] ‛«_.pushnewbindings ()»«_.bind ("RuleName", RuleName.rwr ())»’ = ‛\n«RuleName» = «RuleBody»«_.popbindings ()»’
   AuxRule [kdash RuleName RuleBody] ‛«_.pushnewbindings ()»«_.bind ("RuleName", RuleName.rwr ())»’ = ‛\n«RuleName» = «RuleBody»«_.popbindings ()»’
 
+
+
   RuleBody [RuleBranch+] = ‛«RuleBranch»’
 
   Branch_tagged [kdash Tag MatchItems+] = ‛\n | «MatchItems» «Tag»’
   Branch_untagged [MatchItems+] = ‛«MatchItems»’
 
   RuleName [lt kmark gt Name lts kmark2 gt2] = ‛«Name»’
+
+  Equivalence [keqv klt ksub kgt klt1 ki kgtlb Name krbltsl ki2 kgt2 kltsl2 ksub2 kgt3] = ‛«Name»’
 
   MatchItem_ruleapplication [x] = ‛«x»’
   MatchItem_opRecursion [x] = ‛«x»’

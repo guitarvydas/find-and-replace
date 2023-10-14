@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "junk-src.md",
+                "file": "fr/find.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "junk-src.md",
+                "file": "fr/find.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "junk-src.md",
+                "file": "fr/find.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "junk-src.md"
+                "file": "fr/find.md"
               }
             }
           }
@@ -149,16 +149,17 @@
   "active": "3a5d83cfe262be1b",
   "lastOpenFiles": [
     "find-and-replace",
+    "find-and-replace.ld_BaXoR9",
     "find-and-replace.o",
+    "fr/#find.ohm#",
+    "junk-src.md",
+    "find-and-replace.ld_kNpYLA",
+    "fr/#find.rwr#",
     "fr/#findsupport.js#",
     "find-and-replace.ld_C6DVAn",
     "ohmjs/#ohmjs.js#",
-    "fr/#find.rwr#",
     "find-and-replace.ld_1haouL",
     "find-and-replace.ld_E8hzDc",
-    "find-and-replace.ld_Y3ahRs",
-    "find-and-replace.ld_bOvhVr",
-    "fr/junk.js",
     "Loop syntax.md",
     "TODO.md",
     "test.md",
@@ -170,7 +171,6 @@
     "parsing atoms.md",
     "tokenized.md",
     "src.md",
-    "junk-src.md",
     "find.md"
   ]
 }

@@ -16,5 +16,5 @@
 
 - <mark>Statement</mark>                   <sub><i>Clause</i></sub> ;
 
-- <mark>SymbolListName</mark>       `=` <sub><i>word</i></sub>
-- <mark>SingleSymbolName</mark>  `=` <sub><i>word</i></sub>
+- <mark>SymbolListName</mark>       ≡ <sub><i>⎣word⎦</i></sub>
+- <mark>SingleSymbolName</mark>   ≡ <sub><i>⎣word⎦</i></sub>
