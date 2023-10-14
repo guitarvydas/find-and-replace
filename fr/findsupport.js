@@ -301,7 +301,7 @@ _ = {
 
     // binding stack for RWR
     
-    bindingstack: [],
+    bindingstack: "nil",
     popbindings: function () {
 	//console.error ("popbindings");
 	_.bindingstack = _.rest (_.bindingstack);
@@ -313,9 +313,11 @@ _ = {
 	return "";
     },
     bind: function (name, value) {
-	//console.error ("bind");
+	console.error ("bind 1a", _.bindingstack);
 	let item = _.top (_.bindingstack);
+	console.error ("bind 1b", item);
 	item.set (name, value);
+	console.error ("bind 1c", item);
 	return "";
     },
     top: function () {
@@ -332,7 +334,10 @@ _ = {
 	    return "";
 	} else {
 	    let item0 = _.top (_.bindingstack);
+	    console.error ("fetchbinding 2a", _.bindingstack);
+	    console.error ("fetchbinding 2b", item0);
 	    let v = item0.get (name);
+	    console.error ("fetchbinding 3", v);
 	    if (undefined != v) {
 		return v;
 	    } else {
