@@ -303,24 +303,31 @@ _ = {
     
     bindingstack: [],
     popbindings: function () {
+	//console.error ("popbindings");
 	_.bindingstack = _.rest (_.bindingstack);
 	return "";
     },
     pushnewbindings: function () {
+	//console.error ("pushnewbindings");
 	_.bindingstack = _.push (_.bindingstack.push, new Map ());
+	return "";
     },
     bind: function (name, value) {
+	//console.error ("bind");
 	let item = _.top (_.bindingstack);
 	item.set (name, value);
 	return "";
     },
     top: function () {
+	//console.error ("top");
 	return _.car (_.bindingstack);
     },
     fetch: function (name) {
+	//console.error ("fetch");
 	return _.fetchbinding (name, _.bindingstack);
     },
     fetchbinding: function (name, stack) {
+	//console.error ("fetchbinding");
 	if (_.isEmpty (stack)) {
 	    return "";
 	} else {

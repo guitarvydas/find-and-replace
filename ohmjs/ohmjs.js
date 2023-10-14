@@ -134,7 +134,7 @@ function processCST (opName, asst, cst) {
 	return (asst (cst) [opName]) ();
     } catch (e) {
 	_tracing = true;
-	console.error ('error during processing of the AST, src written to /tmp/src');
+	console.error (`error during processing of the AST, src written to /tmp/src\n${e}`);
 	console.error (argv);
 	fs.writeFileSync ('/tmp/src', src);
 	try {
