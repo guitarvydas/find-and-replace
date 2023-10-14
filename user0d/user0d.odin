@@ -54,6 +54,7 @@ components :: proc (leaves: ^[dynamic]reg.Leaf_Template) {
     append(leaves, reg.Leaf_Template { name = "': '", instantiate = leaf.colonspc_instantiate })
 
     append(leaves, reg.Leaf_Template { name = "'Find'", instantiate = leaf.find_instantiate })
+    append(leaves, reg.Leaf_Template { name = "'fr/findsupport.js'", instantiate = leaf.findsupport_instantiate })
 
     append(leaves, reg.Leaf_Template { name = "Ensure String Datum", instantiate = leaf.ensure_string_datum_instantiate })
 

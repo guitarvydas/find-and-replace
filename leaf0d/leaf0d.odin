@@ -747,6 +747,16 @@ find_handle :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
 }
 
 ///
+///
+findsupport_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
+    name_with_id := gensym("find")
+    return zd.make_leaf (name_with_id, owner, nil, findsupport_handle)
+}
+findsupport_handle :: proc(eh: ^zd.Eh, msg: ^zd.Message) {
+    zd.send_string (eh, "output", "fr/findsupport.js", msg)
+}
+
+///
 
 ensure_string_datum_instantiate :: proc(name: string, owner : ^zd.Eh) -> ^zd.Eh {
     name_with_id := gensym("Ensure String Datum")

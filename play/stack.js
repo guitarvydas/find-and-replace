@@ -381,16 +381,9 @@ function testall () {
     pdebug ('B', stk);
     
     let map2 = new Map ();
-    map1.set('d', 4);
+    map2.set('d', 4);
     stk = push (stk, map2);
     pdebug ('C',stk);
 }
 
 testall ();
-
-let m = new Map ();
-m.set('x', 97);
-m.set('y', 98);
-m.set('z', 99);
-console.log (mapAsString (m));
-console.log (typeof (m));
