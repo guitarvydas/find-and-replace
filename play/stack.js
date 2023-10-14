@@ -319,11 +319,46 @@ function rest (stack) {
     }
 }
 
-function pdebug (info, s) {
-    console.log (info, s.toString ());
+// function explicit_asString (m) {
+//     // return a string representation of a map (for debugging)
+//     let r = [];
+//     i = 0;
+//     for (const [key, value] of m) {
+// 	let str = `${key}: ${value.toString ()}`;
+// 	r [i] = str;
+// 	i += 1;
+//     }
+//     return r;
+// }
+	       
+function mapAsString (m) {
+    return Array.from (m);
 }
-    
-function testall () {
+
+
+function printable (s) {
+    if (s === undefined) {
+	return constant_nil ().toString ();
+    } else if (s instanceof Map) {
+	return mapAsString (s);
+    } else {
+	return s.toString ();
+    }
+}	
+
+function pdebug (info, s) {
+    console.log (info, 
+		 printable (s), 
+		 "is empty:", isEmpty (s), 
+		 "top:", printable (car (s)),
+		 "rest:", printable (rest (s))
+		);
+}
+
+
+
+
+function test0 () {
     let stk = init ();
     pdebug ('A', stk);
     
@@ -334,5 +369,28 @@ function testall () {
     pdebug ('C',stk);
 }
 
+function testall () {
+    let stk = init ();
+    pdebug ('A', stk);
+
+    let map1 = new Map ();
+    map1.set('a', 1);
+    map1.set('b', 2);
+    map1.set('c', 3);
+    stk = push (stk, map1);
+    pdebug ('B', stk);
+    
+    let map2 = new Map ();
+    map1.set('d', 4);
+    stk = push (stk, map2);
+    pdebug ('C',stk);
+}
+
 testall ();
 
+let m = new Map ();
+m.set('x', 97);
+m.set('y', 98);
+m.set('z', 99);
+console.log (mapAsString (m));
+console.log (typeof (m));
