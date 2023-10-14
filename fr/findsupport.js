@@ -301,6 +301,7 @@ _ = {
 
     // binding stack for RWR
     debug (x, y, z) {
+	return;
 	if (y === undefined) {
 	    console.log (x);
 	} else if (z === undefined) {

@@ -3,8 +3,8 @@ Find {
 
   Heading [koctothorpe+ kblank Name] = ‛// «Name»’
 
-  Rule [RuleName RuleBody] ‛«_.pushnewbindings ()»«_.bind ("RuleName", RuleName.rwr ())»’= ‛\n«RuleName» = «RuleBody»«_.popbindings ()»’
-  AuxRule [kdash RuleName RuleBody] = ‛\n«RuleName» = «RuleBody»’
+  Rule [RuleName RuleBody] ‛«_.pushnewbindings ()»«_.bind ("RuleName", RuleName.rwr ())»’ = ‛\n«RuleName» = «RuleBody»«_.popbindings ()»’
+  AuxRule [kdash RuleName RuleBody] ‛«_.pushnewbindings ()»«_.bind ("RuleName", RuleName.rwr ())»’ = ‛\n«RuleName» = «RuleBody»«_.popbindings ()»’
 
   RuleBody [RuleBranch+] = ‛«RuleBranch»’
 
