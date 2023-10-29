@@ -13,13 +13,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Key Ideas.md",
+                "file": "README.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "4d627b298c0da45f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "doc/parsing atoms.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -85,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Key Ideas.md",
+                "file": "doc/parsing atoms.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Key Ideas.md",
+                "file": "doc/parsing atoms.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Key Ideas.md"
+                "file": "doc/parsing atoms.md"
               }
             }
           }
@@ -146,30 +159,31 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "3a5d83cfe262be1b",
+  "active": "4d627b298c0da45f",
   "lastOpenFiles": [
+    "TODO.md",
+    "doc/parsing atoms.md",
+    "tokenized.md",
+    "Untitled.md",
+    "Untitled 1.md",
+    "README.md",
+    "attic/test.md",
+    "find-and-replace",
+    "find-and-replace.o",
+    "attic/Makefile",
+    "attic/Key Ideas.md",
+    "attic",
+    "fr/find.md",
+    "attic/Loop syntax.md",
+    "attic/junk-src.md",
+    "attic/experminents.md",
     "doc/2023-10-15-Examining Dynamic Structure.md",
     "doc/#2023-10-15-Examining Dynamic Structure.md#",
-    "find-and-replace",
     "find-and-replace.ld_jdYnjd",
-    "find-and-replace.o",
-    "fr/find.md",
     "find-and-replace.ld_BaXoR9",
     "fr/#find.ohm#",
-    "junk-src.md",
     "find-and-replace.ld_kNpYLA",
     "fr/#find.rwr#",
-    "fr/#findsupport.js#",
-    "find-and-replace.ld_C6DVAn",
-    "Loop syntax.md",
-    "TODO.md",
-    "test.md",
-    "experminents.md",
-    "Key Ideas.md",
-    "README.md",
-    "Untitled.md",
-    "parsing atoms.md",
-    "tokenized.md",
     "src.md",
     "find.md"
   ]
