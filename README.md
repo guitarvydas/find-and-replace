@@ -2,6 +2,8 @@ Sample file is in `fr/find.md`.
 usage: make dev
 status: parses `fr/find.md`, but, nothing more
 
+![](doc/find-and-replace-main.drawio.svg)
+
 
 
 Demonstration of a combination of a number of simple concepts ostensibly to play with new syntax:
